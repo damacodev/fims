@@ -44,7 +44,7 @@ export default {
       clickableSteps: true
     });
 
-    wizard.on("change", (wizardObj) => {
+    wizard.on("change", wizardObj => {
       if (wizardObj.newStep > wizardObj.currentStep) {
         const step = self.validator[`step${wizardObj.currentStep}`];
 

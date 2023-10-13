@@ -91,6 +91,11 @@
         <i class="menu-icon flaticon-more-v2"></i>
       </li>
       <li-menu
+        :to="{ name: 'approver' }"
+        text="Approver"
+        icon="flaticon-users"
+      />
+      <li-menu
         :to="{ name: 'technician' }"
         text="Technician"
         icon="flaticon-user"

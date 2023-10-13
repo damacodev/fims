@@ -83,34 +83,16 @@
     <div class="pagination-wrapper" v-if="!hideFooter">
       <hr class="m-0" />
       <b-row
-        class="
-          px-4
-          py-3
-          my-auto
-          m-0
-          d-flex
-          justify-content-center justify-content-md-between
-        "
+        class="px-4 py-3 my-auto m-0 d-flex justify-content-center justify-content-md-between"
       >
         <span class="text-results my-auto">
           Showing {{ showing }} of {{ totalRecords }} results
         </span>
         <div
-          class="
-            d-block d-md-flex
-            justify-content-center justify-content-md-between
-            page-item-wrapper
-          "
+          class="d-block d-md-flex justify-content-center justify-content-md-between page-item-wrapper"
         >
           <div
-            class="
-              d-none
-              text-small-gray-13
-              d-md-flex
-              align-items-center
-              mr-3
-              justify-content-center
-            "
+            class="d-none text-small-gray-13 d-md-flex align-items-center mr-3 justify-content-center"
           >
             <span>Per page:</span>
             <span
@@ -149,8 +131,8 @@ export default {
     searchText: String,
     columns: Array,
     rows: Array,
-    pageNumber: Number,
-    pageSize: Number,
+    pageNumber: [Number, String],
+    pageSize: [Number, String],
     totalPage: {
       type: Number,
       default: 0

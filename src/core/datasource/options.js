@@ -57,7 +57,7 @@ export const role = [
   {
     value: 10,
     text: "GA"
-  },
+  }
 ];
 
 export const category = [
@@ -149,6 +149,10 @@ export const requestType = [
   {
     value: 5,
     text: "Work Order"
+  },
+  {
+    value: 6,
+    text: "Standard Form"
   }
 ];
 

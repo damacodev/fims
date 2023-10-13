@@ -54,10 +54,10 @@ export default {
      */
     widthFluid() {
       return this.layoutConfig("footer.width") === "fluid";
-    },
+    }
   },
   methods: {
-    getYear,
-  },
+    getYear
+  }
 };
 </script>

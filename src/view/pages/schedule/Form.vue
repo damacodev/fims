@@ -23,6 +23,7 @@
           <Select
             v-if="multipleDppu"
             label="Depot Pengisian Pesawat Udara"
+            placeholder="Choose DPPU"
             v-model="form.dppu"
             :v="$v.form.dppu"
             :options="options.dppu"
@@ -32,6 +33,7 @@
           <Select
             ref="Activity"
             label="Activity"
+            placeholder="Search activity"
             v-model="form.activity"
             :v="$v.form.activity"
             :multiple="false"
@@ -67,6 +69,7 @@
           />
           <Select
             label="Default Role Assignment"
+            placeholder="Choose Default Role Assignment"
             v-model="form.defaultRoleAssignment"
             :v="$v.form.defaultRoleAssignment"
             :options="options.role"
@@ -75,6 +78,7 @@
           <Select
             :disabled="form.category == null"
             label="Equipment"
+            placeholder="Search Equipment"
             v-model="form.equipments"
             :v="$v.form.equipments"
             :options="options.equipment"
@@ -126,7 +130,7 @@
           <template
             v-if="
               form.mediaTataKerjaIndividu.length > 0 ||
-              form.mediaStandardForm.length > 0
+                form.mediaStandardForm.length > 0
             "
           >
             <hr />
@@ -187,7 +191,7 @@ export default {
     title: "Preventive Maintenance Schedule",
     route: {
       form: "scheduleCreate",
-      table: "schedule",
+      table: "schedule"
     },
     baseUrl: process.env.NODE_ENV === "production" ? apiUrl.prod : apiUrl.dev,
     form: {
@@ -198,12 +202,12 @@ export default {
       activity: null,
       standardForm: {
         id: null,
-        label: null,
+        label: null
       },
       description: null,
       period: {
         id: null,
-        label: null,
+        label: null
       },
       shiftLevelGeneration: false,
       defaultRoleAssignment: null,
@@ -212,12 +216,12 @@ export default {
       startDate: null,
       notification: 0,
       taskAutoClosed: 0,
-      actived: true,
+      actived: true
     },
     normalizer(node) {
       return {
         id: node.value,
-        label: node.text,
+        label: node.text
       };
     },
     options: {
@@ -229,8 +233,8 @@ export default {
       category,
       period,
       status,
-      yesNo,
-    },
+      yesNo
+    }
   }),
   computed: {
     ...mapGetters("personalize", ["multipleDppu", "dppu"]),
@@ -243,7 +247,7 @@ export default {
     textButton() {
       const self = this;
       return self.$route.name != self.route.form ? "Save Changes" : "Submit";
-    },
+    }
   },
   validations: {
     form: {
@@ -252,21 +256,21 @@ export default {
       defaultRoleAssignment: { required },
       startDate: { required },
       notification: { required },
-      taskAutoClosed: { required },
-    },
+      taskAutoClosed: { required }
+    }
   },
   created() {
     const self = this;
 
-    getRole().then((response) => {
+    getRole().then(response => {
       self.options.role = response.data;
     });
 
     if (self.multipleDppu) {
-      getDppu().then((response) => {
-        self.options.dppu = response.data.map((x) => ({
+      getDppu().then(response => {
+        self.options.dppu = response.data.map(x => ({
           id: x.id,
-          label: x.name,
+          label: x.name
         }));
       });
     } else {
@@ -377,13 +381,13 @@ export default {
         let loader = self.$loading.show();
         self.$store
           .dispatch("apis/get", {
-            url: `/dppu/${id}`,
+            url: `/dppu/${id}`
           })
-          .then((response) => {
+          .then(response => {
             if (response.error) {
               self.$message.error({
                 zIndex: 10000,
-                message: response.message,
+                message: response.message
               });
             } else {
               self.options.dppuWithShift = response.data.shifts.length > 0;
@@ -399,21 +403,21 @@ export default {
           .dispatch("apis/get", {
             url: `/preventivemaintenance/activity`,
             params: {
-              keyword: searchQuery,
-            },
+              keyword: searchQuery
+            }
           })
-          .then((response) => {
+          .then(response => {
             if (response.error) {
               self.$message.error({
                 zIndex: 10000,
-                message: response.message,
+                message: response.message
               });
             } else {
               callback(
                 null,
-                response.data.data.map((x) => ({
+                response.data.data.map(x => ({
                   id: x.id,
-                  label: x.title,
+                  label: x.title
                 }))
               );
             }
@@ -427,7 +431,7 @@ export default {
       self.form.description = null;
       self.form.period = {
         id: null,
-        label: null,
+        label: null
       };
       // self.form.equipments = [];
       self.form.mediaTataKerjaIndividu = [];
@@ -438,13 +442,13 @@ export default {
         let loader = self.$loading.show();
         self.$store
           .dispatch("apis/get", {
-            url: `/preventivemaintenance/activity/${id}`,
+            url: `/preventivemaintenance/activity/${id}`
           })
-          .then((response) => {
+          .then(response => {
             if (response.error) {
               self.$message.error({
                 zIndex: 10000,
-                message: response.message,
+                message: response.message
               });
             } else {
               self.form.category = response.data.category?.id;
@@ -468,19 +472,19 @@ export default {
         .dispatch("apis/get", {
           url: `/equipment`,
           params: {
-            category,
-          },
+            category
+          }
         })
-        .then((response) => {
+        .then(response => {
           if (response.error) {
             self.$message.error({
               zIndex: 10000,
-              message: response.message,
+              message: response.message
             });
           } else {
-            self.options.equipment = response.data.data.map((x) => ({
+            self.options.equipment = response.data.data.map(x => ({
               id: x.id,
-              label: x.code,
+              label: x.code
             }));
           }
         });
@@ -492,7 +496,7 @@ export default {
           self.$message.warning({
             zIndex: 10000,
             message:
-              "Sorry, shift hours at this DPPU have not been setup. You can't set this activity to the shift level. If needed, please setup shift hours on the DPPU page.",
+              "Sorry, shift hours at this DPPU have not been setup. You can't set this activity to the shift level. If needed, please setup shift hours on the DPPU page."
           });
         }
       }
@@ -505,13 +509,13 @@ export default {
       let loader = self.$loading.show();
       self.$store
         .dispatch("apis/get", {
-          url: `/preventivemaintenance/schedule/${self.$route.params.id}`,
+          url: `/preventivemaintenance/schedule/${self.$route.params.id}`
         })
-        .then((response) => {
+        .then(response => {
           if (response.error) {
             self.$message.error({
               zIndex: 10000,
-              message: response.message,
+              message: response.message
             });
 
             self.$router.push({ name: self.route.table });
@@ -519,21 +523,24 @@ export default {
             self.$refs.Activity.$refs.Activity.defaultOptions = [
               {
                 id: response.data.activity?.id,
-                label: response.data.activity?.title,
-              },
+                label: response.data.activity?.title
+              }
             ];
             self.$refs.Activity.$refs.Activity.initialize();
 
             self.form.dppu = response.data.dppu?.id;
             self.form.category = response.data.activity?.category?.id;
             self.form.activity = response.data.activity?.id;
-            self.form.standardForm = response.data.activity?.standardForm;
+            self.form.standardForm = {
+              id: response.data.activity?.standardForm?.id,
+              label: response.data.activity?.standardForm?.label
+            };
             self.form.description = response.data.activity?.description;
             self.form.period = response.data.activity?.period;
             self.form.shiftLevelGeneration = response.data.shiftLevelGeneration;
             self.form.defaultRoleAssignment =
               response.data.defaultRoleAssignment?.id;
-            self.form.equipments = response.data.equipments.map((x) => x.id);
+            self.form.equipments = response.data.equipments.map(x => x.id);
             self.form.equipmentInSingleForm =
               response.data.equipmentInSingleForm;
             self.form.startDate = dateFormat(
@@ -583,32 +590,32 @@ export default {
         startDate: self.form.startDate,
         notification: self.form.notification,
         taskAutoClosed: self.form.taskAutoClosed,
-        actived: self.form.actived,
+        actived: self.form.actived
       };
 
       self.$dialog
         .confirm(_confirmText, {
           okText: _okText,
           cancelText: "Cancel",
-          loader: true,
+          loader: true
         })
-        .then((dialog) => {
+        .then(dialog => {
           self.$store
             .dispatch(_action, {
               url: _url,
-              params: _form,
+              params: _form
             })
-            .then((response) => {
+            .then(response => {
               dialog.close();
               if (response.error) {
                 self.$message.error({
                   zIndex: 10000,
-                  message: response.message,
+                  message: response.message
                 });
               } else {
                 self.$message.success({
                   zIndex: 10000,
-                  message: response.message,
+                  message: response.message
                 });
 
                 self.$router.go(-1);
@@ -623,31 +630,31 @@ export default {
         .confirm("You are about to delete this schedule. Are you sure ?", {
           okText: "Yes, Delete",
           cancelText: "Cancel",
-          loader: true,
+          loader: true
         })
-        .then((dialog) => {
+        .then(dialog => {
           self.$store
             .dispatch("apis/remove", {
-              url: `/preventivemaintenance/schedule/${self.$route.params.id}`,
+              url: `/preventivemaintenance/schedule/${self.$route.params.id}`
             })
-            .then((response) => {
+            .then(response => {
               dialog.close();
               if (response.error) {
                 self.$message.error({
                   zIndex: 10000,
-                  message: response.message,
+                  message: response.message
                 });
               } else {
                 self.$message.success({
                   zIndex: 10000,
-                  message: response.message,
+                  message: response.message
                 });
 
                 self.$router.go(-1);
               }
             });
         });
-    },
-  },
+    }
+  }
 };
 </script>

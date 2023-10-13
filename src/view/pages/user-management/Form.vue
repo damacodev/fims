@@ -81,7 +81,7 @@ export default {
     title: "User Management",
     route: {
       form: "userManagementCreate",
-      table: "userManagement",
+      table: "userManagement"
     },
     form: {
       fullName: "",
@@ -89,30 +89,30 @@ export default {
       phone: "",
       role: null,
       actived: true,
-      plant: [],
+      plant: []
     },
     normalizer(node) {
       return {
         id: node.value,
-        label: node.text,
+        label: node.text
       };
     },
 
     phone: {
       countryCallingCode: "62",
       countryCode: "ID",
-      formattedNumber: null,
+      formattedNumber: null
     },
     status,
     role: [],
-    plant: [],
+    plant: []
   }),
   validations: {
     form: {
       fullName: { required },
       email: { required, email },
-      role: { required },
-    },
+      role: { required }
+    }
   },
   computed: {
     ...mapGetters("auth", ["user"]),
@@ -125,19 +125,19 @@ export default {
     textButton() {
       const self = this;
       return self.$route.name != self.route.form ? "Save Changes" : "Submit";
-    },
+    }
   },
   created() {
     const self = this;
 
-    getRole().then((response) => {
+    getRole().then(response => {
       self.role = response.data;
     });
 
-    getDppu().then((response) => {
-      self.plant = response.data.map((x) => ({
+    getDppu().then(response => {
+      self.plant = response.data.map(x => ({
         id: x.id,
-        label: x.name,
+        label: x.name
       }));
     });
     if (self.$route.name != self.route.form) {
@@ -164,13 +164,13 @@ export default {
       let loader = self.$loading.show();
       self.$store
         .dispatch("apis/get", {
-          url: `/account/${self.$route.params.id}`,
+          url: `/account/${self.$route.params.id}`
         })
-        .then((response) => {
+        .then(response => {
           if (response.error) {
             self.$message.error({
               zIndex: 10000,
-              message: response.message,
+              message: response.message
             });
 
             self.$router.push({ name: self.route.table });
@@ -181,7 +181,7 @@ export default {
               phone: response.data.phone,
               role: response.data.role.id,
               actived: response.data.actived,
-              plant: response.data.dppu.map((x) => x.id),
+              plant: response.data.dppu.map(x => x.id)
             };
 
             if (self.form.phone != null) {
@@ -205,12 +205,12 @@ export default {
           self.phone != null
             ? {
                 countryCode: self.phone.countryCode,
-                formattedNumber: self.phone.formattedNumber,
+                formattedNumber: self.phone.formattedNumber
               }
             : "",
         role: self.form.role,
         actived: self.form.actived,
-        dppu: self.form.role != 0 ? self.form.plant : [],
+        dppu: self.form.role != 0 ? self.form.plant : []
       };
 
       let _confirmText = "",
@@ -234,25 +234,25 @@ export default {
         .confirm(_confirmText, {
           okText: _okText,
           cancelText: "Cancel",
-          loader: true,
+          loader: true
         })
-        .then((dialog) => {
+        .then(dialog => {
           self.$store
             .dispatch(_action, {
               url: _url,
-              params: _form,
+              params: _form
             })
-            .then((response) => {
+            .then(response => {
               dialog.close();
               if (response.error) {
                 self.$message.error({
                   zIndex: 10000,
-                  message: response.message,
+                  message: response.message
                 });
               } else {
                 self.$message.success({
                   zIndex: 10000,
-                  message: response.message,
+                  message: response.message
                 });
 
                 if (
@@ -263,7 +263,7 @@ export default {
                   self.user.phone = _form.phone;
                   self.user.role = {
                     id: _form.role,
-                    name: self.role.find((x) => x.value == _form.role).text,
+                    name: self.role.find(x => x.value == _form.role).text
                   };
                   self.user.actived = _form.actived;
                   self.$store.dispatch("auth/updateUser", self.user);
@@ -281,24 +281,24 @@ export default {
         .confirm("You are about to delete this account. Are you sure ?", {
           okText: "Yes, Delete",
           cancelText: "Cancel",
-          loader: true,
+          loader: true
         })
-        .then((dialog) => {
+        .then(dialog => {
           self.$store
             .dispatch("apis/remove", {
-              url: `/account/${self.$route.params.id}`,
+              url: `/account/${self.$route.params.id}`
             })
-            .then((response) => {
+            .then(response => {
               dialog.close();
               if (response.error) {
                 self.$message.error({
                   zIndex: 10000,
-                  message: response.message,
+                  message: response.message
                 });
               } else {
                 self.$message.success({
                   zIndex: 10000,
-                  message: response.message,
+                  message: response.message
                 });
 
                 self.$router.go(-1);
@@ -315,35 +315,35 @@ export default {
           {
             okText: "Yes, Reset Password",
             cancelText: "Cancel",
-            loader: true,
+            loader: true
           }
         )
-        .then((dialog) => {
+        .then(dialog => {
           self.$store
             .dispatch("apis/post", {
               url: `/account/reset-password`,
               params: {
-                email: self.form.email,
-              },
+                email: self.form.email
+              }
             })
-            .then((response) => {
+            .then(response => {
               dialog.close();
               if (response.error) {
                 self.$message.error({
                   zIndex: 10000,
-                  message: response.message,
+                  message: response.message
                 });
               } else {
                 self.$message.success({
                   zIndex: 10000,
-                  message: response.message,
+                  message: response.message
                 });
 
                 self.$router.go(-1);
               }
             });
         });
-    },
-  },
+    }
+  }
 };
 </script>

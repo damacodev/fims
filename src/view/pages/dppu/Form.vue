@@ -195,13 +195,13 @@ import { getRegion, isNullOrEmpty } from "@/core/utils";
 
 export default {
   components: {
-    NextStep,
+    NextStep
   },
   data: () => ({
     title: "Depot Pengisian Pesawat Udara (DPPU)",
     route: {
       form: "dppuCreate",
-      table: "dppu",
+      table: "dppu"
     },
     step1: {
       region: null,
@@ -213,10 +213,10 @@ export default {
       email: null,
       operatingHours: {
         start: null,
-        end: null,
+        end: null
       },
       shifts: [],
-      actived: true,
+      actived: true
     },
     step2: {
       plant: null,
@@ -225,26 +225,26 @@ export default {
       mainDppuId: null,
       supplyType: null,
       supplyPoint: null,
-      supplyPointDistance: null,
+      supplyPointDistance: null
     },
     step3: {
       address: null,
       city: null,
       landArea: null,
-      landStatus: null,
+      landStatus: null
     },
     options: {
       region: [],
       // dppu: [],
-      status,
+      status
     },
 
     defaultCountryCode: {
       phone: "ID",
-      fax: "ID",
+      fax: "ID"
     },
     phone: null,
-    fax: null,
+    fax: null
   }),
   validations: {
     step1: {
@@ -254,21 +254,21 @@ export default {
       type: { required },
       operatingHours: {
         start: { required },
-        end: { required },
-      },
+        end: { required }
+      }
     },
     step2: {
       plant: { required, maxLength: maxLength(4) },
       supplyType: { required },
       supplyPoint: { required },
-      supplyPointDistance: { required },
+      supplyPointDistance: { required }
     },
     step3: {
       address: { required },
       city: { required },
       landArea: { required },
-      landStatus: { required },
-    },
+      landStatus: { required }
+    }
   },
   computed: {
     subTitle() {
@@ -276,15 +276,15 @@ export default {
       return self.$route.name != self.route.form
         ? "Update DPPU information"
         : "Create new DPPU";
-    },
+    }
   },
   created() {
     const self = this;
-    getRegion().then((response) => {
-      self.options.region = response.data.map((x) => ({
+    getRegion().then(response => {
+      self.options.region = response.data.map(x => ({
         id: x.id,
         label: x.name,
-        area: x.area,
+        area: x.area
       }));
     });
     // getDppu().then(response => {
@@ -335,7 +335,7 @@ export default {
     },
     chooseRegion(params) {
       const self = this;
-      self.step1.area = self.options.region.find((x) => x.id == params).area;
+      self.step1.area = self.options.region.find(x => x.id == params).area;
     },
     get() {
       const self = this;
@@ -343,13 +343,13 @@ export default {
       let loader = self.$loading.show();
       self.$store
         .dispatch("apis/get", {
-          url: `/dppu/${self.$route.params.id}`,
+          url: `/dppu/${self.$route.params.id}`
         })
-        .then((response) => {
+        .then(response => {
           if (response.error) {
             self.$message.error({
               zIndex: 10000,
-              message: response.message,
+              message: response.message
             });
 
             self.$router.push({ name: self.route.table });
@@ -364,7 +364,7 @@ export default {
               email: response.data.email,
               operatingHours: response.data.operatingHours,
               shifts: response.data.shifts,
-              actived: response.data.actived,
+              actived: response.data.actived
             };
             self.step2 = {
               plant: response.data.plant,
@@ -376,13 +376,13 @@ export default {
                   : null,
               supplyType: response.data.supplyType,
               supplyPoint: response.data.supplyPoint,
-              supplyPointDistance: response.data.supplyPointDistance,
+              supplyPointDistance: response.data.supplyPointDistance
             };
             self.step3 = {
               address: response.data.address,
               city: response.data.city,
               landArea: response.data.landArea,
-              landStatus: response.data.landStatus,
+              landStatus: response.data.landStatus
             };
 
             if (self.step1.phone != null) {
@@ -415,20 +415,20 @@ export default {
           self.phone != null
             ? {
                 countryCode: self.phone.countryCode,
-                formattedNumber: self.phone.formattedNumber,
+                formattedNumber: self.phone.formattedNumber
               }
             : "",
         fax:
           self.fax != null
             ? {
                 countryCode: self.fax.countryCode,
-                formattedNumber: self.fax.formattedNumber,
+                formattedNumber: self.fax.formattedNumber
               }
             : "",
         email: self.step1.email,
         operatingHours: {
           start: self.step1.operatingHours.start,
-          end: self.step1.operatingHours.end,
+          end: self.step1.operatingHours.end
         },
         shifts: self.step1.shifts,
         actived: self.step1.actived,
@@ -442,7 +442,7 @@ export default {
         address: self.step3.address,
         city: self.step3.city,
         landArea: self.step3.landArea,
-        landStatus: self.step3.landStatus,
+        landStatus: self.step3.landStatus
       };
 
       let _confirmText = "",
@@ -466,25 +466,25 @@ export default {
         .confirm(_confirmText, {
           okText: _okText,
           cancelText: "Cancel",
-          loader: true,
+          loader: true
         })
-        .then((dialog) => {
+        .then(dialog => {
           self.$store
             .dispatch(_action, {
               url: _url,
-              params: _form,
+              params: _form
             })
-            .then((response) => {
+            .then(response => {
               dialog.close();
               if (response.error) {
                 self.$message.error({
                   zIndex: 10000,
-                  message: response.message,
+                  message: response.message
                 });
               } else {
                 self.$message.success({
                   zIndex: 10000,
-                  message: response.message,
+                  message: response.message
                 });
 
                 self.$router.go(-1);
@@ -499,24 +499,24 @@ export default {
         .confirm("You are about to delete this DPPU. Are you sure ?", {
           okText: "Yes, Delete",
           cancelText: "Cancel",
-          loader: true,
+          loader: true
         })
-        .then((dialog) => {
+        .then(dialog => {
           self.$store
             .dispatch("apis/remove", {
-              url: `/dppu/${self.$route.params.id}`,
+              url: `/dppu/${self.$route.params.id}`
             })
-            .then((response) => {
+            .then(response => {
               dialog.close();
               if (response.error) {
                 self.$message.error({
                   zIndex: 10000,
-                  message: response.message,
+                  message: response.message
                 });
               } else {
                 self.$message.success({
                   zIndex: 10000,
-                  message: response.message,
+                  message: response.message
                 });
 
                 self.$router.go(-1);
@@ -529,7 +529,7 @@ export default {
       let _next = true;
 
       if (self.step1.shifts.length > 0) {
-        self.step1.shifts.forEach((item) => {
+        self.step1.shifts.forEach(item => {
           if (
             isNullOrEmpty(item.shiftCallSign) ||
             isNullOrEmpty(item.workingTime.start) ||
@@ -543,15 +543,15 @@ export default {
       if (!_next) {
         self.$message.warning({
           zIndex: 10000,
-          message: "Please complete the shift data first",
+          message: "Please complete the shift data first"
         });
       } else {
         self.step1.shifts.push({
           shiftCallSign: "",
           workingTime: {
             start: null,
-            end: null,
-          },
+            end: null
+          }
         });
       }
     },
@@ -562,13 +562,13 @@ export default {
         .confirm("You are about to remove this shift. Are you sure ?", {
           okText: "Yes, Remove",
           cancelText: "Cancel",
-          loader: true,
+          loader: true
         })
-        .then((dialog) => {
+        .then(dialog => {
           self.step1.shifts.splice(indexShift, 1);
           dialog.close();
         });
-    },
-  },
+    }
+  }
 };
 </script>

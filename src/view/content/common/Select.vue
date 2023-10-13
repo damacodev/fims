@@ -19,6 +19,7 @@
       :async="async"
       :load-options="loadOptions"
       :default-expand-level="1"
+      :placeholder="placeholder"
     />
   </form-group>
 </template>

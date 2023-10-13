@@ -1,5 +1,6 @@
 <template>
   <CardTable
+    ref="CardTable"
     :title="title"
     :subTitle="subTitle"
     :searchText="searchText"
@@ -47,6 +48,7 @@
 
 <script>
 import { dppu as columns } from "@/core/datasource/columns";
+import { pageSize } from "@/core/utils";
 
 export default {
   data: () => ({
@@ -54,10 +56,9 @@ export default {
     subTitle: "Display all DPPU",
     searchText: "Search by name",
     serverParams: {
-      pageNumber: 1,
-      pageSize: 20,
-      keyword: null,
-      name: null
+      pageNumber: null,
+      pageSize: null,
+      keyword: null
     },
     table: {
       isLoading: false,
@@ -67,13 +68,28 @@ export default {
       totalRecords: 0
     }
   }),
-  created() {
+  mounted() {
     const self = this;
+
+    self.serverParams.pageNumber = self.$route.query.pageNumber ?? 1;
+    self.serverParams.pageSize = self.$route.query.pageSize ?? pageSize;
+    self.serverParams.keyword = self.$route.query.keyword;
+    self.$refs.CardTable.keyword = self.$route.query.keyword;
+
     self.getAll();
+  },
+  watch: {
+    $route() {
+      this.getAll();
+    }
   },
   methods: {
     updateParams(newProps) {
-      this.serverParams = Object.assign({}, this.serverParams, newProps);
+      const self = this;
+      let query = self.$route.query;
+      query = Object.assign({}, query, newProps);
+
+      self.$router.push({ query });
     },
     onRowSelected(items) {
       const self = this;
@@ -85,18 +101,25 @@ export default {
       });
     },
     onPageChange(params) {
-      this.updateParams({ pageNumber: params });
-      this.getAll();
+      const self = this;
+      self.updateParams({ pageNumber: params });
+      self.serverParams.pageNumber = params;
+      self.getAll();
     },
     onPerPageChange(params) {
-      this.updateParams({ pageSize: params });
-      this.getAll();
+      const self = this;
+      self.updateParams({ pageNumber: 1, pageSize: params });
+      self.serverParams.pageNumber = 1;
+      self.serverParams.pageSize = params;
+      self.getAll();
     },
     onSearch(params) {
       const self = this;
       self.updateParams({
+        pageNumber: 1,
         keyword: params
       });
+      self.serverParams.keyword = params;
       self.getAll();
     },
     getAll() {

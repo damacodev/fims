@@ -56,6 +56,28 @@ export default new Router({
           component: () => import("@/view/pages/LaporanKerusakan.vue")
         },
         {
+          path: "/approver",
+          component: () => import("@/view/pages/approver"),
+          children: [
+            {
+              path: "/",
+              name: "approver",
+              component: () => import("@/view/pages/approver/Table.vue")
+            },
+            {
+              path: "form",
+              name: "approverCreate",
+              component: () => import("@/view/pages/approver/Form.vue")
+            },
+            {
+              path: "form/:id",
+              name: "approverUpdate",
+              component: () => import("@/view/pages/approver/Form.vue")
+            }
+          ]
+        },
+
+        {
           path: "/documents",
           name: "documents",
           component: () => import("@/view/pages/Documents.vue")

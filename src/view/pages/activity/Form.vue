@@ -23,13 +23,12 @@
           <Select
             label="Standard Form"
             v-model="form.standardFormId"
-            :v="$v.form.standardFormId"
             :options="options.standardForm"
             :multiple="false"
             @input="changeStandardForm"
           />
           <Select
-            label="Category"
+            label="Equipment Category"
             v-model="form.category"
             :options="options.category"
             :multiple="false"
@@ -147,7 +146,7 @@ export default {
     title: "Preventive Maintenance Activity",
     route: {
       form: "activityCreate",
-      table: "activity",
+      table: "activity"
     },
     baseUrl: process.env.NODE_ENV === "production" ? apiUrl.prod : apiUrl.dev,
     form: {
@@ -159,16 +158,16 @@ export default {
       actived: true,
       mediaTataKerjaIndividu: [],
       mediaStandardForm: [],
-      ownerEstimateId: null,
+      ownerEstimateId: null
     },
     media: {
       standardForm: [],
-      tataKerjaIndividu: [],
+      tataKerjaIndividu: []
     },
     normalizer(node) {
       return {
         id: node.value,
-        label: node.text,
+        label: node.text
       };
     },
     options: {
@@ -176,8 +175,8 @@ export default {
       period,
       status,
       standardForm: [],
-      ownerEstimate: [],
-    },
+      ownerEstimate: []
+    }
   }),
   computed: {
     subTitle() {
@@ -189,15 +188,14 @@ export default {
     textButton() {
       const self = this;
       return self.$route.name != self.route.form ? "Save Changes" : "Submit";
-    },
+    }
   },
   validations: {
     form: {
-      standardFormId: { required },
       period: { required },
       title: { required },
-      description: { required },
-    },
+      description: { required }
+    }
   },
   created() {
     const self = this;
@@ -213,13 +211,13 @@ export default {
       let loader = self.$loading.show();
       self.$store
         .dispatch("apis/get", {
-          url: `/preventivemaintenance/activity/${self.$route.params.id}`,
+          url: `/preventivemaintenance/activity/${self.$route.params.id}`
         })
-        .then((response) => {
+        .then(response => {
           if (response.error) {
             self.$message.error({
               zIndex: 10000,
-              message: response.message,
+              message: response.message
             });
 
             self.$router.push({ name: self.route.table });
@@ -233,12 +231,12 @@ export default {
               actived: response.data.actived,
               mediaTataKerjaIndividu: [],
               mediaStandardForm: [],
-              ownerEstimateId: response.data.ownerEstimateId,
+              ownerEstimateId: response.data.ownerEstimateId
             };
 
             self.media = {
               tataKerjaIndividu: response.data.mediaTataKerjaIndividu,
-              standardForm: response.data.mediaStandardForm,
+              standardForm: response.data.mediaStandardForm
             };
           }
           loader.hide();
@@ -249,13 +247,13 @@ export default {
 
       self.$store
         .dispatch("apis/get", {
-          url: `/common/standard-form`,
+          url: `/common/standard-form`
         })
-        .then((response) => {
+        .then(response => {
           if (response.error) {
             self.$message.error({
               zIndex: 10000,
-              message: response.message,
+              message: response.message
             });
           } else {
             self.options.standardForm = response.data.data;
@@ -270,21 +268,21 @@ export default {
         .dispatch("apis/get", {
           url: `/ownerestimate`,
           params: {
-            category: [self.form.category],
-          },
+            category: [self.form.category]
+          }
         })
-        .then((response) => {
+        .then(response => {
           if (response.error) {
             self.$message.error({
               zIndex: 10000,
-              message: response.message,
+              message: response.message
             });
 
             self.$router.push({ name: self.route.table });
           } else {
-            self.options.ownerEstimate = response.data.data.map((x) => ({
+            self.options.ownerEstimate = response.data.data.map(x => ({
               id: x.id,
-              label: x.title,
+              label: x.title
             }));
           }
           loader.hide();
@@ -293,7 +291,7 @@ export default {
     changeStandardForm(params) {
       const self = this;
 
-      let find = self.options.standardForm.find((x) => x.id == params);
+      let find = self.options.standardForm.find(x => x.id == params);
       if (isNullOrEmpty(self.form.title)) self.form.title = find.label;
 
       if (isNullOrEmpty(self.form.description))
@@ -329,34 +327,34 @@ export default {
         title: self.form.title,
         description: self.form.description,
         actived: self.form.actived,
-        mediaTataKerjaIndividu: self.media.tataKerjaIndividu.map((x) => x.id),
-        mediaStandardForm: self.media.standardForm.map((x) => x.id),
-        ownerEstimateId: self.form.ownerEstimateId,
+        mediaTataKerjaIndividu: self.media.tataKerjaIndividu.map(x => x.id),
+        mediaStandardForm: self.media.standardForm.map(x => x.id),
+        ownerEstimateId: self.form.ownerEstimateId
       };
 
       self.$dialog
         .confirm(_confirmText, {
           okText: _okText,
           cancelText: "Cancel",
-          loader: true,
+          loader: true
         })
-        .then((dialog) => {
+        .then(dialog => {
           self.$store
             .dispatch(_action, {
               url: _url,
-              params: _form,
+              params: _form
             })
-            .then((response) => {
+            .then(response => {
               dialog.close();
               if (response.error) {
                 self.$message.error({
                   zIndex: 10000,
-                  message: response.message,
+                  message: response.message
                 });
               } else {
                 self.$message.success({
                   zIndex: 10000,
-                  message: response.message,
+                  message: response.message
                 });
 
                 self.$router.go(-1);
@@ -385,24 +383,24 @@ export default {
         .confirm("You are about to delete this activity. Are you sure ?", {
           okText: "Yes, Delete",
           cancelText: "Cancel",
-          loader: true,
+          loader: true
         })
-        .then((dialog) => {
+        .then(dialog => {
           self.$store
             .dispatch("apis/remove", {
-              url: `/preventivemaintenance/activity/${self.$route.params.id}`,
+              url: `/preventivemaintenance/activity/${self.$route.params.id}`
             })
-            .then((response) => {
+            .then(response => {
               dialog.close();
               if (response.error) {
                 self.$message.error({
                   zIndex: 10000,
-                  message: response.message,
+                  message: response.message
                 });
               } else {
                 self.$message.success({
                   zIndex: 10000,
-                  message: response.message,
+                  message: response.message
                 });
 
                 self.$router.go(-1);
@@ -423,7 +421,7 @@ export default {
         const self = this;
         let payload = new FormData();
 
-        event.target.files.forEach((item) => {
+        event.target.files.forEach(item => {
           payload.append("file", item);
         });
         payload.append("group", group);
@@ -436,21 +434,21 @@ export default {
         self.$store
           .dispatch("apis/upload", {
             url: _url,
-            params: payload,
+            params: payload
           })
-          .then((response) => {
+          .then(response => {
             if (response.error) {
               self.$message.error({
                 zIndex: 10000,
-                message: response.message,
+                message: response.message
               });
             } else {
               if (group == 0) {
-                response.data.forEach((item) => {
+                response.data.forEach(item => {
                   self.media.standardForm.push(item);
                 });
               } else if (group == 1) {
-                response.data.forEach((item) => {
+                response.data.forEach(item => {
                   self.media.tataKerjaIndividu.push(item);
                 });
               }
@@ -465,41 +463,39 @@ export default {
         .confirm("You are about to remove this document. Are you sure ?", {
           okText: "Yes, Remove",
           cancelText: "Cancel",
-          loader: true,
+          loader: true
         })
-        .then((dialog) => {
+        .then(dialog => {
           self.$store
             .dispatch("apis/remove", {
-              url: `/media/${id}`,
+              url: `/media/${id}`
             })
-            .then((response) => {
+            .then(response => {
               dialog.close();
               if (response.error) {
                 self.$message.error({
                   zIndex: 10000,
-                  message: response.message,
+                  message: response.message
                 });
               } else {
                 self.$message.success({
                   zIndex: 10000,
-                  message: response.message,
+                  message: response.message
                 });
 
                 if (group == 0) {
-                  let find = self.media.standardForm.findIndex(
-                    (x) => x.id == id
-                  );
+                  let find = self.media.standardForm.findIndex(x => x.id == id);
                   self.media.standardForm.splice(find, 1);
                 } else if (group == 1) {
                   let find = self.media.tataKerjaIndividu.findIndex(
-                    (x) => x.id == id
+                    x => x.id == id
                   );
                   self.media.tataKerjaIndividu.splice(find, 1);
                 }
               }
             });
         });
-    },
-  },
+    }
+  }
 };
 </script>

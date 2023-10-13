@@ -2,7 +2,6 @@
   <CardTable
     :title="title"
     :subTitle="subTitle"
-    :searchText="searchText"
     :columns="table.columns"
     :rows="table.rows"
     :isLoading="table.isLoading"
@@ -13,101 +12,72 @@
     @onRowSelected="onRowSelected"
     @onPerPageChange="onPerPageChange"
     @onPageChange="onPageChange"
-    @onSearch="onSearch"
   >
     <template #toolbar>
-      <b-button variant="primary" :to="{ name: 'scheduleCreate' }">
-        Create New Schedule
+      <b-button variant="primary" :to="{ name: 'approverCreate' }">
+        Create New Approver
       </b-button>
     </template>
     <template #filter>
       <b-row class="p-3">
-        <b-col xl="3">
+        <b-col xl="4">
           <treeselect
             class="mb-2"
             placeholder="Select DPPU"
-            v-model="serverParams.dppu"
+            v-model="serverParams.dppuId"
             :options="options.dppu"
-            @input="onFilter"
-          ></treeselect>
+            @input="changeDppu"
+          />
         </b-col>
-        <b-col xl="3">
+        <b-col xl="4">
           <treeselect
             class="mb-2"
-            placeholder="Select category"
-            v-model="serverParams.category"
-            :options="options.category"
-            :multiple="true"
-            :normalizer="normalizer"
+            placeholder="Select Standard Form"
+            v-model="serverParams.standardFormId"
+            :options="options.standardForm"
             @input="onFilter"
-          ></treeselect>
+          />
         </b-col>
-        <b-col xl="3">
+        <b-col xl="4">
           <treeselect
             class="mb-2"
-            placeholder="Select period"
-            v-model="serverParams.period"
-            :options="options.period"
-            :multiple="true"
-            :normalizer="normalizer"
+            placeholder="Select Approver"
+            v-model="serverParams.approver"
+            :options="options.approver"
             @input="onFilter"
-          ></treeselect>
-        </b-col>
-        <b-col xl="3">
-          <treeselect
-            class="mb-2"
-            placeholder="Select status"
-            v-model="serverParams.actived"
-            :options="options.status"
-            :normalizer="normalizer"
-            @input="onFilter"
-          ></treeselect>
+          />
         </b-col>
       </b-row>
     </template>
     <template #empty>
       <EmptyTable
-        :title="title"
-        description="You can manage preventive maintenance schedule"
-        button-label="Create New Schedule"
-        :href="{ name: 'scheduleCreate' }"
+        title="Approvers are managed from here"
+        description="You can see about approver information or which ones are active/inactive status"
+        button-label="Create New Approver"
+        :href="{ name: 'approverCreate' }"
       />
-    </template>
-    <template #cell(equipments)="data">
-      {{ populateEquipments(data.item.equipments) }}
-    </template>
-    <template #cell(startDate)="data">
-      {{ dateFormat(data.item.startDate) }}
-    </template>
-    <template #cell(actived)="data">
-      <span v-show="data.item.actived" class="text-success">Active</span>
-      <span v-show="!data.item.actived" class="text-danger">Inactive</span>
     </template>
   </CardTable>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
-import { status, category, period } from "@/core/datasource/options";
-import { schedule as columns } from "@/core/datasource/columns";
-import { getDppu, dateFormat } from "@/core/utils";
+import { approver as columns } from "@/core/datasource/columns";
+import { getDppu, normalizer } from "@/core/utils";
 
 export default {
   data: () => ({
-    title: "Schedule",
-    subTitle: "Display all schedules",
-    searchText: "Search by title",
+    title: "Approver",
+    subTitle: "Display all approvers",
     serverParams: {
       pageNumber: 1,
       pageSize: 20,
-      keyword: null,
-      dppu: null,
-      category: [],
-      period: [],
-      actived: null
+      dppuId: null,
+      standardFormId: null,
+      approver: null
     },
     table: {
-      isLoading: false,
+      isLoading: true,
       columns,
       rows: [],
       totalPage: 0,
@@ -115,15 +85,8 @@ export default {
     },
     options: {
       dppu: [],
-      category,
-      period,
-      status
-    },
-    normalizer(node) {
-      return {
-        id: node.value,
-        label: node.text
-      };
+      standardForm: [],
+      approver: []
     }
   }),
   computed: {
@@ -142,19 +105,22 @@ export default {
       self.options.dppu = [self.dppu];
     }
     if (self.dppu) {
-      self.serverParams.dppu = self.dppu.id;
+      self.serverParams.dppuId = self.dppu.id;
+      self.changeDppu();
     }
+
+    self.getStandardForm();
     self.getAll();
   },
   methods: {
-    dateFormat,
+    normalizer,
     updateParams(newProps) {
       this.serverParams = Object.assign({}, this.serverParams, newProps);
     },
     onRowSelected(items) {
       const self = this;
       self.$router.push({
-        name: "scheduleUpdate",
+        name: "approverUpdate",
         params: {
           id: items[0].id
         }
@@ -171,7 +137,7 @@ export default {
     onSearch(params) {
       const self = this;
       self.updateParams({
-        keyword: params
+        fullName: params
       });
       self.getAll();
     },
@@ -179,13 +145,60 @@ export default {
       const self = this;
       self.getAll();
     },
+    changeDppu() {
+      const self = this;
+
+      self.options.approver = [];
+      if (self.serverParams.dppuId != null) {
+        self.$store
+          .dispatch("apis/get", {
+            url: "/account",
+            params: {
+              dppu: self.serverParams.dppuId
+            }
+          })
+          .then(response => {
+            if (response.error) {
+              self.$message.error({
+                zIndex: 10000,
+                message: response.message
+              });
+            } else {
+              self.options.approver = response.data.data.map(x => ({
+                id: x.id,
+                label: x.fullName
+              }));
+            }
+          });
+      }
+
+      self.getAll();
+    },
+    getStandardForm() {
+      const self = this;
+
+      self.$store
+        .dispatch("apis/get", {
+          url: `/common/standard-form`
+        })
+        .then(response => {
+          if (response.error) {
+            self.$message.error({
+              zIndex: 10000,
+              message: response.message
+            });
+          } else {
+            self.options.standardForm = response.data.data;
+          }
+        });
+    },
     getAll() {
       const self = this;
 
       self.table.isLoading = true;
       self.$store
         .dispatch("apis/get", {
-          url: `/preventivemaintenance/schedule`,
+          url: "/approver",
           params: self.serverParams
         })
         .then(response => {
@@ -201,20 +214,6 @@ export default {
           }
           self.table.isLoading = false;
         });
-    },
-    populateEquipments(params) {
-      let max = 3;
-
-      if (params.length > max) {
-        let results = [];
-        let rest = params.length - max;
-        for (let i = 0; i < max; i++) results.push(params[i].label);
-        results.push(`...${rest} more`);
-
-        return results.join(", ");
-      } else {
-        return params.map(x => x.label).join(", ");
-      }
     }
   }
 };

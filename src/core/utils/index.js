@@ -5,6 +5,8 @@ import accounting from "accounting";
 import store from "@/core/services/store";
 import { camelCase } from "lodash";
 
+export const pageSize = 20;
+
 export function validEmail(email) {
   const re = /^(([^<>()\\[\]\\.,;:\s@"]+(\.[^<>()\\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   return re.test(email);
@@ -168,7 +170,7 @@ export function years() {
   for (let item = 1900; item <= 2099; item++) {
     result.push({
       id: item,
-      label: item,
+      label: item
     });
   }
 
@@ -245,9 +247,9 @@ export async function getRegion() {
 
   await store
     .dispatch("apis/get", {
-      url: "/common/region",
+      url: "/common/region"
     })
-    .then((response) => {
+    .then(response => {
       result = response.data;
     });
 
@@ -259,9 +261,9 @@ export async function getRole() {
 
   await store
     .dispatch("apis/get", {
-      url: "/common/role",
+      url: "/common/role"
     })
-    .then((response) => {
+    .then(response => {
       result = response.data;
     });
 
@@ -274,8 +276,11 @@ export async function getDppu() {
   await store
     .dispatch("apis/get", {
       url: "/dppu",
+      params: {
+        actived: true
+      }
     })
-    .then((response) => {
+    .then(response => {
       result = response.data;
     });
 
@@ -307,12 +312,12 @@ export function groupBy(arr, key) {
 
 export function camelizeKeys(obj) {
   if (Array.isArray(obj)) {
-    return obj.map((v) => camelizeKeys(v));
+    return obj.map(v => camelizeKeys(v));
   } else if (obj != null && obj.constructor === Object) {
     return Object.keys(obj).reduce(
       (result, key) => ({
         ...result,
-        [camelCase(key)]: camelizeKeys(obj[key]),
+        [camelCase(key)]: camelizeKeys(obj[key])
       }),
       {}
     );
@@ -323,4 +328,11 @@ export function camelizeKeys(obj) {
 export function isNullOrEmpty(str) {
   if (str === null || str.trim() === "") return true;
   else return false;
+}
+
+export function normalizer(node) {
+  return {
+    id: node.value,
+    label: node.text
+  };
 }

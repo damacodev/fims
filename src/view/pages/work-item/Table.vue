@@ -117,7 +117,7 @@ export default {
       pageNumber: 1,
       pageSize: 20,
       keyword: null,
-      assignedTo: "me",
+      assignedTo: null,
       dppu: null,
       type: [],
       status: []
@@ -189,6 +189,7 @@ export default {
     onSearch(params) {
       const self = this;
       self.updateParams({
+        pageNumber: 1,
         keyword: params
       });
       self.getAll();
@@ -230,6 +231,8 @@ export default {
             }
           });
       }
+
+      self.getAll();
     },
     getAll() {
       const self = this;
