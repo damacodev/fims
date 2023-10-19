@@ -34,6 +34,7 @@
             :multiple="false"
             :normalizer="normalizer"
             @input="getOwnerEstimate"
+            description="Leave it blank if this activity doesn't depend on equipment"
           />
           <RadioGroup
             label="Period"
@@ -247,7 +248,10 @@ export default {
 
       self.$store
         .dispatch("apis/get", {
-          url: `/common/standard-form`
+          url: `/common/standard-form`,
+          params: {
+            scheduled: true
+          }
         })
         .then(response => {
           if (response.error) {
@@ -293,9 +297,6 @@ export default {
 
       let find = self.options.standardForm.find(x => x.id == params);
       if (isNullOrEmpty(self.form.title)) self.form.title = find.label;
-
-      if (isNullOrEmpty(self.form.description))
-        self.form.description = find.label;
     },
     handleSubmit() {
       const self = this;

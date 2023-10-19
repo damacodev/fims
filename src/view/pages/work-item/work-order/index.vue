@@ -68,7 +68,7 @@ export default {
     title: "Task ID #",
     subTitle: "Work Order",
     route: {
-      form: "workItemForm",
+      form: "workItemFormWorkOrder",
       table: "workItem"
     },
     requestInfo: {

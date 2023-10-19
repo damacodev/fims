@@ -287,6 +287,20 @@ export async function getDppu() {
   return result;
 }
 
+export async function getAppearance() {
+  let result = [];
+
+  await store
+    .dispatch("apis/get", {
+      url: "/common/appearance"
+    })
+    .then(response => {
+      result = response.data;
+    });
+
+  return result;
+}
+
 // export function groupBy(list, keyGetter) {
 //   const map = new Map();
 //   list.forEach((item) => {
@@ -335,4 +349,20 @@ export function normalizer(node) {
     id: node.value,
     label: node.text
   };
+}
+
+export function setVolume(params) {
+  return `${numberFormat(params)} L`;
+}
+
+export function setDensity(params) {
+  return `${numberFormat(params)} Kg/L`;
+}
+
+export function setTemperature(params) {
+  return `${numberFormat(params)}°C`;
+}
+
+export function setConductivity(params) {
+  return `${numberFormat(params)} pS/m`;
 }

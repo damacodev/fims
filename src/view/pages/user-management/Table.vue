@@ -46,6 +46,7 @@
             placeholder="Select role"
             v-model="serverParams.role"
             :options="options.role"
+            :multiple="true"
             :normalizer="normalizer"
             @input="onFilter"
           ></treeselect>

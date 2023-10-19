@@ -108,6 +108,7 @@ export default {
     }
     if (self.dppu) {
       self.form.dppuId = self.dppu.id;
+      self.changeDppu();
     }
 
     if (self.$route.name != self.route.form) {
@@ -144,7 +145,8 @@ export default {
           .dispatch("apis/get", {
             url: "/account",
             params: {
-              dppu: self.form.dppuId
+              dppu: self.form.dppuId,
+              actived: true
             }
           })
           .then(response => {

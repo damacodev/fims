@@ -10,6 +10,8 @@ Vue.use(VuelidateErrorExtractor, {
   messages: {
     required: "{attribute} must not be empty",
     numeric: "{attribute} is not a valid format",
+    integer: "{attribute} is not a valid data type",
+    decimal: "{attribute} is not a valid data type",
     url: "{attribute} is not a valid URL format",
     email: "{attribute} is not a valid Email address",
     minLength: "{attribute} must have at least {min} letters",

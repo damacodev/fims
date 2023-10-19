@@ -31,8 +31,8 @@
         <i class="menu-icon flaticon-more-v2"></i>
       </li>
       <li-menu
-        :to="{ name: 'laporanKerusakan' }"
-        text="Laporan Kerusakan"
+        :to="{ name: 'generalTask' }"
+        text="General Task"
         icon="flaticon-edit-1"
       />
       <li-menu

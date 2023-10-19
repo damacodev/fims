@@ -403,7 +403,8 @@ export default {
           .dispatch("apis/get", {
             url: `/preventivemaintenance/activity`,
             params: {
-              keyword: searchQuery
+              keyword: searchQuery,
+              actived: true
             }
           })
           .then(response => {
@@ -428,6 +429,10 @@ export default {
       const self = this;
 
       self.form.category = null;
+      self.form.standardForm = {
+        id: null,
+        label: null
+      };
       self.form.description = null;
       self.form.period = {
         id: null,
@@ -452,6 +457,12 @@ export default {
               });
             } else {
               self.form.category = response.data.category?.id;
+              if (response.data.standardForm != null) {
+                self.form.standardForm = {
+                  id: response.data.standardForm.id,
+                  label: response.data.standardForm.label
+                };
+              }
               self.form.description = response.data.description;
               self.form.period = response.data.period;
               self.form.mediaTataKerjaIndividu =

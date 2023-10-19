@@ -10,18 +10,9 @@
         :createdAt="requestInfo.createdAt"
         :histories="histories"
       />
-      <PreventiveMaintenance
-        v-if="requestInfo.type.id == 3"
-        cssClass="mt-8"
-        :requestInfo="requestInfo"
-      />
-      <BreakdownMaintenance
-        v-else-if="requestInfo.type.id == 4"
-        cssClass="mt-8"
-        :requestInfo="requestInfo"
-      />
+      <Detail cssClass="mt-8" :requestInfo="requestInfo" />
     </b-col>
-    <b-col lg="6">
+    <b-col lg="6" class="mb-4">
       <Action
         :title="form.title"
         :subTitle="subTitle"
@@ -29,75 +20,86 @@
         :form="form"
         :technician="options.technician"
       />
+      <!-- <Action
+        v-if="!requestInfo.locked"
+        :submitLabel="form.status == 5 ? 'Request to Closed' : 'Submit'"
+        title="Follow-Up"
+        :subTitle="subTitle"
+        :requestInfo="requestInfo"
+        :requestStatus="currentStatus"
+        :form="form"
+        :followUp="followUp"
+      />
+      <CurrentProgress
+        :cssClass="!requestInfo.locked ? 'mt-8' : ''"
+        title="Current Progress"
+        subTitle="Last activity updates"
+        :requestInfo="requestInfo"
+        :followUp="followUp"
+      /> -->
     </b-col>
   </b-row>
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import TaskInfo from "../common/TaskInfo.vue";
+import Detail from "./Detail.vue";
 import Action from "./Action.vue";
-import BreakdownMaintenance from "./BreakdownMaintenance.vue";
-import PreventiveMaintenance from "./PreventiveMaintenance.vue";
+// import CurrentProgress from "./CurrentProgress.vue";
+
+// import { dateTimeFormat } from "@/core/utils";
+// import { requestStatus } from "@/core/datasource/options";
 
 export default {
   components: {
     TaskInfo,
-    Action,
-    BreakdownMaintenance,
-    PreventiveMaintenance
+    Detail,
+    Action
+    // CurrentProgress,
   },
   data: () => ({
-    title: null,
-    subTitle: null,
+    title: "Task ID #",
+    subTitle: "Standard Form",
     route: {
-      form: "workItemFormMaintenance",
+      form: "workItemFormStandardForm",
       table: "workItem"
     },
     requestInfo: {
-      id: "",
-      taskId: "",
-      dppu: {
-        label: null
-      },
-      request: {
-        category: {
-          label: null
-        },
-        equipment: {
-          label: null
-        },
-        evidences: []
-      },
-      workOrder: {
-        startDate: null,
-        finishDate: null,
-        assignedTo: []
-      },
+      id: null,
+      taskId: null,
       type: {
         label: null
       },
+      title: null,
+      request: {},
+      status: [],
+      statuses: [],
       createdBy: {
         label: null
       },
+      createdAt: null,
       locked: true
     },
+    currentStatus: {},
     form: {
-      title: "Create Work Order",
+      title: "Assignment",
       workItemId: null,
-      spareparts: [],
-      startDate: null,
-      finishDate: null,
+      currentStatus: null,
+      status: null,
       remarks: null,
-      assignedTo: []
+      assignedTo: null
     },
     histories: [],
     options: {
       technician: []
     }
   }),
+  computed: {
+    ...mapGetters("auth", ["user"])
+  },
   created() {
-    const self = this;
-    self.get();
+    this.get();
   },
   methods: {
     get() {
@@ -126,29 +128,20 @@ export default {
             self.subTitle = self.requestInfo.type.label;
             self.form.workItemId = self.requestInfo.id;
 
+            self.form.remarks = self.requestInfo.currentStatus.remarks;
+            if (self.requestInfo.currentStatus.assignedTo != null) {
+              self.form.assignedTo =
+                self.requestInfo.currentStatus.assignedTo.id;
+            }
+
             self.histories = self.requestInfo.statuses;
 
-            if (self.requestInfo.locked) {
-              if (self.requestInfo.workOrder == null) {
-                self.form.title = "Evaluate";
-              }
-              if (self.requestInfo.workOrder != null) {
-                self.form.title = "Work Order";
-                self.form.spareparts = self.requestInfo.workOrder.spareparts
-                  .filter(x => x.type.id == 0)
-                  .map(x => ({
-                    id: x.sparepart.id,
-                    code: x.sparepart.code,
-                    label: x.sparepart.label,
-                    quantity: x.quantity
-                  }));
-              }
-            } else {
+            if (!self.requestInfo.locked) {
               self.getTechnician();
             }
           }
-          loader.hide();
-        });
+        })
+        .finally(() => loader.hide());
     },
     getTechnician() {
       const self = this;

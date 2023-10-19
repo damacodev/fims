@@ -93,12 +93,6 @@ export default {
       date: getDate(),
       remarks: null
     },
-    normalizer(node) {
-      return {
-        id: node.value,
-        label: node.text
-      };
-    },
     options: {
       dppu: [],
       inOut

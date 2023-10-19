@@ -170,13 +170,70 @@ export default {
     },
     onRowSelected(items) {
       const self = this;
-      self.$router.push({
-        name: "workItemForm",
-        params: {
-          type: items[0].type.id,
-          id: items[0].id
-        }
-      });
+
+      switch (items[0].type.id) {
+        case 0:
+          self.$router.push({
+            name: "workItemFormEquipment",
+            params: {
+              id: items[0].id,
+              action: "create"
+            }
+          });
+          break;
+        case 1:
+          self.$router.push({
+            name: "workItemFormEquipment",
+            params: {
+              id: items[0].id,
+              action: "update"
+            }
+          });
+          break;
+        case 2:
+          self.$router.push({
+            name: "workItemFormEquipment",
+            params: {
+              id: items[0].id,
+              action: "delete"
+            }
+          });
+          break;
+        case 3:
+          self.$router.push({
+            name: "workItemFormMaintenance",
+            params: {
+              id: items[0].id,
+              action: "preventive"
+            }
+          });
+          break;
+        case 4:
+          self.$router.push({
+            name: "workItemFormMaintenance",
+            params: {
+              id: items[0].id,
+              action: "breakdown"
+            }
+          });
+          break;
+        case 5:
+          self.$router.push({
+            name: "workItemFormWorkOrder",
+            params: {
+              id: items[0].id
+            }
+          });
+          break;
+        case 6:
+          self.$router.push({
+            name: "workItemFormStandardForm",
+            params: {
+              id: items[0].id
+            }
+          });
+          break;
+      }
     },
     onPageChange(params) {
       this.updateParams({ pageNumber: params });

@@ -13,52 +13,48 @@ export const inOut = [
   { text: "Stock Out", value: 1 }
 ];
 
-export const role = [
-  {
-    value: 0,
-    text: "Admin"
-  },
-  {
-    value: 1,
-    text: "Operation Head"
-  },
-  {
-    value: 2,
-    text: "Maintenance"
-  },
-  {
-    value: 3,
-    text: "RSD"
-  },
-  {
-    value: 4,
-    text: "Technician"
-  },
-  {
-    value: 5,
-    text: "Supervisor Maintenance"
-  },
-  {
-    value: 6,
-    text: "Supervisor RSD"
-  },
-  {
-    value: 7,
-    text: "Supervisor HSSE"
-  },
-  {
-    value: 8,
-    text: "Supervisor GA"
-  },
-  {
-    value: 9,
-    text: "HSSE"
-  },
-  {
-    value: 10,
-    text: "GA"
-  }
-];
+// export const role = [
+//   {
+//     value: 0,
+//     text: "Admin"
+//   },
+//   {
+//     value: 1,
+//     text: "Operation Head"
+//   },
+//   {
+//     value: 2,
+//     text: "Supervisor Maintenance"
+//   },
+//   {
+//     value: 3,
+//     text: "RSD"
+//   },
+//   {
+//     value: 4,
+//     text: "Maintenance"
+//   },
+//   {
+//     value: 5,
+//     text: "Supervisor RSD"
+//   },
+//   {
+//     value: 6,
+//     text: "Supervisor HSSE"
+//   },
+//   {
+//     value: 7,
+//     text: "Supervisor GA"
+//   },
+//   {
+//     value: 8,
+//     text: "HSSE"
+//   },
+//   {
+//     value: 9,
+//     text: "GA"
+//   }
+// ];
 
 export const category = [
   {

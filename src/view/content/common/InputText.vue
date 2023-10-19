@@ -7,20 +7,22 @@
     :use-label="useLabel"
     :use-horizontal="useHorizontal"
   >
-    <b-form-input
-      slot-scope="{ attrs }"
-      v-bind="attrs"
-      v-model="model"
-      :placeholder="placeholder"
-      :type="type"
-      :size="size"
-      :step="step"
-      autocomplete="off"
-      :class="contentClass"
-      :maxlength="maxlength"
-      :min="min"
-      :max="max"
-    />
+    <b-input-group :append="append">
+      <b-form-input
+        slot-scope="{ attrs }"
+        v-bind="attrs"
+        v-model="model"
+        :placeholder="placeholder"
+        :type="type"
+        :size="size"
+        :step="step"
+        autocomplete="off"
+        :class="contentClass"
+        :maxlength="maxlength"
+        :min="min"
+        :max="max"
+      />
+    </b-input-group>
   </form-group>
 </template>
 
@@ -59,7 +61,8 @@ export default {
     step: [String, Number],
     maxlength: Number,
     min: Number,
-    max: Number
+    max: Number,
+    append: String
   },
   computed: {
     model: {

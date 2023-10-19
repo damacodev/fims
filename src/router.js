@@ -51,9 +51,57 @@ export default new Router({
           component: () => import("@/view/pages/WorkOrder.vue")
         },
         {
-          path: "/laporan-kerusakan",
-          name: "laporanKerusakan",
-          component: () => import("@/view/pages/LaporanKerusakan.vue")
+          path: "/general-task",
+          component: () => import("@/view/pages/general-task"),
+          children: [
+            {
+              path: "/",
+              name: "generalTask",
+              component: () => import("@/view/pages/general-task/GridMenu.vue")
+            },
+            {
+              path: "laporan-kerusakan",
+              name: "laporanKerusakan",
+              component: () =>
+                import("@/view/pages/general-task/LaporanKerusakan.vue")
+            },
+            {
+              path: "sf-103",
+              component: () => import("@/view/pages/general-task/sf-103"),
+              children: [
+                {
+                  path: "/",
+                  name: "sf103",
+                  component: () =>
+                    import("@/view/pages/general-task/sf-103/Table.vue")
+                },
+                {
+                  path: "form",
+                  name: "sf103Create",
+                  component: () =>
+                    import("@/view/pages/general-task/sf-103/Form")
+                },
+                {
+                  path: "form/:id",
+                  name: "sf103Update",
+                  component: () =>
+                    import("@/view/pages/general-task/sf-103/Form")
+                },
+                {
+                  path: "form/:id/item",
+                  name: "sf103CreateItem",
+                  component: () =>
+                    import("@/view/pages/general-task/sf-103/Item")
+                },
+                {
+                  path: "form/:id/item/:iditem",
+                  name: "sf103UpdateItem",
+                  component: () =>
+                    import("@/view/pages/general-task/sf-103/Item")
+                }
+              ]
+            }
+          ]
         },
         {
           path: "/approver",
@@ -97,9 +145,24 @@ export default new Router({
               component: () => import("@/view/pages/work-item/Table.vue")
             },
             {
-              path: ":type/:id",
-              name: "workItemForm",
-              component: () => import("@/view/pages/work-item/Form.vue")
+              path: "equipment/:id/:action",
+              name: "workItemFormEquipment",
+              component: () => import("@/view/pages/work-item/equipment")
+            },
+            {
+              path: "maintenance/:id/:action",
+              name: "workItemFormMaintenance",
+              component: () => import("@/view/pages/work-item/maintenance")
+            },
+            {
+              path: "work-order/:id",
+              name: "workItemFormWorkOrder",
+              component: () => import("@/view/pages/work-item/work-order")
+            },
+            {
+              path: "standard-form/:id",
+              name: "workItemFormStandardForm",
+              component: () => import("@/view/pages/work-item/standard-form")
             }
           ]
         },

@@ -110,7 +110,7 @@ export default {
     title: null,
     subTitle: null,
     route: {
-      form: "workItemForm",
+      form: "workItemFormEquipment",
       table: "workItem"
     },
     requestInfo: {

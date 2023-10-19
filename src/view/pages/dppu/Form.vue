@@ -51,7 +51,12 @@
               :default-country-code="defaultCountryCode.fax"
               :update="updateFax"
             />
-            <InputText label="Email" type="email" v-model="step1.email" />
+            <InputText
+              label="Email"
+              type="email"
+              v-model="step1.email"
+              :v="$v.step1.email"
+            />
             <b-row>
               <b-col lg="8" xl="5" offset-xl="4">
                 <h5 class="font-weight-bold mb-6">Operation</h5>
@@ -189,7 +194,7 @@
 
 <script>
 import NextStep from "./NextStep";
-import { required, maxLength } from "vuelidate/lib/validators";
+import { required, maxLength, email } from "vuelidate/lib/validators";
 import { status } from "@/core/datasource/options";
 import { getRegion, isNullOrEmpty } from "@/core/utils";
 
@@ -252,6 +257,7 @@ export default {
       area: { required },
       name: { required },
       type: { required },
+      email: { email },
       operatingHours: {
         start: { required },
         end: { required }
