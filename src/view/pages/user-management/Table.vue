@@ -47,7 +47,6 @@
             v-model="serverParams.role"
             :options="options.role"
             :multiple="true"
-            :normalizer="normalizer"
             @input="onFilter"
           ></treeselect>
         </b-col>
@@ -90,7 +89,8 @@
 <script>
 import { mapGetters } from "vuex";
 import { userManagement as columns } from "@/core/datasource/columns";
-import { role, status } from "@/core/datasource/options";
+import { status } from "@/core/datasource/options";
+import { getRole } from "@/core/utils";
 
 export default {
   data: () => ({
@@ -114,7 +114,7 @@ export default {
       totalPage: 0,
       totalRecords: 0
     },
-    options: { role, status },
+    options: { role: [], status },
     normalizer(node) {
       return {
         id: node.value,
@@ -127,6 +127,11 @@ export default {
   },
   created() {
     const self = this;
+
+    getRole().then(response => {
+      self.options.role = response.data;
+    });
+
     self.getAll();
   },
   methods: {
