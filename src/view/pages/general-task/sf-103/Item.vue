@@ -388,7 +388,7 @@ export default {
       self.getById();
     }
 
-    self.form.time = "10:22";
+    /* self.form.time = "10:22";
     self.form.bridgerNo = "BR123";
     self.form.bppNo = "BPP123";
     self.form.volume = 9800;
@@ -406,7 +406,7 @@ export default {
       maximumDifferential: 43.123
     };
     self.form.appearanceId = "1E";
-    self.form.conductivity = 32;
+    self.form.conductivity = 32; */
   },
   methods: {
     setVolume,
