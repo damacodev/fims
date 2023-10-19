@@ -183,6 +183,25 @@ export const requestStatus = [
   }
 ];
 
+export const standardFormStatus = [
+  {
+    value: "New",
+    text: "New"
+  },
+  {
+    value: "Ready For Approval",
+    text: "Ready For Approval"
+  },
+  {
+    value: "Approved",
+    text: "Approved"
+  },
+  {
+    value: "Approved",
+    text: "Approved"
+  }
+];
+
 export const period = [
   {
     value: 1,

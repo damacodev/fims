@@ -27,6 +27,11 @@
             :multiple="false"
             @input="changeStandardForm"
           />
+          <InputText
+            label="Work Item Type"
+            v-model="workItemType"
+            :disabled="true"
+          />
           <Select
             label="Equipment Category"
             v-model="form.category"
@@ -189,6 +194,11 @@ export default {
     textButton() {
       const self = this;
       return self.$route.name != self.route.form ? "Save Changes" : "Submit";
+    },
+    workItemType() {
+      const self = this;
+      if (self.form.standardFormId != null) return "Standard Form";
+      return "Preventive Maintenace";
     }
   },
   validations: {
@@ -294,6 +304,8 @@ export default {
     },
     changeStandardForm(params) {
       const self = this;
+
+      self.form.title = null;
 
       let find = self.options.standardForm.find(x => x.id == params);
       if (isNullOrEmpty(self.form.title)) self.form.title = find.label;

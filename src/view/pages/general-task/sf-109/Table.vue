@@ -15,119 +15,89 @@
     @onPageChange="onPageChange"
     @onSearch="onSearch"
   >
-    <template #toolbar>
-      <b-button variant="primary" :to="{ name: 'userManagementCreate' }">
-        Create New Account
-      </b-button>
-    </template>
     <template #filter>
       <b-row class="p-3">
-        <b-col xl="3">
+        <b-col xl="4">
           <treeselect
             class="mb-2"
             placeholder="Select DPPU"
-            v-model="serverParams.dppu"
+            v-model="serverParams.dppuId"
             :options="options.dppu"
             @input="onFilter"
-          />
+          ></treeselect>
         </b-col>
-        <b-col xl="3">
+        <b-col xl="4">
           <b-form-input
-            class="mb-2"
-            placeholder="Email"
-            type="email"
-            v-model="serverParams.email"
-            @change="onFilter"
+            placeholder="Transaction Date"
+            type="date"
+            v-model="serverParams.transactionDate"
+            @input="onFilter"
           ></b-form-input>
         </b-col>
-        <b-col xl="3">
+        <b-col xl="4">
           <treeselect
             class="mb-2"
-            placeholder="Select role"
-            v-model="serverParams.role"
-            :options="options.role"
+            placeholder="Select request status"
+            v-model="serverParams.status"
+            :options="options.standardFormStatus"
+            :normalizer="normalizer"
             :multiple="true"
             @input="onFilter"
-          ></treeselect>
-        </b-col>
-        <b-col xl="3">
-          <treeselect
-            class="mb-2"
-            placeholder="Select status"
-            v-model="serverParams.actived"
-            :options="options.status"
-            :normalizer="normalizer"
-            @input="onFilter"
-          ></treeselect>
+          />
         </b-col>
       </b-row>
     </template>
     <template #empty>
       <EmptyTable
-        title="User accounts are managed from here"
-        description="You can see about account information or which ones are active/inactive status"
-        button-label="Create New Account"
-        :href="{ name: 'userManagementCreate' }"
+        :title="`${subTitle} are managed from here`"
+        :description="`All ${subTitle} will be displayed on this page`"
       />
     </template>
-    <template #cell(fullName)="data">
-      {{ data.item.fullName }}
-      <b-badge v-if="data.item.email == user.email" variant="success">
-        It's You!
-      </b-badge>
-    </template>
-    <template #cell(plant)="data">
-      {{ data.item.dppu.map(x => x.label).join(", ") }}
-    </template>
-    <template #cell(actived)="data">
-      <span v-show="data.item.actived" class="text-success">Active</span>
-      <span v-show="!data.item.actived" class="text-danger">Inactive</span>
-    </template>
+    <template #cell(transactionDate)="data">
+      {{ dateFormat(data.value) }}</template
+    >
+    <template #cell(transactionRecords)="data">
+      {{ data.item.details.length }} Records</template
+    >
   </CardTable>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
-import { userManagement as columns } from "@/core/datasource/columns";
-import { status } from "@/core/datasource/options";
-import { getDppu, getRole } from "@/core/utils";
+import { sf109 as columns } from "@/core/datasource/columns";
+import { standardFormStatus } from "@/core/datasource/options";
+import { getDate, getDppu, dateFormat, normalizer } from "@/core/utils";
 
 export default {
   data: () => ({
-    title: "User Management",
-    subTitle: "Display all accounts",
-    searchText: "Search by full name",
+    title: "109 SF",
+    subTitle: "Storage Tank Sump Record",
+    searchText: "Search by transaction #",
     serverParams: {
       pageNumber: 1,
       pageSize: 20,
-      fullName: null,
-      dppu: null,
-      email: null,
-      role: null,
-      actived: null
+      transactionDate: getDate(),
+      keyword: null,
+      dppuId: null,
+      status: null
     },
     table: {
-      isLoading: true,
+      isLoading: false,
       columns,
       rows: [],
       totalPage: 0,
       totalRecords: 0
     },
-    options: { dppu: [], role: [], status },
-    normalizer(node) {
-      return {
-        id: node.value,
-        label: node.text
-      };
+    options: {
+      dppu: [],
+      standardFormStatus
     }
   }),
   computed: {
-    ...mapGetters("personalize", ["multipleDppu", "dppu"]),
-    ...mapGetters("auth", ["user"])
+    ...mapGetters("personalize", ["multipleDppu", "dppu"])
   },
   created() {
     const self = this;
-
     if (self.multipleDppu) {
       getDppu().then(response => {
         self.options.dppu = response.data.map(x => ({
@@ -139,23 +109,20 @@ export default {
       self.options.dppu = [self.dppu];
     }
     if (self.dppu) {
-      self.serverParams.dppu = self.dppu.id;
+      self.serverParams.dppuId = self.dppu.id;
     }
-
-    getRole().then(response => {
-      self.options.role = response.data;
-    });
-
     self.getAll();
   },
   methods: {
+    normalizer,
+    dateFormat,
     updateParams(newProps) {
       this.serverParams = Object.assign({}, this.serverParams, newProps);
     },
     onRowSelected(items) {
       const self = this;
       self.$router.push({
-        name: "userManagementUpdate",
+        name: "sf109Update",
         params: {
           id: items[0].id
         }
@@ -172,7 +139,7 @@ export default {
     onSearch(params) {
       const self = this;
       self.updateParams({
-        fullName: params
+        keyword: params
       });
       self.getAll();
     },
@@ -186,7 +153,7 @@ export default {
       self.table.isLoading = true;
       self.$store
         .dispatch("apis/get", {
-          url: "/account",
+          url: "/board/standard-form/109",
           params: self.serverParams
         })
         .then(response => {

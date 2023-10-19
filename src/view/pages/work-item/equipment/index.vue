@@ -86,7 +86,7 @@ import Category4 from "./Category4";
 import Category5 from "./Category5";
 import Category6 from "./Category6";
 import Category7 from "./Category7";
-import Empty from "./Empty";
+import Empty from "../common/Empty";
 import Evaluation from "./Evaluation";
 import { mapGetters } from "vuex";
 

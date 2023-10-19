@@ -9,23 +9,6 @@
       </div>
       <div class="card-toolbar">
         <b-button
-          v-show="!buttonVisibility"
-          variant="outline-primary"
-          class="mr-2"
-          @click="handleDownload"
-        >
-          Download
-        </b-button>
-        <b-button
-          v-show="$route.name != route.form && buttonVisibility"
-          variant="outline-danger"
-          size="lg"
-          class="mr-10"
-          @click="handleDelete"
-        >
-          Delete
-        </b-button>
-        <b-button
           v-show="$route.name != route.form && buttonVisibility"
           variant="outline-primary"
           size="lg"
@@ -41,7 +24,7 @@
           class="mr-2"
           @click="handleSubmit"
         >
-          {{ textButton }}
+          Update
         </b-button>
         <b-button variant="secondary" size="lg" @click="back"> Back </b-button>
       </div>
@@ -49,14 +32,11 @@
     <b-row class="p-2">
       <div class="card-body pb-0">
         <template v-if="buttonVisibility">
-          <Select
-            v-if="multipleDppu"
+          <InputText
             label="Depot Pengisian Pesawat Udara"
-            v-model="form.dppuId"
-            :v="$v.form.dppuId"
-            :options="options.dppu"
-            :multiple="false"
-            :disabled="$route.name != route.form"
+            type="text"
+            v-model="form.dppu.label"
+            disabled
           />
           <InputText
             label="Transaction #"
@@ -69,40 +49,20 @@
             type="date"
             v-model="form.transactionDate"
             :v="$v.form.transactionDate"
+            disabled
           />
-          <Select
-            label="Shift"
-            v-model="form.shiftId"
-            :options="options.shift"
-            :multiple="false"
+          <TextArea
+            label="Remarks"
+            type="text"
+            v-model="form.remarks"
+            :v="$v.form.remarks"
           />
-          <InputText label="Grade" type="text" v-model="form.grade" />
         </template>
         <FormHeader v-else :form="form" :currentProgress="currentProgress" />
       </div>
     </b-row>
     <div v-show="$route.name != route.form">
-      <hr v-show="buttonVisibility" />
-      <b-row>
-        <b-col>
-          <b-button
-            v-show="buttonVisibility"
-            variant="outline-primary"
-            class="ml-2 mb-4"
-            @click="handleOpenForm"
-          >
-            Add New Record
-          </b-button>
-        </b-col>
-      </b-row>
-      <div class="min-card-h">
-        <TableItem :rows="table.rows" @onRowSelected="onRowSelected" />
-        <EmptyTable
-          v-if="table.rows.length == 0"
-          title="Bridger Quality Control Before Receipt Records will be displayed here"
-          description="Please add an items first"
-        />
-      </div>
+      <TableItem :rows="table.rows" :buttonVisibility="buttonVisibility" />
     </div>
   </div>
 </template>
@@ -111,7 +71,7 @@
 import { mapGetters } from "vuex";
 import FormHeader from "./FormHeader.vue";
 import TableItem from "./TableItem.vue";
-import { required } from "vuelidate/lib/validators";
+import { required, maxLength } from "vuelidate/lib/validators";
 import {
   getDppu,
   numberFormat,
@@ -126,10 +86,10 @@ export default {
     TableItem
   },
   data: () => ({
-    title: "103 SF - Bridger Quality Control Before Receipt Record",
+    title: "109 SF - Storage Tank Sump Record",
     route: {
-      form: "sf103Create",
-      table: "sf103"
+      form: "sf109Create",
+      table: "sf109"
     },
     form: {
       dppu: {
@@ -139,12 +99,7 @@ export default {
       dppuId: null,
       transactionId: "Auto Generated",
       transactionDate: getDate(),
-      shift: {
-        id: null,
-        label: null
-      },
-      shiftId: null,
-      grade: null,
+      remarks: null,
       sendApproval: false,
       updatedBy: null,
       updatedAt: null
@@ -160,8 +115,7 @@ export default {
       rows: []
     },
     options: {
-      dppu: [],
-      shift: []
+      dppu: []
     }
   }),
   computed: {
@@ -171,10 +125,6 @@ export default {
       return self.$route.name != self.route.form
         ? "Update transaction"
         : "Create new transaction";
-    },
-    textButton() {
-      const self = this;
-      return self.$route.name != self.route.form ? "Update" : "Save";
     },
     buttonVisibility() {
       const self = this;
@@ -190,7 +140,8 @@ export default {
   validations: {
     form: {
       dppuId: { required },
-      transactionDate: { required }
+      transactionDate: { required },
+      remarks: { maxLength: maxLength(250) }
     }
   },
   created() {
@@ -208,7 +159,6 @@ export default {
     }
     if (self.dppu) {
       self.form.dppuId = self.dppu.id;
-      self.changeDppu();
     }
 
     if (self.$route.name != self.route.form) {
@@ -224,38 +174,13 @@ export default {
       if (isNullOrEmpty(self.$route.query.from || "")) self.$router.go(-1);
       else window.close();
     },
-    changeDppu() {
-      const self = this;
-
-      self.form.shiftId = null;
-      self.options.shift = [];
-      if (self.form.dppuId != null) {
-        self.$store
-          .dispatch("apis/get", {
-            url: `/dppu/${self.form.dppuId}`
-          })
-          .then(response => {
-            if (response.error) {
-              self.$message.error({
-                zIndex: 10000,
-                message: response.message
-              });
-            } else {
-              self.options.shift = response.data.shifts.map(x => ({
-                id: x.id,
-                label: `${x.shiftCallSign} (${x.workingTime.start} - ${x.workingTime.end})`
-              }));
-            }
-          });
-      }
-    },
     get() {
       const self = this;
 
       let loader = self.$loading.show();
       self.$store
         .dispatch("apis/get", {
-          url: `/board/standard-form/103/${self.$route.params.id}`
+          url: `/board/standard-form/109/${self.$route.params.id}`
         })
         .then(response => {
           if (response.error) {
@@ -274,12 +199,7 @@ export default {
                 response.data.transactionDate,
                 "YYYY-MM-DD"
               ),
-              shift: {
-                id: response.data.shift?.id,
-                label: response.data.shift?.label
-              },
-              shiftId: response.data.shift?.id,
-              grade: response.data.grade,
+              remarks: response.data.remarks,
               updatedBy: response.data.updatedBy,
               updatedAt: response.data.updatedAt
             };
@@ -292,31 +212,17 @@ export default {
               }
             };
 
-            self.table.rows = response.data.details;
+            self.table.rows = response.data.details.map(x => ({
+              id: x.id,
+              equipment: x.equipment,
+              resultId: x.result?.id ?? null,
+              result: x.result,
+              afterHeavyRainId: x.afterHeavyRain?.id ?? null,
+              afterHeavyRain: x.afterHeavyRain
+            }));
           }
         })
         .finally(() => loader.hide());
-    },
-    handleOpenForm() {
-      const self = this;
-
-      self.$router.push({
-        name: "sf103CreateItem",
-        params: {
-          id: self.$route.params.id
-        }
-      });
-    },
-    onRowSelected(item) {
-      const self = this;
-
-      self.$router.push({
-        name: "sf103UpdateItem",
-        params: {
-          id: self.$route.params.id,
-          iditem: item.id
-        }
-      });
     },
     handleSubmit() {
       const self = this;
@@ -324,34 +230,16 @@ export default {
       self.$v.form.$touch();
       if (self.$v.form.$pending || self.$v.form.$error) return;
 
-      let _confirmText = "",
-        _okText = "",
-        _action = "",
-        _url = "";
-
-      if (self.$route.name == self.route.form) {
-        _confirmText = "You are about to save this transaction. Are you sure ?";
-        _okText = "Yes, Save";
-        _action = "apis/post";
-        _url = "/board/standard-form/103";
-      } else {
-        _confirmText =
-          "You are about to update this transaction. Are you sure ?";
-        _okText = "Yes, Update";
-        _action = "apis/put";
-        _url = `/board/standard-form/103/${self.$route.params.id}`;
-      }
-
       self.$dialog
-        .confirm(_confirmText, {
-          okText: _okText,
+        .confirm("You are about to update this transaction. Are you sure ?", {
+          okText: "Yes, Update",
           cancelText: "Cancel",
           loader: true
         })
         .then(dialog => {
           self.$store
-            .dispatch(_action, {
-              url: _url,
+            .dispatch("apis/put", {
+              url: `/board/standard-form/109/${self.$route.params.id}`,
               params: self.form
             })
             .then(response => {
@@ -365,48 +253,6 @@ export default {
                   zIndex: 10000,
                   message: response.message
                 });
-
-                if (self.$route.name == self.route.form) {
-                  self.$router.replace({
-                    name: "sf103Update",
-                    params: {
-                      id: response.data.id
-                    }
-                  });
-                  self.get();
-                }
-              }
-            })
-            .finally(() => dialog.close());
-        });
-    },
-    handleDelete() {
-      const self = this;
-
-      self.$dialog
-        .confirm("You are about to delete this transaction. Are you sure ?", {
-          okText: "Yes, Delete",
-          cancelText: "Cancel",
-          loader: true
-        })
-        .then(dialog => {
-          self.$store
-            .dispatch("apis/remove", {
-              url: `/board/standard-form/103/${self.$route.params.id}`
-            })
-            .then(response => {
-              if (response.error) {
-                self.$message.error({
-                  zIndex: 10000,
-                  message: response.message
-                });
-              } else {
-                self.$message.success({
-                  zIndex: 10000,
-                  message: response.message
-                });
-
-                self.$router.go(-1);
               }
             })
             .finally(() => dialog.close());
@@ -432,7 +278,7 @@ export default {
 
           self.$store
             .dispatch("apis/put", {
-              url: `/board/standard-form/103/${self.$route.params.id}`,
+              url: `/board/standard-form/109/${self.$route.params.id}`,
               params: self.form
             })
             .then(response => {
@@ -451,31 +297,6 @@ export default {
               }
             })
             .finally(() => dialog.close());
-        });
-    },
-    handleDownload() {
-      const self = this;
-
-      self.$store
-        .dispatch("apis/download", {
-          url: `/board/standard-form/103/export/${self.$route.params.id}`
-        })
-        .then(response => {
-          if (response.error) {
-            self.$message.error({
-              zIndex: 10000,
-              message: response.message
-            });
-          } else {
-            let fileURL = window.URL.createObjectURL(new Blob([response])),
-              fileLink = document.createElement("a");
-
-            fileLink.href = fileURL;
-            fileLink.setAttribute("download", "103 SF.xlsx");
-            document.body.appendChild(fileLink);
-
-            fileLink.click();
-          }
         });
     }
   }

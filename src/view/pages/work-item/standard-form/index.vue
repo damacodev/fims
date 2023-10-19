@@ -6,6 +6,7 @@
         :cardSubTitle="subTitle"
         :taskType="requestInfo.type.label"
         :taskTitle="requestInfo.title"
+        :taskPeriod="requestInfo.request.schedule || ''"
         :createdBy="requestInfo.createdBy.label"
         :createdAt="requestInfo.createdAt"
         :histories="histories"
@@ -13,50 +14,65 @@
       <Detail cssClass="mt-8" :requestInfo="requestInfo" />
     </b-col>
     <b-col lg="6" class="mb-4">
-      <Action
-        :title="form.title"
+      <Assignment
+        v-if="!requestInfo.locked && requestInfo.action == 'assignment'"
+        title="Assignment"
         :subTitle="subTitle"
         :requestInfo="requestInfo"
+        :currentStatus="currentStatus"
         :form="form"
-        :technician="options.technician"
       />
-      <!-- <Action
-        v-if="!requestInfo.locked"
-        :submitLabel="form.status == 5 ? 'Request to Closed' : 'Submit'"
+      <Approval
+        v-else-if="!requestInfo.locked && requestInfo.action == 'approval'"
+        title="Approval"
+        :subTitle="subTitle"
+        :requestInfo="requestInfo"
+        :currentStatus="currentStatus"
+        :form="form"
+      />
+      <FollowUp
+        v-else-if="!requestInfo.locked && requestInfo.action == 'followup'"
         title="Follow-Up"
         :subTitle="subTitle"
         :requestInfo="requestInfo"
-        :requestStatus="currentStatus"
+        :currentStatus="currentStatus"
         :form="form"
-        :followUp="followUp"
       />
-      <CurrentProgress
-        :cssClass="!requestInfo.locked ? 'mt-8' : ''"
-        title="Current Progress"
-        subTitle="Last activity updates"
-        :requestInfo="requestInfo"
-        :followUp="followUp"
-      /> -->
+      <Evaluate
+        v-else
+        title="Evaluate"
+        :subTitle="subTitle"
+        :currentStatus="currentStatus"
+      />
     </b-col>
+    <!-- 
+    <b-col lg="6">
+      <pre>{{ requestInfo }}</pre>
+    </b-col>
+    <b-col lg="6">
+      <pre>{{ currentStatus }}</pre>
+    </b-col>
+ -->
   </b-row>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
 import TaskInfo from "../common/TaskInfo.vue";
+import Approval from "./Approval.vue";
+import Assignment from "./Assignment.vue";
 import Detail from "./Detail.vue";
-import Action from "./Action.vue";
-// import CurrentProgress from "./CurrentProgress.vue";
-
-// import { dateTimeFormat } from "@/core/utils";
-// import { requestStatus } from "@/core/datasource/options";
+import Evaluate from "./Evaluate.vue";
+import FollowUp from "./FollowUp.vue";
 
 export default {
   components: {
     TaskInfo,
+    Approval,
+    Assignment,
     Detail,
-    Action
-    // CurrentProgress,
+    Evaluate,
+    FollowUp
   },
   data: () => ({
     title: "Task ID #",
@@ -79,21 +95,19 @@ export default {
         label: null
       },
       createdAt: null,
-      locked: true
+      locked: true,
+      action: null
     },
     currentStatus: {},
     form: {
-      title: "Assignment",
+      title: "Evaluate",
       workItemId: null,
       currentStatus: null,
       status: null,
       remarks: null,
       assignedTo: null
     },
-    histories: [],
-    options: {
-      technician: []
-    }
+    histories: []
   }),
   computed: {
     ...mapGetters("auth", ["user"])
@@ -120,18 +134,15 @@ export default {
             self.$router.push({ name: self.route.table });
           } else {
             self.requestInfo = response.data;
-            self.requestInfo.currentStatus = self.requestInfo.statuses.find(
-              x => x.actived
-            );
+            self.currentStatus = self.requestInfo.statuses.find(x => x.actived);
 
             self.title = `Task ID #${self.requestInfo.taskId}`;
             self.subTitle = self.requestInfo.type.label;
             self.form.workItemId = self.requestInfo.id;
 
-            self.form.remarks = self.requestInfo.currentStatus.remarks;
-            if (self.requestInfo.currentStatus.assignedTo != null) {
-              self.form.assignedTo =
-                self.requestInfo.currentStatus.assignedTo.id;
+            self.form.remarks = self.currentStatus.remarks;
+            if (self.currentStatus.assignedTo != null) {
+              self.form.assignedTo = self.currentStatus.assignedTo.id;
             }
 
             self.histories = self.requestInfo.statuses;
@@ -143,22 +154,36 @@ export default {
         })
         .finally(() => loader.hide());
     },
-    getTechnician() {
+    handleSubmit() {
       const self = this;
 
-      self.$store
-        .dispatch("apis/get", {
-          url: `/common/technician/${self.requestInfo.dppu.id}/${self.requestInfo.currentStatus.assignedToRole.id}`
+      self.$dialog
+        .confirm("You are about to approve this transaction. Are you sure ?", {
+          okText: "Yes, Approve",
+          cancelText: "Cancel",
+          loader: true
         })
-        .then(response => {
-          if (response.error) {
-            self.$message.error({
-              zIndex: 10000,
-              message: response.message
-            });
-          } else {
-            self.options.technician = response.data;
-          }
+        .then(dialog => {
+          self.$store
+            .dispatch("apis/post", {
+              url: `board/evaluate/standard-form/${self.form.workItemId}`
+            })
+            .then(response => {
+              if (response.error) {
+                self.$message.error({
+                  zIndex: 10000,
+                  message: response.message
+                });
+              } else {
+                self.$message.success({
+                  zIndex: 10000,
+                  message: response.message
+                });
+
+                self.$router.go(-1);
+              }
+            })
+            .finally(() => dialog.close());
         });
     }
   }

@@ -15,6 +15,11 @@
         <div class="card-body">
           <PlainText label="Type" :value="taskType" />
           <PlainText label="Title" :value="taskTitle" />
+          <PlainText
+            v-if="!!taskPeriod"
+            label="Task Period"
+            :value="taskPeriod.activity.period.label"
+          />
           <PlainText label="Created By" :value="createdBy" />
           <PlainText label="Created At" :value="dateTimeFormat(createdAt)" />
         </div>
@@ -37,6 +42,7 @@ export default {
     cardSubTitle: String,
     taskType: String,
     taskTitle: String,
+    taskPeriod: Object,
     createdBy: String,
     createdAt: String,
     histories: Array

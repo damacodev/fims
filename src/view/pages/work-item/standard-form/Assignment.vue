@@ -1,28 +1,16 @@
 <template>
   <CardForm :title="title" :subTitle="subTitle">
     <template #toolbar>
-      <b-button
-        v-if="!requestInfo.locked"
-        variant="primary"
-        @click="handleSubmit"
-      >
-        Submit
-      </b-button>
+      <b-button variant="primary" @click="handleSubmit">Submit</b-button>
     </template>
     <template #form>
-      <b-form v-if="!requestInfo.locked" @submit.stop.prevent="handleSubmit">
+      <b-form @submit.stop.prevent="handleSubmit">
         <div class="card-body">
-          <TextArea
-            label="Notes"
-            v-model="form.remarks"
-            :useHorizontal="false"
-            :v="$v.form.remarks"
-          />
           <Select
             label="Assigned To"
             v-model="form.assignedTo"
             :v="$v.form.assignedTo"
-            :options="technician"
+            :options="options.technician"
             :useHorizontal="false"
             :multiple="false"
           />
@@ -33,6 +21,7 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import { required } from "vuelidate/lib/validators";
 
 export default {
@@ -40,8 +29,16 @@ export default {
     title: String,
     subTitle: String,
     requestInfo: Object,
-    form: Object,
-    technician: Array
+    currentStatus: Object,
+    form: Object
+  },
+  data: () => ({
+    options: {
+      technician: []
+    }
+  }),
+  computed: {
+    ...mapGetters("auth", ["user"])
   },
   validations: {
     form: {
@@ -49,7 +46,28 @@ export default {
       assignedTo: { required }
     }
   },
+  mounted() {
+    this.getTechnician();
+  },
   methods: {
+    getTechnician() {
+      const self = this;
+
+      self.$store
+        .dispatch("apis/get", {
+          url: `/common/technician/${self.requestInfo.dppu.id}/${self.user.role.id}`
+        })
+        .then(response => {
+          if (response.error) {
+            self.$message.error({
+              zIndex: 10000,
+              message: response.message
+            });
+          } else {
+            self.options.technician = response.data;
+          }
+        });
+    },
     handleSubmit() {
       const self = this;
 

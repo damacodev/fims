@@ -10,8 +10,7 @@
         label="Transaction Date"
         :value="dateFormat(form.transactionDate)"
       />
-      <PlainText label="Shift" :value="form.shift.label" />
-      <PlainText label="Grade" :value="form.grade" />
+      <PlainText label="Remarks" :value="form.remarks" />
       <PlainText label="Status">
         <template #value>
           <b-badge

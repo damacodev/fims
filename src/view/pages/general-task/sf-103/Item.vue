@@ -26,7 +26,7 @@
     <template slot="form">
       <b-form @submit.stop.prevent="handleSubmit">
         <div class="card-body">
-          <FormHeader :form="form" />
+          <FormHeader :form="form" :currentProgress="currentProgress" />
           <hr />
           <b-row v-if="buttonVisibility">
             <b-col lg="3">
@@ -419,7 +419,7 @@ export default {
       let loader = self.$loading.show();
       self.$store
         .dispatch("apis/get", {
-          url: `/board/sf-103/${self.$route.params.id}`
+          url: `/board/standard-form/103/${self.$route.params.id}`
         })
         .then(response => {
           if (response.error) {
@@ -460,7 +460,7 @@ export default {
       let loader = self.$loading.show();
       self.$store
         .dispatch("apis/get", {
-          url: `/board/sf-103/record/${self.$route.params.iditem}`
+          url: `/board/standard-form/103/record/${self.$route.params.iditem}`
         })
         .then(response => {
           if (response.error) {
@@ -501,12 +501,12 @@ export default {
         _confirmText = "You are about to submit this record. Are you sure ?";
         _okText = "Yes, Submit";
         _action = "apis/post";
-        _url = "/board/sf-103/record";
+        _url = "/board/standard-form/103/record";
       } else {
         _confirmText = "You are about to update this record. Are you sure ?";
         _okText = "Yes, Update";
         _action = "apis/put";
-        _url = `/board/sf-103/record/${self.$route.params.iditem}`;
+        _url = `/board/standard-form/103/record/${self.$route.params.iditem}`;
       }
 
       self.$dialog
@@ -555,7 +555,7 @@ export default {
         .then(dialog => {
           self.$store
             .dispatch("apis/remove", {
-              url: `/board/sf-103/record/${self.$route.params.iditem}`
+              url: `/board/standard-form/103/record/${self.$route.params.iditem}`
             })
             .then(response => {
               dialog.close();

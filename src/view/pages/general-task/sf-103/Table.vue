@@ -16,9 +16,6 @@
     @onSearch="onSearch"
   >
     <template #toolbar>
-      <b-button variant="outline-primary" class="mr-2" @click="handleDownload">
-        Download
-      </b-button>
       <b-button variant="primary" :to="{ name: 'sf103Create' }">
         Create New Transaction
       </b-button>
@@ -56,7 +53,7 @@
             class="mb-2"
             placeholder="Select request status"
             v-model="serverParams.status"
-            :options="options.requestStatus"
+            :options="options.standardFormStatus"
             :normalizer="normalizer"
             :multiple="true"
             @input="onFilter"
@@ -84,7 +81,7 @@
 <script>
 import { mapGetters } from "vuex";
 import { sf103 as columns } from "@/core/datasource/columns";
-import { status, requestStatus } from "@/core/datasource/options";
+import { standardFormStatus } from "@/core/datasource/options";
 import { getDate, getDppu, dateFormat, normalizer } from "@/core/utils";
 
 export default {
@@ -98,7 +95,8 @@ export default {
       transactionDate: getDate(),
       keyword: null,
       dppuId: null,
-      shiftId: null
+      shiftId: null,
+      status: null
     },
     table: {
       isLoading: false,
@@ -110,8 +108,7 @@ export default {
     options: {
       dppu: [],
       shift: [],
-      status,
-      requestStatus
+      standardFormStatus
     }
   }),
   computed: {
@@ -202,7 +199,7 @@ export default {
       self.table.isLoading = true;
       self.$store
         .dispatch("apis/get", {
-          url: "/board/sf-103",
+          url: "/board/standard-form/103",
           params: self.serverParams
         })
         .then(response => {
@@ -217,41 +214,6 @@ export default {
             self.table.totalRecords = response.data.totalData;
           }
           self.table.isLoading = false;
-        });
-    },
-    handleDownload() {
-      const self = this;
-
-      let _serverParams = {
-        pageNumber: self.serverParams.pageNumber,
-        pageSize: self.serverParams.pageSize,
-        keyword: self.serverParams.keyword,
-        dppu: self.serverParams.dppu,
-        remarks: self.serverParams.remarks,
-        startDate: self.serverParams.dateRange.startDate,
-        endDate: self.serverParams.dateRange.endDate
-      };
-      self.$store
-        .dispatch("apis/download", {
-          url: `/sparepart/dailystock/export`,
-          params: _serverParams
-        })
-        .then(response => {
-          if (response.error) {
-            self.$message.error({
-              zIndex: 10000,
-              message: response.message
-            });
-          } else {
-            let fileURL = window.URL.createObjectURL(new Blob([response])),
-              fileLink = document.createElement("a");
-
-            fileLink.href = fileURL;
-            fileLink.setAttribute("download", "DailyStock.xlsx");
-            document.body.appendChild(fileLink);
-
-            fileLink.click();
-          }
         });
     }
   }

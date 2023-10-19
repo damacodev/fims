@@ -24,29 +24,51 @@
         </div>
       </router-link>
     </b-col>
-    <b-col lg="4">
+    <b-col lg="4" v-for="(item, index) in sfGrid" v-bind:key="index">
       <router-link
         :to="{
-          name: 'sf103'
+          name: item.route
         }"
         class="card card-custom bgi-no-repeat card-stretch gutter-b"
         style="background-position: right top; background-size: 30% auto"
         v-bind:style="
-          `background-image: url(${require('@/assets/media/svg/shapes/abstract-2.svg')})`
+          `background-image: url(${require('@/assets/media/svg/shapes/' +
+            item.bgImg)})`
         "
       >
         <div class="card-body">
           <span
-            class="card-title font-weight-bold text-muted text-hover-primary font-size-h5"
+            class="card-title font-weight-bold text-muted text-hover-primary font-size-h1"
           >
-            103 SF
+            {{ item.title }}
           </span>
 
-          <p class="text-dark-75 font-weight-bolder font-size-h5 m-0 mt-9">
-            Bridger Quality Control Before Receipt Record
+          <p class="text-dark-75 font-weight-bolder font-size-h5 m-0 mt-3">
+            {{ item.subTitle }}
           </p>
         </div>
       </router-link>
     </b-col>
   </b-row>
 </template>
+
+<script>
+export default {
+  data: () => ({
+    sfGrid: [
+      {
+        route: "sf103",
+        title: "103 SF",
+        subTitle: "Bridger Quality Control Before Receipt Record",
+        bgImg: "abstract-2.svg"
+      },
+      {
+        route: "sf109",
+        title: "109 SF",
+        subTitle: "Storage Tank Sump Record",
+        bgImg: "abstract-3.svg"
+      }
+    ]
+  })
+};
+</script>

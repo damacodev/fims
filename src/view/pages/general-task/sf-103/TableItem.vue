@@ -92,9 +92,6 @@ export default {
     setDensity,
     setTemperature,
     setConductivity,
-    onRowRemove(params) {
-      this.$emit("onRowRemove", params);
-    },
     onRowSelected(params) {
       this.$emit("onRowSelected", params);
     }

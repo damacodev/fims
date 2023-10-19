@@ -10,38 +10,24 @@
           label="Standard Form"
           :value="requestInfo.request.standardForm.label"
         />
-        <PlainText label="Activity" :value="requestInfo.title" />
         <PlainText label="Description" :value="requestInfo.description" />
-        <PlainText label="Date" :value="dateFormat(requestInfo.createdAt)" />
-        <TableEquipment
-          label="Equipment"
-          :rows="requestInfo.request.equipments"
-        />
-        <h5 class="font-weight-bolder text-dark">Work References</h5>
-        <PlainText label="Tata Kerja Individu">
+        <PlainText label="Transaction">
           <template #value>
-            <a
-              v-for="doc in requestInfo.request.schedule.activity
-                .tataKerjaIndividu"
-              v-bind:key="doc.id"
-              :href="`${baseUrl}${doc.url}`"
+            <router-link
+              :to="{
+                name: routeName,
+                params: {
+                  id: requestInfo.request.referenceId
+                },
+                query: {
+                  from: 'task'
+                }
+              }"
+              class="btn btn-outline-primary btn-sm"
               target="_blank"
             >
-              {{ doc.originalFileName }}
-            </a>
-          </template>
-        </PlainText>
-        <PlainText label="Standard Form">
-          <template #value>
-            <span
-              v-for="doc in requestInfo.request.schedule.activity.standardForm"
-              v-bind:key="doc.id"
-            >
-              <a :href="`${baseUrl}${doc.url}`" target="_blank">
-                {{ doc.originalFileName }}
-              </a>
-              <br />
-            </span>
+              View Transaction
+            </router-link>
           </template>
         </PlainText>
       </div>
@@ -50,16 +36,24 @@
 </template>
 
 <script>
-import TableEquipment from "./TableEquipment.vue";
 import { dateFormat } from "@/core/utils";
 
 export default {
-  components: {
-    TableEquipment
-  },
   props: {
     cssClass: String,
     requestInfo: Object
+  },
+  computed: {
+    routeName() {
+      const self = this;
+
+      if (self.requestInfo.request.standardForm.id == "103")
+        return "sf103Update";
+      if (self.requestInfo.request.standardForm.id == "109")
+        return "sf109Update";
+
+      return null;
+    }
   },
   methods: {
     dateFormat

@@ -286,94 +286,6 @@ export default {
   },
   methods: {
     getRole,
-    /* async onCategoryChange() {
-      const self = this;
-
-      self.options.activity = [];
-      self.options.equipment = [];
-      self.form.activity = null;
-      self.form.description = null;
-      self.form.period = {
-        id: null,
-        label: null,
-      };
-      self.form.mediaTataKerjaIndividu = [];
-      self.form.mediaStandardForm = [];
-      self.form.equipment = null;
-
-      if (self.form.category != null) {
-        let loader = self.$loading.show();
-
-        await self.$store
-          .dispatch("apis/get", {
-            url: `/equipment`,
-            params: {
-              category: self.form.category,
-            },
-          })
-          .then((response) => {
-            if (response.error) {
-              self.$message.error({
-                zIndex: 10000,
-                message: response.message,
-              });
-            } else {
-              self.options.equipment = response.data.data.map((x) => ({
-                id: x.id,
-                label: x.code,
-              }));
-            }
-          });
-
-        await self.$store
-          .dispatch("apis/get", {
-            url: "/preventivemaintenance/activity",
-            params: {
-              category: [self.form.category],
-            },
-          })
-          .then((response) => {
-            if (response.error) {
-              self.$message.error({
-                zIndex: 10000,
-                message: response.message,
-              });
-            } else {
-              self.options.activity = response.data.data.map((x) => ({
-                id: x.id,
-                label: x.title,
-              }));
-            }
-          });
-
-        loader.hide();
-      }
-    }, */
-    /* getActivity() {
-      const self = this;
-
-      if (self.form.activity != null) {
-        let loader = self.$loading.show();
-        self.$store
-          .dispatch("apis/get", {
-            url: `/preventivemaintenance/activity/${self.form.activity}`
-          })
-          .then(response => {
-            if (response.error) {
-              self.$message.error({
-                zIndex: 10000,
-                message: response.message
-              });
-            } else {
-              self.form.description = response.data.description;
-              self.form.period = response.data.period;
-              self.form.mediaTataKerjaIndividu = response.data.mediaTataKerjaIndividu;
-              self.form.mediaStandardForm = response.data.mediaStandardForm;
-            }
-            loader.hide();
-          });
-      }
-    }, */
     getDppuById(id) {
       if (id != null) {
         const self = this;
@@ -393,7 +305,10 @@ export default {
               self.options.dppuWithShift = response.data.shifts.length > 0;
             }
           })
-          .finally(() => loader.hide());
+          .finally(() => {
+            loader.hide();
+            self.getEquipmentByCategory();
+          });
       }
     },
     getActivity({ action, searchQuery, callback }) {
@@ -469,21 +384,21 @@ export default {
                 response.data.mediaTataKerjaIndividu;
               self.form.mediaStandardForm = response.data.mediaStandardForm;
 
-              if (response.data.category != null)
-                self.getEquipmentByCategory(response.data.category?.id);
+              if (response.data.category != null) self.getEquipmentByCategory();
             }
           })
           .finally(() => loader.hide());
       }
     },
-    getEquipmentByCategory(category) {
+    getEquipmentByCategory() {
       const self = this;
 
       self.$store
         .dispatch("apis/get", {
           url: `/equipment`,
           params: {
-            category
+            dppu: self.form.dppu,
+            category: self.form.category
           }
         })
         .then(response => {
@@ -563,7 +478,10 @@ export default {
             self.form.actived = response.data.actived;
           }
         })
-        .finally(() => loader.hide());
+        .finally(() => {
+          loader.hide();
+          self.getEquipmentByCategory();
+        });
     },
     handleSubmit() {
       const self = this;
