@@ -13,49 +13,6 @@ export const inOut = [
   { text: "Stock Out", value: 1 }
 ];
 
-// export const role = [
-//   {
-//     value: 0,
-//     text: "Admin"
-//   },
-//   {
-//     value: 1,
-//     text: "Operation Head"
-//   },
-//   {
-//     value: 2,
-//     text: "Supervisor Maintenance"
-//   },
-//   {
-//     value: 3,
-//     text: "RSD"
-//   },
-//   {
-//     value: 4,
-//     text: "Maintenance"
-//   },
-//   {
-//     value: 5,
-//     text: "Supervisor RSD"
-//   },
-//   {
-//     value: 6,
-//     text: "Supervisor HSSE"
-//   },
-//   {
-//     value: 7,
-//     text: "Supervisor GA"
-//   },
-//   {
-//     value: 8,
-//     text: "HSSE"
-//   },
-//   {
-//     value: 9,
-//     text: "GA"
-//   }
-// ];
-
 export const category = [
   {
     value: 1,
@@ -180,6 +137,10 @@ export const requestStatus = [
   {
     value: 6,
     text: "Re-Assign"
+  },
+  {
+    value: 7,
+    text: "Ready For Approval"
   }
 ];
 
@@ -197,8 +158,8 @@ export const standardFormStatus = [
     text: "Approved"
   },
   {
-    value: "Approved",
-    text: "Approved"
+    value: "Rejected",
+    text: "Rejected"
   }
 ];
 

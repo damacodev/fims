@@ -1,7 +1,7 @@
 <template>
   <div class="topbar-item mr-4">
     <div
-      class="btn btn-icon btn-sm btn-clean btn-text-dark-75"
+      class="btn btn-sm btn-clean btn-light btn-text-dark-75"
       id="kt_quick_user_toggle"
     >
       <span class="svg-icon svg-icon-lg">
@@ -9,6 +9,7 @@
           :src="require('@/assets/media/svg/icons/General/User.svg')"
         />
       </span>
+      {{ user.fullName }}
     </div>
 
     <div

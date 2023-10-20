@@ -26,7 +26,11 @@
     <template slot="form">
       <b-form @submit.stop.prevent="handleSubmit">
         <div class="card-body">
-          <FormHeader :form="form" :currentProgress="currentProgress" />
+          <FormHeader
+            :form="form"
+            :currentProgress="currentProgress"
+            :showRemarks="false"
+          />
           <hr />
           <b-row v-if="buttonVisibility">
             <b-col lg="3">
@@ -146,7 +150,7 @@
                 append="Kg/L"
               />
               <InputText
-                label="DIFF.max 0.003 kg/l"
+                label="DIFF.max 0.003 Kg/L"
                 type="number"
                 v-model="form.visualCheck.maximumDifferential"
                 :v="$v.form.visualCheck.maximumDifferential"
@@ -261,6 +265,7 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import FormHeader from "./FormHeader.vue";
 import { apiUrl } from "@/core/services/api.url";
 import {
@@ -303,6 +308,8 @@ export default {
         label: null
       },
       grade: null,
+      updatedBy: null,
+      updatedAt: null,
       time: null,
       recordTime: null,
       bridgerNo: null,
@@ -331,6 +338,7 @@ export default {
     },
     currentProgress: {
       status: null,
+      remarks: null,
       nextAction: {
         id: null,
         label: null
@@ -341,14 +349,26 @@ export default {
     }
   }),
   computed: {
+    ...mapGetters("auth", ["user"]),
     textButton() {
       const self = this;
       return self.$route.name != self.route.form ? "Update" : "Submit";
     },
     buttonVisibility() {
       const self = this;
-
-      return self.currentProgress.status == "New";
+      if (
+        !["New", "Rejected"].includes(self.currentProgress.status) ||
+        (self.currentProgress.status == "Rejected" &&
+          self.user.id != self.currentProgress.nextAction.id)
+      ) {
+        return false;
+      } else if (
+        self.currentProgress.status == "Rejected" &&
+        self.user.id == self.currentProgress.nextAction.id
+      ) {
+        return true;
+      }
+      return true;
     }
   },
   validations: {
@@ -442,9 +462,12 @@ export default {
               label: response.data.shift?.label
             };
             self.form.grade = response.data.grade;
+            self.form.updatedBy = response.data.updatedBy;
+            self.form.updatedAt = response.data.updatedAt;
 
             self.currentProgress = {
               status: response.data.currentProgress.status,
+              remarks: response.data.currentProgress.remarks,
               nextAction: {
                 id: response.data.currentProgress.nextAction?.id,
                 label: response.data.currentProgress.nextAction?.label

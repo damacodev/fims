@@ -1,7 +1,17 @@
 <template>
   <CardForm :title="title" :subTitle="subTitle">
     <template #toolbar>
-      <b-button variant="primary" @click="handleSubmit"> Open Form </b-button>
+      <router-link
+        :to="{
+          name: routeName,
+          params: {
+            id: requestInfo.request.referenceId
+          }
+        }"
+        class="btn btn-primary"
+      >
+        Open Form
+      </router-link>
     </template>
     <template #form>
       <div class="card-body">
@@ -25,38 +35,9 @@ export default {
     currentStatus: Object,
     form: Object
   },
-  methods: {
-    handleSubmit() {
-      const self = this;
-
-      self.$dialog
-        .confirm("You are about to approve this transaction. Are you sure ?", {
-          okText: "Yes, Approve",
-          cancelText: "Cancel",
-          loader: true
-        })
-        .then(dialog => {
-          self.$store
-            .dispatch("apis/post", {
-              url: `board/evaluate/standard-form/${self.form.workItemId}`
-            })
-            .then(response => {
-              if (response.error) {
-                self.$message.error({
-                  zIndex: 10000,
-                  message: response.message
-                });
-              } else {
-                self.$message.success({
-                  zIndex: 10000,
-                  message: response.message
-                });
-
-                self.$router.go(-1);
-              }
-            })
-            .finally(() => dialog.close());
-        });
+  computed: {
+    routeName() {
+      return `sf${this.requestInfo.request.standardForm.id}Update`;
     }
   }
 };

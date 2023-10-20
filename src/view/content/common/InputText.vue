@@ -60,8 +60,8 @@ export default {
     value: [String, Number],
     step: [String, Number],
     maxlength: Number,
-    min: Number,
-    max: Number,
+    min: [Number, Date, String],
+    max: [Number, Date, String],
     append: String
   },
   computed: {

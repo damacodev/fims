@@ -18,13 +18,9 @@
                 name: routeName,
                 params: {
                   id: requestInfo.request.referenceId
-                },
-                query: {
-                  from: 'task'
                 }
               }"
               class="btn btn-outline-primary btn-sm"
-              target="_blank"
             >
               View Transaction
             </router-link>
@@ -45,14 +41,7 @@ export default {
   },
   computed: {
     routeName() {
-      const self = this;
-
-      if (self.requestInfo.request.standardForm.id == "103")
-        return "sf103Update";
-      if (self.requestInfo.request.standardForm.id == "109")
-        return "sf109Update";
-
-      return null;
+      return `sf${this.requestInfo.request.standardForm.id}Update`;
     }
   },
   methods: {

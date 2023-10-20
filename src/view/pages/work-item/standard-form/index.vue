@@ -42,6 +42,7 @@
         v-else
         title="Evaluate"
         :subTitle="subTitle"
+        :requestInfo="requestInfo"
         :currentStatus="currentStatus"
       />
     </b-col>

@@ -57,24 +57,8 @@
             v-model="form.remarks"
             :v="$v.form.remarks"
           />
-          <b-row v-if="currentProgress.status == 'Rejected'">
-            <b-col lg="8" xl="5" offset="4">
-              <b-alert show variant="danger">
-                <h4 class="alert-heading">Rejected</h4>
-                <hr />
-                <p class="mb-0">
-                  {{ currentProgress.remarks }}
-                </p>
-              </b-alert>
-            </b-col>
-          </b-row>
         </template>
-        <FormHeader
-          v-else
-          :form="form"
-          :currentProgress="currentProgress"
-          :showRemarks="true"
-        />
+        <FormHeader v-else :form="form" :currentProgress="currentProgress" />
       </div>
     </b-row>
     <div v-show="$route.name != route.form">
@@ -93,24 +77,24 @@ import {
   numberFormat,
   getDate,
   dateFormat,
-  isNullOrEmpty,
+  isNullOrEmpty
 } from "@/core/utils";
 
 export default {
   components: {
     FormHeader,
-    TableItem,
+    TableItem
   },
   data: () => ({
-    title: "109 SF - Storage Tank Sump Record",
+    title: "110 SF - Storage Tank Sump Record",
     route: {
-      form: "sf109Create",
-      table: "sf109",
+      form: "sf110Create",
+      table: "sf110"
     },
     form: {
       dppu: {
         id: null,
-        label: null,
+        label: null
       },
       dppuId: null,
       transactionId: "Auto Generated",
@@ -118,22 +102,21 @@ export default {
       remarks: null,
       sendApproval: false,
       updatedBy: null,
-      updatedAt: null,
+      updatedAt: null
     },
     currentProgress: {
       status: null,
-      remarks: null,
       nextAction: {
         id: null,
-        label: null,
-      },
+        label: null
+      }
     },
     table: {
-      rows: [],
+      rows: []
     },
     options: {
-      dppu: [],
-    },
+      dppu: []
+    }
   }),
   computed: {
     ...mapGetters("personalize", ["multipleDppu", "dppu"]),
@@ -160,23 +143,23 @@ export default {
         return true;
       }
       return true;
-    },
+    }
   },
   validations: {
     form: {
       dppuId: { required },
       transactionDate: { required },
-      remarks: { maxLength: maxLength(250) },
-    },
+      remarks: { maxLength: maxLength(250) }
+    }
   },
   created() {
     const self = this;
 
     if (self.multipleDppu) {
-      getDppu().then((response) => {
-        self.options.dppu = response.data.map((x) => ({
+      getDppu().then(response => {
+        self.options.dppu = response.data.map(x => ({
           id: x.id,
-          label: x.name,
+          label: x.name
         }));
       });
     } else {
@@ -205,13 +188,13 @@ export default {
       let loader = self.$loading.show();
       self.$store
         .dispatch("apis/get", {
-          url: `/board/standard-form/109/${self.$route.params.id}`,
+          url: `/board/standard-form/110/${self.$route.params.id}`
         })
-        .then((response) => {
+        .then(response => {
           if (response.error) {
             self.$message.error({
               zIndex: 10000,
-              message: response.message,
+              message: response.message
             });
 
             self.$router.push({ name: self.route.table });
@@ -226,25 +209,22 @@ export default {
               ),
               remarks: response.data.remarks,
               updatedBy: response.data.updatedBy,
-              updatedAt: response.data.updatedAt,
+              updatedAt: response.data.updatedAt
             };
 
             self.currentProgress = {
               status: response.data.currentProgress.status,
-              remarks: response.data.currentProgress.remarks,
               nextAction: {
                 id: response.data.currentProgress.nextAction?.id,
-                label: response.data.currentProgress.nextAction?.label,
-              },
+                label: response.data.currentProgress.nextAction?.label
+              }
             };
 
-            self.table.rows = response.data.details.map((x) => ({
+            self.table.rows = response.data.details.map(x => ({
               id: x.id,
               equipment: x.equipment,
               resultId: x.result?.id ?? null,
-              result: x.result,
-              afterHeavyRainId: x.afterHeavyRain?.id ?? null,
-              afterHeavyRain: x.afterHeavyRain,
+              result: x.result
             }));
           }
         })
@@ -260,24 +240,24 @@ export default {
         .confirm("You are about to update this transaction. Are you sure ?", {
           okText: "Yes, Update",
           cancelText: "Cancel",
-          loader: true,
+          loader: true
         })
-        .then((dialog) => {
+        .then(dialog => {
           self.$store
             .dispatch("apis/put", {
-              url: `/board/standard-form/109/${self.$route.params.id}`,
-              params: self.form,
+              url: `/board/standard-form/110/${self.$route.params.id}`,
+              params: self.form
             })
-            .then((response) => {
+            .then(response => {
               if (response.error) {
                 self.$message.error({
                   zIndex: 10000,
-                  message: response.message,
+                  message: response.message
                 });
               } else {
                 self.$message.success({
                   zIndex: 10000,
-                  message: response.message,
+                  message: response.message
                 });
               }
             })
@@ -296,27 +276,27 @@ export default {
           {
             okText: "Yes, Send",
             cancelText: "Cancel",
-            loader: true,
+            loader: true
           }
         )
-        .then((dialog) => {
+        .then(dialog => {
           self.form.sendApproval = true;
 
           self.$store
             .dispatch("apis/put", {
-              url: `/board/standard-form/109/${self.$route.params.id}`,
-              params: self.form,
+              url: `/board/standard-form/110/${self.$route.params.id}`,
+              params: self.form
             })
-            .then((response) => {
+            .then(response => {
               if (response.error) {
                 self.$message.error({
                   zIndex: 10000,
-                  message: response.message,
+                  message: response.message
                 });
               } else {
                 self.$message.success({
                   zIndex: 10000,
-                  message: response.message,
+                  message: response.message
                 });
 
                 self.$router.go(-1);
@@ -324,7 +304,7 @@ export default {
             })
             .finally(() => dialog.close());
         });
-    },
-  },
+    }
+  }
 };
 </script>

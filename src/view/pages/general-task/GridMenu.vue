@@ -24,16 +24,20 @@
         </div>
       </router-link>
     </b-col>
-    <b-col lg="4" v-for="(item, index) in sfGrid" v-bind:key="index">
+    <b-col
+      lg="4"
+      v-for="(item, index) in options.standardForm"
+      v-bind:key="index"
+    >
       <router-link
         :to="{
-          name: item.route
+          name: item.routeName
         }"
         class="card card-custom bgi-no-repeat card-stretch gutter-b"
         style="background-position: right top; background-size: 30% auto"
         v-bind:style="
           `background-image: url(${require('@/assets/media/svg/shapes/' +
-            item.bgImg)})`
+            item.backgroundImage)})`
         "
       >
         <div class="card-body">
@@ -55,20 +59,35 @@
 <script>
 export default {
   data: () => ({
-    sfGrid: [
-      {
-        route: "sf103",
-        title: "103 SF",
-        subTitle: "Bridger Quality Control Before Receipt Record",
-        bgImg: "abstract-2.svg"
-      },
-      {
-        route: "sf109",
-        title: "109 SF",
-        subTitle: "Storage Tank Sump Record",
-        bgImg: "abstract-3.svg"
-      }
-    ]
-  })
+    options: {
+      standardForm: []
+    }
+  }),
+  created() {
+    this.getStandardForm();
+  },
+  methods: {
+    getStandardForm() {
+      const self = this;
+
+      self.$store
+        .dispatch("apis/get", {
+          url: `/common/standard-form`,
+          params: {
+            grid: true
+          }
+        })
+        .then(response => {
+          if (response.error) {
+            self.$message.error({
+              zIndex: 10000,
+              message: response.message
+            });
+          } else {
+            self.options.standardForm = response.data.data;
+          }
+        });
+    }
+  }
 };
 </script>

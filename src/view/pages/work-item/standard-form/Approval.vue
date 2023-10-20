@@ -1,17 +1,37 @@
 <template>
   <CardForm :title="title" :subTitle="subTitle">
     <template #toolbar>
-      <b-button variant="primary" @click="handleSubmit"> Approve </b-button>
+      <b-button variant="outline-danger" class="mr-2" @click="openRejectDialog">
+        Reject
+      </b-button>
+      <b-button variant="primary" @click="handleSubmit">Approve</b-button>
     </template>
     <template #form>
       <div class="card-body">
         <CurrentStatus :currentStatus="currentStatus" />
       </div>
+
+      <b-modal
+        v-model="modalReject"
+        title="Reason for Rejection"
+        ok-title="Reject"
+        ok-variant="danger"
+        @ok="handleReject"
+      >
+        <TextArea
+          label="Reason"
+          v-model="remarks"
+          :v="$v.remarks"
+          :useHorizontal="false"
+          :useLabel="false"
+        />
+      </b-modal>
     </template>
   </CardForm>
 </template>
 
 <script>
+import { required, maxLength } from "vuelidate/lib/validators";
 import CurrentStatus from "./CurrentStatus";
 
 export default {
@@ -25,7 +45,60 @@ export default {
     currentStatus: Object,
     form: Object
   },
+  data: () => ({
+    modalReject: false,
+    remarks: null
+  }),
+  validations: {
+    remarks: { required, maxLength: maxLength(250) }
+  },
   methods: {
+    openRejectDialog() {
+      const self = this;
+      self.$v.remarks.$reset();
+      self.modalReject = true;
+      self.remarks = null;
+    },
+    handleReject(event) {
+      event.preventDefault();
+      const self = this;
+
+      self.$v.remarks.$touch();
+      if (self.$v.remarks.$pending || self.$v.remarks.$error) return;
+
+      self.$dialog
+        .confirm("You are about to reject this transaction. Are you sure ?", {
+          okText: "Yes, Reject",
+          cancelText: "Cancel",
+          loader: true
+        })
+        .then(dialog => {
+          self.$store
+            .dispatch("apis/post", {
+              url: `board/evaluate/standard-form/${self.form.workItemId}`,
+              params: {
+                approved: false,
+                remarks: self.remarks
+              }
+            })
+            .then(response => {
+              if (response.error) {
+                self.$message.error({
+                  zIndex: 10000,
+                  message: response.message
+                });
+              } else {
+                self.$message.success({
+                  zIndex: 10000,
+                  message: response.message
+                });
+
+                self.$router.go(-1);
+              }
+            })
+            .finally(() => dialog.close());
+        });
+    },
     handleSubmit() {
       const self = this;
 
@@ -38,7 +111,10 @@ export default {
         .then(dialog => {
           self.$store
             .dispatch("apis/post", {
-              url: `board/evaluate/standard-form/${self.form.workItemId}`
+              url: `board/evaluate/standard-form/${self.form.workItemId}`,
+              params: {
+                approved: true
+              }
             })
             .then(response => {
               if (response.error) {

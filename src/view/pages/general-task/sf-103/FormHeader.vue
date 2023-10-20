@@ -23,7 +23,19 @@
         </template>
       </PlainText>
       <PlainText label="Requester" :value="form.updatedBy.label" />
-      <PlainText label="Updated At" :value="dateTimeFormat(form.updateAt)" />
+      <PlainText label="Updated At" :value="dateTimeFormat(form.updatedAt)" />
+      <div
+        v-if="currentProgress.status == 'Rejected' && showRemarks"
+        class="mt-4"
+      >
+        <b-alert show variant="danger">
+          <h4 class="alert-heading">Rejected</h4>
+          <hr />
+          <p class="mb-0">
+            {{ currentProgress.remarks }}
+          </p>
+        </b-alert>
+      </div>
     </b-col>
   </b-row>
 </template>
@@ -34,7 +46,8 @@ import { dateFormat, dateTimeFormat } from "@/core/utils";
 export default {
   props: {
     form: Object,
-    currentProgress: Object
+    currentProgress: Object,
+    showRemarks: Boolean
   },
   methods: {
     dateFormat,

@@ -26,7 +26,11 @@
           Delete
         </b-button>
         <b-button
-          v-show="$route.name != route.form && buttonVisibility"
+          v-show="
+            $route.name != route.form &&
+              buttonVisibility &&
+              table.rows.length > 0
+          "
           variant="outline-primary"
           size="lg"
           class="mr-2"
@@ -69,6 +73,7 @@
             type="date"
             v-model="form.transactionDate"
             :v="$v.form.transactionDate"
+            :max="getDate()"
           />
           <Select
             label="Shift"
@@ -77,8 +82,24 @@
             :multiple="false"
           />
           <InputText label="Grade" type="text" v-model="form.grade" />
+          <b-row v-if="currentProgress.status == 'Rejected'">
+            <b-col lg="8" xl="5" offset="4">
+              <b-alert show variant="danger">
+                <h4 class="alert-heading">Rejected</h4>
+                <hr />
+                <p class="mb-0">
+                  {{ currentProgress.remarks }}
+                </p>
+              </b-alert>
+            </b-col>
+          </b-row>
         </template>
-        <FormHeader v-else :form="form" :currentProgress="currentProgress" />
+        <FormHeader
+          v-else
+          :form="form"
+          :currentProgress="currentProgress"
+          :showRemarks="true"
+        />
       </div>
     </b-row>
     <div v-show="$route.name != route.form">
@@ -95,7 +116,7 @@
           </b-button>
         </b-col>
       </b-row>
-      <div class="min-card-h">
+      <div :class="buttonVisibility ? `min-card-h` : ``">
         <TableItem :rows="table.rows" @onRowSelected="onRowSelected" />
         <EmptyTable
           v-if="table.rows.length == 0"
@@ -151,6 +172,7 @@ export default {
     },
     currentProgress: {
       status: null,
+      remarks: null,
       nextAction: {
         id: null,
         label: null
@@ -166,6 +188,7 @@ export default {
   }),
   computed: {
     ...mapGetters("personalize", ["multipleDppu", "dppu"]),
+    ...mapGetters("auth", ["user"]),
     subTitle() {
       const self = this;
       return self.$route.name != self.route.form
@@ -179,10 +202,17 @@ export default {
     buttonVisibility() {
       const self = this;
       if (
-        self.$route.name != self.route.form &&
-        self.currentProgress.status != "New"
+        (self.$route.name != self.route.form &&
+          !["New", "Rejected"].includes(self.currentProgress.status)) ||
+        (self.currentProgress.status == "Rejected" &&
+          self.user.id != self.currentProgress.nextAction.id)
       ) {
         return false;
+      } else if (
+        self.currentProgress.status == "Rejected" &&
+        self.user.id == self.currentProgress.nextAction.id
+      ) {
+        return true;
       }
       return true;
     }
@@ -218,6 +248,7 @@ export default {
   methods: {
     dateFormat,
     numberFormat,
+    getDate,
     back() {
       const self = this;
 
@@ -286,6 +317,7 @@ export default {
 
             self.currentProgress = {
               status: response.data.currentProgress.status,
+              remarks: response.data.currentProgress.remarks,
               nextAction: {
                 id: response.data.currentProgress.nextAction?.id,
                 label: response.data.currentProgress.nextAction?.label
@@ -373,7 +405,35 @@ export default {
                       id: response.data.id
                     }
                   });
-                  self.get();
+
+                  self.form = {
+                    dppu: response.data.dppu,
+                    dppuId: response.data.dppu?.id,
+                    transactionId: response.data.transactionId,
+                    transactionDate: dateFormat(
+                      response.data.transactionDate,
+                      "YYYY-MM-DD"
+                    ),
+                    shift: {
+                      id: response.data.shift?.id,
+                      label: response.data.shift?.label
+                    },
+                    shiftId: response.data.shift?.id,
+                    grade: response.data.grade,
+                    updatedBy: response.data.updatedBy,
+                    updatedAt: response.data.updatedAt
+                  };
+
+                  self.currentProgress = {
+                    status: response.data.currentProgress.status,
+                    remarks: response.data.currentProgress.remarks,
+                    nextAction: {
+                      id: response.data.currentProgress.nextAction?.id,
+                      label: response.data.currentProgress.nextAction?.label
+                    }
+                  };
+
+                  self.table.rows = response.data.details;
                 }
               }
             })
