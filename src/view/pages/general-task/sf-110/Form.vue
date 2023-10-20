@@ -86,7 +86,7 @@ export default {
     TableItem
   },
   data: () => ({
-    title: "110 SF - Storage Tank Sump Record",
+    title: "110 SF - Filter Sump Record",
     route: {
       form: "sf110Create",
       table: "sf110"

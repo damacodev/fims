@@ -26,6 +26,11 @@
   </form-group>
 </template>
 
+<style lang="sass" scoped>
+.input-group-text
+  border: unset !important
+</style>
+
 <script>
 export default {
   props: {

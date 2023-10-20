@@ -57,28 +57,16 @@
             v-model="form.remarks"
             :v="$v.form.remarks"
           />
-          <b-row v-if="currentProgress.status == 'Rejected'">
-            <b-col lg="8" xl="5" offset="4">
-              <b-alert show variant="danger">
-                <h4 class="alert-heading">Rejected</h4>
-                <hr />
-                <p class="mb-0">
-                  {{ currentProgress.remarks }}
-                </p>
-              </b-alert>
-            </b-col>
-          </b-row>
         </template>
-        <FormHeader
-          v-else
-          :form="form"
-          :currentProgress="currentProgress"
-          :showRemarks="true"
-        />
+        <FormHeader v-else :form="form" :currentProgress="currentProgress" />
       </div>
     </b-row>
     <div v-show="$route.name != route.form">
-      <TableItem :rows="table.rows" :buttonVisibility="buttonVisibility" />
+      <TableItem
+        :transactionDate="form.transactionDate"
+        :rows="table.rows"
+        :buttonVisibility="buttonVisibility"
+      />
     </div>
   </div>
 </template>
@@ -102,10 +90,10 @@ export default {
     TableItem
   },
   data: () => ({
-    title: "109 SF - Storage Tank Sump Record",
+    title: "111 SF - Conductivity Unit Record",
     route: {
-      form: "sf109Create",
-      table: "sf109"
+      form: "sf111Create",
+      table: "sf111"
     },
     form: {
       dppu: {
@@ -122,7 +110,6 @@ export default {
     },
     currentProgress: {
       status: null,
-      remarks: null,
       nextAction: {
         id: null,
         label: null
@@ -205,7 +192,7 @@ export default {
       let loader = self.$loading.show();
       self.$store
         .dispatch("apis/get", {
-          url: `/board/standard-form/109/${self.$route.params.id}`
+          url: `/board/standard-form/111/${self.$route.params.id}`
         })
         .then(response => {
           if (response.error) {
@@ -231,7 +218,6 @@ export default {
 
             self.currentProgress = {
               status: response.data.currentProgress.status,
-              remarks: response.data.currentProgress.remarks,
               nextAction: {
                 id: response.data.currentProgress.nextAction?.id,
                 label: response.data.currentProgress.nextAction?.label
@@ -241,10 +227,9 @@ export default {
             self.table.rows = response.data.details.map(x => ({
               id: x.id,
               equipment: x.equipment,
-              resultId: x.result?.id ?? null,
-              result: x.result,
-              afterHeavyRainId: x.afterHeavyRain?.id ?? null,
-              afterHeavyRain: x.afterHeavyRain
+              recordTime: dateFormat(x.recordTime, "YYYY-MM-DD"),
+              conductivity: x.conductivity,
+              temperature: x.temperature
             }));
           }
         })
@@ -265,7 +250,7 @@ export default {
         .then(dialog => {
           self.$store
             .dispatch("apis/put", {
-              url: `/board/standard-form/109/${self.$route.params.id}`,
+              url: `/board/standard-form/111/${self.$route.params.id}`,
               params: self.form
             })
             .then(response => {
@@ -304,7 +289,7 @@ export default {
 
           self.$store
             .dispatch("apis/put", {
-              url: `/board/standard-form/109/${self.$route.params.id}`,
+              url: `/board/standard-form/111/${self.$route.params.id}`,
               params: self.form
             })
             .then(response => {

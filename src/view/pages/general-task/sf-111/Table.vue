@@ -70,8 +70,8 @@ import { getDate, getDppu, dateFormat, normalizer } from "@/core/utils";
 
 export default {
   data: () => ({
-    title: "110 SF",
-    subTitle: "Filter Sump Record",
+    title: "111 SF",
+    subTitle: "Conductivity Unit Record",
     searchText: "Search by transaction #",
     serverParams: {
       pageNumber: 1,
@@ -122,7 +122,7 @@ export default {
     onRowSelected(items) {
       const self = this;
       self.$router.push({
-        name: "sf110Update",
+        name: "sf111Update",
         params: {
           id: items[0].id
         }
@@ -153,7 +153,7 @@ export default {
       self.table.isLoading = true;
       self.$store
         .dispatch("apis/get", {
-          url: "/board/standard-form/110",
+          url: "/board/standard-form/111",
           params: self.serverParams
         })
         .then(response => {

@@ -136,6 +136,24 @@ export default new Router({
                     import("@/view/pages/general-task/sf-110/Form")
                 }
               ]
+            },
+            {
+              path: "sf-111",
+              component: () => import("@/view/pages/general-task/sf-111"),
+              children: [
+                {
+                  path: "/",
+                  name: "sf111",
+                  component: () =>
+                    import("@/view/pages/general-task/sf-111/Table.vue")
+                },
+                {
+                  path: "form/:id",
+                  name: "sf111Update",
+                  component: () =>
+                    import("@/view/pages/general-task/sf-111/Form")
+                }
+              ]
             }
           ]
         },

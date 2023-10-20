@@ -2,7 +2,7 @@
   <b-table-simple responsive="" bordered hover class="text-nowrap">
     <b-thead head-variant="light">
       <b-tr>
-        <b-th class="text-center align-middle">Storage Tank</b-th>
+        <b-th class="text-center align-middle">Filter</b-th>
         <b-th class="text-center align-middle">Result</b-th>
       </b-tr>
     </b-thead>

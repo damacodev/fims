@@ -2,7 +2,10 @@
   <CardForm :title="title" :subTitle="subTitle">
     <template #toolbar>
       <router-link
-        v-if="currentStatus.status.label == 'Rejected' && currentStatus.assignedTo.id == user.id"
+        v-if="
+          currentStatus.status.label == 'Rejected' &&
+            currentStatus.assignedTo.id == user.id
+        "
         :to="{
           name: routeName,
           params: {

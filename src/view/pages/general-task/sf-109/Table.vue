@@ -64,7 +64,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-import { sf109 as columns } from "@/core/datasource/columns";
+import { sfCommon as columns } from "@/core/datasource/columns";
 import { standardFormStatus } from "@/core/datasource/options";
 import { getDate, getDppu, dateFormat, normalizer } from "@/core/utils";
 
