@@ -223,3 +223,8 @@ export const dateInMonth = Array.from(Array(28), (_, i) => ({
   value: i + 1,
   text: i + 1
 }));
+
+export const workItemType = [
+  { value: "Preventive Maintenance", text: "Preventive Maintenance" },
+  { value: "Standard Form", text: "Standard Form" }
+];

@@ -22,7 +22,17 @@
     </template>
     <template #filter>
       <b-row class="p-3">
-        <b-col xl="4">
+        <b-col xl="3">
+          <treeselect
+            class="mb-2"
+            placeholder="Select work item type"
+            v-model="serverParams.workItemType"
+            :options="options.workItemType"
+            :normalizer="normalizer"
+            @input="onFilter"
+          ></treeselect>
+        </b-col>
+        <b-col xl="3">
           <treeselect
             class="mb-2"
             placeholder="Select category"
@@ -33,7 +43,7 @@
             @input="onFilter"
           ></treeselect>
         </b-col>
-        <b-col xl="4">
+        <b-col xl="3">
           <treeselect
             class="mb-2"
             placeholder="Select period"
@@ -44,7 +54,7 @@
             @input="onFilter"
           ></treeselect>
         </b-col>
-        <b-col xl="4">
+        <b-col xl="3">
           <treeselect
             class="mb-2"
             placeholder="Select status"
@@ -73,7 +83,13 @@
 
 <script>
 import { activity as columns } from "@/core/datasource/columns";
-import { category, period, status } from "@/core/datasource/options";
+import {
+  category,
+  period,
+  status,
+  workItemType
+} from "@/core/datasource/options";
+import { normalizer } from "@/core/utils";
 
 export default {
   data: () => ({
@@ -83,6 +99,7 @@ export default {
     serverParams: {
       pageNumber: 1,
       pageSize: 20,
+      workItemType: null,
       category: [],
       period: [],
       actived: null
@@ -97,13 +114,8 @@ export default {
     options: {
       category,
       period,
-      status
-    },
-    normalizer(node) {
-      return {
-        id: node.value,
-        label: node.text
-      };
+      status,
+      workItemType
     }
   }),
   created() {
@@ -111,6 +123,7 @@ export default {
     self.getAll();
   },
   methods: {
+    normalizer,
     updateParams(newProps) {
       this.serverParams = Object.assign({}, this.serverParams, newProps);
     },

@@ -45,11 +45,11 @@
         text="OE Generator"
         icon="flaticon-interface-9"
       />
-      <li-menu
+      <!-- <li-menu
         :to="{ name: 'checklist' }"
         text="Checklist"
         icon="flaticon-interface-5"
-      />
+      /> -->
 
       <li class="menu-section">
         <h4 class="menu-text">Preventive Maintenance</h4>
