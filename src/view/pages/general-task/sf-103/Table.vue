@@ -48,7 +48,7 @@
             placeholder="Transaction #"
             autocomplete="off"
             v-model="serverParams.keyword"
-            @input="onFilter"
+            @change="onFilter"
           ></b-form-input>
         </b-col>
         <b-col xl="3">
@@ -94,7 +94,13 @@
 import { mapGetters } from "vuex";
 import { sf103 as columns } from "@/core/datasource/columns";
 import { standardFormStatus } from "@/core/datasource/options";
-import { getDate, getDppu, dateFormat, normalizer } from "@/core/utils";
+import {
+  startDate,
+  getDate,
+  getDppu,
+  dateFormat,
+  normalizer
+} from "@/core/utils";
 
 import DateRangePicker from "vue2-daterange-picker";
 import "vue2-daterange-picker/dist/vue2-daterange-picker.css";
@@ -115,7 +121,7 @@ export default {
       shiftId: null,
       status: null,
       dateRange: {
-        startDate: getDate(),
+        startDate: startDate(),
         endDate: getDate()
       }
     },

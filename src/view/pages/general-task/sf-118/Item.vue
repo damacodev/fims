@@ -37,7 +37,7 @@
                     subTitle="Every Day"
                     :form="form.everyDay.productTankDrain"
                     :options="options"
-                    :buttonVisibility="buttonVisibility"
+                    :buttonVisibility="!currentProgress.locked"
                     group="EVERY_DAY"
                     check="PRODUCT_TANK_DRAIN"
                     class="mb-7"
@@ -49,7 +49,7 @@
                     subTitle="Every Day"
                     :form="form.everyDay.beforeFilter"
                     :options="options"
-                    :buttonVisibility="buttonVisibility"
+                    :buttonVisibility="!currentProgress.locked"
                     group="EVERY_DAY"
                     check="BEFORE_FILTER"
                     class="mb-7"
@@ -61,7 +61,7 @@
                     subTitle="Every Day"
                     :form="form.everyDay.afterFilter"
                     :options="options"
-                    :buttonVisibility="buttonVisibility"
+                    :buttonVisibility="!currentProgress.locked"
                     group="EVERY_DAY"
                     check="AFTER_FILTER"
                   />
@@ -72,7 +72,7 @@
                     subTitle="Every Day"
                     :form="form.everyDay.recoveryTankDrain"
                     :options="options"
-                    :buttonVisibility="buttonVisibility"
+                    :buttonVisibility="!currentProgress.locked"
                     group="EVERY_DAY"
                     check="RECOVERY_TANK_DRAIN"
                   />
@@ -87,7 +87,7 @@
                     subTitle="After Wash"
                     :form="form.afterWash.productTankDrain"
                     :options="options"
-                    :buttonVisibility="buttonVisibility"
+                    :buttonVisibility="!currentProgress.locked"
                     group="AFTER_WASH"
                     check="PRODUCT_TANK_DRAIN"
                   />
@@ -98,7 +98,7 @@
                     subTitle="After Wash"
                     :form="form.afterWash.recoveryTankDrain"
                     :options="options"
-                    :buttonVisibility="buttonVisibility"
+                    :buttonVisibility="!currentProgress.locked"
                     group="AFTER_WASH"
                     check="RECOVERY_TANK_DRAIN"
                   />
@@ -113,7 +113,7 @@
                     subTitle="After Heavy Rain"
                     :form="form.afterHeavyRain.productTankDrain"
                     :options="options"
-                    :buttonVisibility="buttonVisibility"
+                    :buttonVisibility="!currentProgress.locked"
                     group="AFTER_HEAVY_RAIN"
                     check="PRODUCT_TANK_DRAIN"
                   />
@@ -124,7 +124,7 @@
                     subTitle="After Heavy Rain"
                     :form="form.afterHeavyRain.recoveryTankDrain"
                     :options="options"
-                    :buttonVisibility="buttonVisibility"
+                    :buttonVisibility="!currentProgress.locked"
                     group="AFTER_HEAVY_RAIN"
                     check="RECOVERY_TANK_DRAIN"
                   />
@@ -135,7 +135,7 @@
               <b-row>
                 <b-col lg="12">
                   <b-button
-                    v-if="buttonVisibility"
+                    v-if="!currentProgress.locked"
                     variant="outline-primary"
                     @click="createNewRecord"
                   >
@@ -162,7 +162,7 @@
                     "
                     :form="afterTopingUp"
                     :options="options"
-                    :buttonVisibility="buttonVisibility"
+                    :buttonVisibility="!currentProgress.locked"
                     group="AFTER_TOPING_UP"
                     check="PRODUCT_TANK_DRAIN"
                     :deletable="true"
@@ -286,6 +286,7 @@ export default {
       afterTopingUp: []
     },
     currentProgress: {
+      locked: null,
       status: null,
       remarks: null,
       nextAction: {
@@ -301,11 +302,17 @@ export default {
     }
   }),
   computed: {
-    ...mapGetters("auth", ["user"]),
-    buttonVisibility() {
+    ...mapGetters("auth", ["user"])
+    /* buttonVisibility() {
       const self = this;
       if (
-        !["New", "Rejected"].includes(self.currentProgress.status) ||
+        ["New", "Rejected"].includes(self.currentProgress.status) &&
+        self.user.id != self.currentProgress.nextAction.id
+      ) {
+        return false;
+      } else if (
+        (self.$route.name != self.route.form &&
+          !["New", "Rejected"].includes(self.currentProgress.status)) ||
         (self.currentProgress.status == "Rejected" &&
           self.user.id != self.currentProgress.nextAction.id)
       ) {
@@ -317,7 +324,7 @@ export default {
         return true;
       }
       return true;
-    }
+    }, */
   },
   created() {
     const self = this;
@@ -386,7 +393,9 @@ export default {
             };
 
             self.currentProgress = {
+              locked: response.data.currentProgress.locked,
               status: response.data.currentProgress.status,
+              remarks: response.data.currentProgress.remarks,
               nextAction: {
                 id: response.data.currentProgress.nextAction?.id,
                 label: response.data.currentProgress.nextAction?.label

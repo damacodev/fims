@@ -9,7 +9,7 @@
   >
     <div class="mt-2">
       <span class="font-size-h4 font-weight-bolder text-dark">
-        {{ model }}
+        {{ model || "-" }}
       </span>
     </div>
   </form-group>

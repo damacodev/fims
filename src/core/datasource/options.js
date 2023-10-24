@@ -208,3 +208,18 @@ export const pendingReason = [
     text: "Waiting Repair Service"
   }
 ];
+
+export const datePart = [
+  { value: 1, text: "Sunday" },
+  { value: 2, text: "Monday" },
+  { value: 3, text: "Tuesday" },
+  { value: 4, text: "Wednesday" },
+  { value: 5, text: "Thursday" },
+  { value: 6, text: "Friday" },
+  { value: 7, text: "Saturday" }
+];
+
+export const dateInMonth = Array.from(Array(28), (_, i) => ({
+  value: i + 1,
+  text: i + 1
+}));

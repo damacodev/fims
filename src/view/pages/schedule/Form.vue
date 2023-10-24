@@ -41,32 +41,44 @@
             :loadOptions="getActivity"
             @input="getActivityById"
           />
-          <InputText
+          <InputPlainText
             label="Standard Form"
             v-model="form.standardForm.label"
-            :disabled="true"
+            class="m-0"
           />
-          <TextArea
+          <InputPlainText
             label="Description"
             v-model="form.description"
-            :disabled="true"
+            class="m-0"
+          />
+          <InputPlainText label="Period" v-model="form.period.label" />
+
+          <Select
+            v-if="form.period.id == 2"
+            label="Repeated on Day of Week"
+            v-model="form.repeatedOnDayOfWeek"
+            :v="$v.form.repeatedOnDayOfWeek"
+            :options="options.datePart"
+            :multiple="false"
+            :normalizer="normalizer"
+          />
+          <Select
+            v-if="[3, 4, 5].includes(form.period.id)"
+            label="Repeated on Date in Month"
+            v-model="form.repeatedOnDateInMonth"
+            :v="$v.form.repeatedOnDateInMonth"
+            :options="options.dateInMonth"
+            :multiple="false"
+            :normalizer="normalizer"
           />
           <InputText
-            label="Period"
-            v-model="form.period.label"
-            :disabled="true"
+            v-if="[6, 7].includes(form.period.id)"
+            label="Repeated on Date"
+            type="date"
+            v-model="form.repeatedOnDate"
+            :v="$v.form.repeatedOnDate"
           />
-          <RadioGroup
-            label="Shift Level Generation"
-            v-model="form.shiftLevelGeneration"
-            :options="options.yesNo"
-            :disabled="!options.dppuWithShift"
-            :description="
-              form.dppu != null && !options.dppuWithShift
-                ? `Shift hours at this DPPU have not been setup. You can't set this activity to the shift level. If needed, please setup shift hours on the DPPU page.`
-                : null
-            "
-          />
+
           <Select
             label="Default Role Assignment"
             placeholder="Choose Default Role Assignment"
@@ -183,8 +195,15 @@ import { ASYNC_SEARCH } from "@riophae/vue-treeselect";
 import { mapGetters } from "vuex";
 import { apiUrl } from "@/core/services/api.url";
 import { required } from "vuelidate/lib/validators";
-import { category, period, status, yesNo } from "@/core/datasource/options";
-import { dateFormat, getDppu, getRole } from "@/core/utils";
+import {
+  category,
+  period,
+  status,
+  yesNo,
+  datePart,
+  dateInMonth
+} from "@/core/datasource/options";
+import { dateFormat, getDppu, getRole, normalizer } from "@/core/utils";
 
 export default {
   data: () => ({
@@ -200,6 +219,9 @@ export default {
       equipments: [],
       equipmentInSingleForm: false,
       activity: null,
+      repeatedOnDayOfWeek: null,
+      repeatedOnDateInMonth: null,
+      repeatedOnDate: null,
       standardForm: {
         id: null,
         label: null
@@ -218,22 +240,18 @@ export default {
       taskAutoClosed: 0,
       actived: true
     },
-    normalizer(node) {
-      return {
-        id: node.value,
-        label: node.text
-      };
-    },
     options: {
       dppuWithShift: false,
       dppu: [],
       equipment: [],
       role: [],
       activity: [],
+      dateInMonth,
       category,
       period,
       status,
-      yesNo
+      yesNo,
+      datePart
     }
   }),
   computed: {
@@ -249,15 +267,56 @@ export default {
       return self.$route.name != self.route.form ? "Save Changes" : "Submit";
     }
   },
-  validations: {
-    form: {
-      dppu: { required },
-      activity: { required },
-      defaultRoleAssignment: { required },
-      startDate: { required },
-      notification: { required },
-      taskAutoClosed: { required }
-    }
+  validations() {
+    const self = this;
+
+    if (self.form.period.id == 2)
+      return {
+        form: {
+          dppu: { required },
+          activity: { required },
+          repeatedOnDayOfWeek: { required },
+          defaultRoleAssignment: { required },
+          startDate: { required },
+          notification: { required },
+          taskAutoClosed: { required }
+        }
+      };
+    else if ([3, 4, 5].includes(self.form.period.id))
+      return {
+        form: {
+          dppu: { required },
+          activity: { required },
+          repeatedOnDateInMonth: { required },
+          defaultRoleAssignment: { required },
+          startDate: { required },
+          notification: { required },
+          taskAutoClosed: { required }
+        }
+      };
+    else if ([6, 7].includes(self.form.period.id))
+      return {
+        form: {
+          dppu: { required },
+          activity: { required },
+          repeatedOnDate: { required },
+          defaultRoleAssignment: { required },
+          startDate: { required },
+          notification: { required },
+          taskAutoClosed: { required }
+        }
+      };
+    else
+      return {
+        form: {
+          dppu: { required },
+          activity: { required },
+          defaultRoleAssignment: { required },
+          startDate: { required },
+          notification: { required },
+          taskAutoClosed: { required }
+        }
+      };
   },
   created() {
     const self = this;
@@ -287,6 +346,7 @@ export default {
   },
   methods: {
     getRole,
+    normalizer,
     changeDppu() {
       const self = this;
 
@@ -461,6 +521,10 @@ export default {
             self.form.dppu = response.data.dppu?.id;
             self.form.category = response.data.activity?.category?.id;
             self.form.activity = response.data.activity?.id;
+            self.form.repeatedOnDayOfWeek = response.data.repeatedOnDayOfWeek;
+            self.form.repeatedOnDateInMonth =
+              response.data.repeatedOnDateInMonth;
+            self.form.repeatedOnDate = response.data.repeatedOnDate;
             self.form.standardForm = {
               id: response.data.activity?.standardForm?.id,
               label: response.data.activity?.standardForm?.label
@@ -513,6 +577,9 @@ export default {
       let _form = {
         dppuId: self.form.dppu,
         activityId: self.form.activity,
+        repeatedOnDayOfWeek: self.form.repeatedOnDayOfWeek,
+        repeatedOnDateInMonth: self.form.repeatedOnDateInMonth,
+        repeatedOnDate: self.form.repeatedOnDate,
         shiftLevelGeneration: self.options.dppuWithShift
           ? self.form.shiftLevelGeneration
           : false,

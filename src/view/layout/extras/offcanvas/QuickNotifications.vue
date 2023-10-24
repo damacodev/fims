@@ -42,7 +42,7 @@
         >
           <template v-for="(item, i) in notification">
             <a
-              href="#"
+              href="javascript:;"
               @click="redirect(item)"
               class="navi-item"
               v-bind:key="i"
@@ -79,6 +79,11 @@
                       v-else-if="item.workItem.type.id == 5"
                       class="icon-lg"
                       v-bind:class="`flaticon2-list-3 text-info`"
+                    />
+                    <i
+                      v-else-if="item.workItem.type.id == 6"
+                      class="icon-lg"
+                      v-bind:class="`flaticon2-document text-success`"
                     />
                   </div>
                 </div>
@@ -182,14 +187,71 @@ export default {
     },
     redirect(item) {
       const self = this;
-      self.$router.push({
-        name: "workItemForm",
-        params: {
-          type: item.workItem.type.id,
-          id: item.workItem.id
-        }
-      });
+      self.$router.push(self.routeName(item.workItem));
       new KTOffcanvas(KTLayoutQuickNotifications.getElement()).hide();
+    },
+    routeName(item) {
+      if (item.type.id == 0)
+        return {
+          name: "workItemFormEquipment",
+          params: {
+            action: "create",
+            id: item.id
+          }
+        };
+      else if (item.type.id == 1)
+        return {
+          name: "workItemFormEquipment",
+          params: {
+            action: "update",
+            id: item.id
+          }
+        };
+      else if (item.type.id == 2)
+        return {
+          name: "workItemFormEquipment",
+          params: {
+            action: "delete",
+            id: item.id
+          }
+        };
+      else if (item.type.id == 3)
+        return {
+          name: "workItemFormMaintenance",
+          params: {
+            action: "preventive",
+            id: item.id
+          }
+        };
+      else if (item.type.id == 4)
+        return {
+          name: "workItemFormMaintenance",
+          params: {
+            action: "breakdown",
+            id: item.id
+          }
+        };
+      else if (item.type.id == 5)
+        return {
+          name: "workItemFormWorkOrder",
+          params: {
+            id: item.id
+          }
+        };
+      else if (item.type.id == 6)
+        return {
+          name: "workItemFormStandardForm",
+          params: {
+            id: item.id
+          }
+        };
+      else
+        return {
+          name: "workItem",
+          params: {
+            id: item.id
+          }
+        };
     }
   }
 };

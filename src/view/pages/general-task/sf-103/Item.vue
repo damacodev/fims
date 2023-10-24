@@ -2,7 +2,7 @@
   <CardForm :title="title" :subTitle="subTitle">
     <template slot="toolbar">
       <b-button
-        v-show="$route.name != route.form && buttonVisibility"
+        v-show="$route.name != route.form && !currentProgress.locked"
         variant="outline-danger"
         size="lg"
         class="mr-10"
@@ -11,7 +11,7 @@
         Delete
       </b-button>
       <b-button
-        v-show="buttonVisibility"
+        v-show="!currentProgress.locked"
         variant="primary"
         size="lg"
         class="mr-2"
@@ -32,7 +32,7 @@
             :showRemarks="false"
           />
           <hr />
-          <b-row v-if="buttonVisibility">
+          <b-row v-if="!currentProgress.locked">
             <b-col lg="3">
               <b-row>
                 <b-col lg="12">
@@ -337,6 +337,7 @@ export default {
       remarks: null
     },
     currentProgress: {
+      locked: null,
       status: null,
       remarks: null,
       nextAction: {
@@ -353,11 +354,17 @@ export default {
     textButton() {
       const self = this;
       return self.$route.name != self.route.form ? "Update" : "Submit";
-    },
-    buttonVisibility() {
+    }
+    /* buttonVisibility() {
       const self = this;
       if (
-        !["New", "Rejected"].includes(self.currentProgress.status) ||
+        ["New", "Rejected"].includes(self.currentProgress.status) &&
+        self.user.id != self.currentProgress.nextAction.id
+      ) {
+        return false;
+      } else if (
+        (self.$route.name != self.route.form &&
+          !["New", "Rejected"].includes(self.currentProgress.status)) ||
         (self.currentProgress.status == "Rejected" &&
           self.user.id != self.currentProgress.nextAction.id)
       ) {
@@ -369,7 +376,7 @@ export default {
         return true;
       }
       return true;
-    }
+    }, */
   },
   validations: {
     form: {
@@ -466,6 +473,7 @@ export default {
             self.form.updatedAt = response.data.updatedAt;
 
             self.currentProgress = {
+              locked: response.data.currentProgress.locked,
               status: response.data.currentProgress.status,
               remarks: response.data.currentProgress.remarks,
               nextAction: {

@@ -9,7 +9,7 @@
       </div>
       <div class="card-toolbar">
         <b-button
-          v-show="!buttonVisibility"
+          v-show="currentProgress.locked"
           variant="outline-primary"
           class="mr-2"
           @click="handleDownload"
@@ -17,7 +17,7 @@
           Download
         </b-button>
         <b-button
-          v-show="$route.name != route.form && buttonVisibility"
+          v-show="$route.name != route.form && !currentProgress.locked"
           variant="outline-danger"
           size="lg"
           class="mr-10"
@@ -28,7 +28,7 @@
         <b-button
           v-show="
             $route.name != route.form &&
-              buttonVisibility &&
+              !currentProgress.locked &&
               table.rows.length > 0
           "
           variant="outline-primary"
@@ -39,7 +39,7 @@
           Save and Send Approval
         </b-button>
         <b-button
-          v-show="buttonVisibility"
+          v-show="!currentProgress.locked"
           variant="primary"
           size="lg"
           class="mr-2"
@@ -52,7 +52,7 @@
     </div>
     <b-row class="p-2">
       <div class="card-body pb-0">
-        <template v-if="buttonVisibility">
+        <template v-if="!currentProgress.locked">
           <Select
             v-if="multipleDppu"
             label="Depot Pengisian Pesawat Udara"
@@ -103,11 +103,11 @@
       </div>
     </b-row>
     <div v-show="$route.name != route.form">
-      <hr v-show="buttonVisibility" />
+      <hr v-show="!currentProgress.locked" />
       <b-row>
         <b-col>
           <b-button
-            v-show="buttonVisibility"
+            v-show="!currentProgress.locked"
             variant="outline-primary"
             class="ml-2 mb-4"
             @click="handleOpenForm"
@@ -116,7 +116,7 @@
           </b-button>
         </b-col>
       </b-row>
-      <div :class="buttonVisibility ? `min-card-h` : ``">
+      <div :class="!currentProgress.locked ? `min-card-h` : ``">
         <TableItem :rows="table.rows" @onRowSelected="onRowSelected" />
         <EmptyTable
           v-if="table.rows.length == 0"
@@ -171,6 +171,7 @@ export default {
       updatedAt: null
     },
     currentProgress: {
+      locked: null,
       status: null,
       remarks: null,
       nextAction: {
@@ -198,10 +199,15 @@ export default {
     textButton() {
       const self = this;
       return self.$route.name != self.route.form ? "Update" : "Save";
-    },
-    buttonVisibility() {
+    }
+    /* buttonVisibility() {
       const self = this;
       if (
+        ["New", "Rejected"].includes(self.currentProgress.status) &&
+        self.user.id != self.currentProgress.nextAction.id
+      ) {
+        return false;
+      } else if (
         (self.$route.name != self.route.form &&
           !["New", "Rejected"].includes(self.currentProgress.status)) ||
         (self.currentProgress.status == "Rejected" &&
@@ -215,7 +221,7 @@ export default {
         return true;
       }
       return true;
-    }
+    }, */
   },
   validations: {
     form: {
@@ -316,6 +322,7 @@ export default {
             };
 
             self.currentProgress = {
+              locked: response.data.currentProgress.locked,
               status: response.data.currentProgress.status,
               remarks: response.data.currentProgress.remarks,
               nextAction: {

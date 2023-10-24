@@ -9,7 +9,7 @@
       </div>
       <div class="card-toolbar">
         <b-button
-          v-show="$route.name != route.form && buttonVisibility"
+          v-show="$route.name != route.form && !currentProgress.locked"
           variant="outline-primary"
           size="lg"
           class="mr-2"
@@ -18,7 +18,7 @@
           Save and Send Approval
         </b-button>
         <b-button
-          v-show="buttonVisibility"
+          v-show="!currentProgress.locked"
           variant="primary"
           size="lg"
           class="mr-2"
@@ -31,7 +31,7 @@
     </div>
     <b-row class="p-2">
       <div class="card-body pb-0">
-        <template v-if="buttonVisibility">
+        <template v-if="!currentProgress.locked">
           <InputPlainText
             label="Depot Pengisian Pesawat Udara"
             css-class="m-0"
@@ -74,7 +74,10 @@
       </div>
     </b-row>
     <div v-show="$route.name != route.form">
-      <TableItem :rows="table.rows" :buttonVisibility="buttonVisibility" />
+      <TableItem
+        :rows="table.rows"
+        :buttonVisibility="!currentProgress.locked"
+      />
     </div>
   </div>
 </template>
@@ -117,6 +120,7 @@ export default {
       updatedAt: null
     },
     currentProgress: {
+      locked: null,
       status: null,
       remarks: null,
       nextAction: {
@@ -140,9 +144,14 @@ export default {
         ? "Update transaction"
         : "Create new transaction";
     },
-    buttonVisibility() {
+    /* buttonVisibility() {
       const self = this;
       if (
+        ["New", "Rejected"].includes(self.currentProgress.status) &&
+        self.user.id != self.currentProgress.nextAction.id
+      ) {
+        return false;
+      } else if (
         (self.$route.name != self.route.form &&
           !["New", "Rejected"].includes(self.currentProgress.status)) ||
         (self.currentProgress.status == "Rejected" &&
@@ -156,7 +165,7 @@ export default {
         return true;
       }
       return true;
-    },
+    }, */
     transactionDateFormatting() {
       return dateFormat(this.form.transactionDate);
     }
@@ -229,6 +238,7 @@ export default {
             };
 
             self.currentProgress = {
+              locked: response.data.currentProgress.locked,
               status: response.data.currentProgress.status,
               remarks: response.data.currentProgress.remarks,
               nextAction: {

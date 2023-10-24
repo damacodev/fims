@@ -24,6 +24,11 @@
       </PlainText>
       <PlainText label="Requester" :value="form.updatedBy.label" />
       <PlainText label="Updated At" :value="dateTimeFormat(form.updatedAt)" />
+      <PlainText
+        v-if="currentProgress.status != `Approved`"
+        label="Assigned To"
+        :value="currentProgress.nextAction.label"
+      />
       <div
         v-if="currentProgress.status == 'Rejected' && showRemarks"
         class="mt-4"

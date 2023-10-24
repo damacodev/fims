@@ -26,13 +26,7 @@
               <tr v-bind:key="i">
                 <td class="pl-0">
                   <span
-                    class="
-                      text-dark
-                      font-weight-bolder
-                      text-hover-primary
-                      mb-1
-                      font-size-lg
-                    "
+                    class="text-dark font-weight-bolder text-hover-primary mb-1 font-size-lg"
                   >
                     {{ `#${item.taskId} ${item.title}` }}
                   </span>
@@ -47,13 +41,7 @@
                 </td>
                 <td class="text-right pr-0">
                   <router-link
-                    :to="{
-                      name: 'workItemForm',
-                      params: {
-                        type: item.type.id,
-                        id: item.id
-                      }
-                    }"
+                    :to="routeName(item)"
                     class="btn btn-icon btn-light btn-sm"
                   >
                     <span class="svg-icon svg-icon-md svg-icon-primary">
@@ -84,6 +72,71 @@ export default {
   },
   props: {
     data: [Array, Object]
+  },
+  methods: {
+    routeName(item) {
+      if (item.type.id == 0)
+        return {
+          name: "workItemFormEquipment",
+          params: {
+            action: "create",
+            id: item.id
+          }
+        };
+      else if (item.type.id == 1)
+        return {
+          name: "workItemFormEquipment",
+          params: {
+            action: "update",
+            id: item.id
+          }
+        };
+      else if (item.type.id == 2)
+        return {
+          name: "workItemFormEquipment",
+          params: {
+            action: "delete",
+            id: item.id
+          }
+        };
+      else if (item.type.id == 3)
+        return {
+          name: "workItemFormMaintenance",
+          params: {
+            action: "preventive",
+            id: item.id
+          }
+        };
+      else if (item.type.id == 4)
+        return {
+          name: "workItemFormMaintenance",
+          params: {
+            action: "breakdown",
+            id: item.id
+          }
+        };
+      else if (item.type.id == 5)
+        return {
+          name: "workItemFormWorkOrder",
+          params: {
+            id: item.id
+          }
+        };
+      else if (item.type.id == 6)
+        return {
+          name: "workItemFormStandardForm",
+          params: {
+            id: item.id
+          }
+        };
+      else
+        return {
+          name: "workItem",
+          params: {
+            id: item.id
+          }
+        };
+    }
   }
 };
 </script>

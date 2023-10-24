@@ -12,6 +12,7 @@
       v-model="model"
       :checked="value"
       :options="options"
+      :stacked="stacked"
       :size="size"
       style="z-index: 0;"
     />
@@ -34,6 +35,10 @@ export default {
     useHorizontal: {
       type: Boolean,
       default: true
+    },
+    stacked: {
+      type: Boolean,
+      default: false
     },
     v: Object,
     value: [String, Boolean, Number],
