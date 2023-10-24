@@ -32,27 +32,23 @@
     <b-row class="p-2">
       <div class="card-body pb-0">
         <template v-if="buttonVisibility">
-          <InputText
+          <InputPlainText
             label="Depot Pengisian Pesawat Udara"
-            type="text"
+            css-class="m-0"
             v-model="form.dppu.label"
-            disabled
           />
-          <InputText
+          <InputPlainText
             label="Transaction #"
-            type="text"
+            css-class="m-0"
             v-model="form.transactionId"
-            disabled
           />
-          <InputText
+          <InputPlainText
             label="Transaction Date"
-            type="date"
-            v-model="form.transactionDate"
-            :v="$v.form.transactionDate"
-            disabled
+            v-model="transactionDateFormatting"
           />
           <TextArea
             label="Remarks"
+            placeholder="Please write your remarks here..."
             type="text"
             v-model="form.remarks"
             :v="$v.form.remarks"
@@ -160,6 +156,9 @@ export default {
         return true;
       }
       return true;
+    },
+    transactionDateFormatting() {
+      return dateFormat(this.form.transactionDate);
     }
   },
   validations: {

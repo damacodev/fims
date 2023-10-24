@@ -28,7 +28,7 @@
             :v="$v.form.dppu"
             :options="options.dppu"
             :multiple="false"
-            @input="getDppuById"
+            @input="changeDppu"
           />
           <Select
             ref="Activity"
@@ -278,6 +278,7 @@ export default {
     }
     if (self.dppu) {
       self.form.dppu = self.dppu.id;
+      self.changeDppu();
     }
 
     if (self.$route.name != self.route.form) {
@@ -286,14 +287,17 @@ export default {
   },
   methods: {
     getRole,
-    getDppuById(id) {
-      if (id != null) {
-        const self = this;
+    changeDppu() {
+      const self = this;
 
+      self.options.dppuWithShift = false;
+      self.form.equipment = [];
+      self.options.equipment = [];
+      if (self.form.dppu != null) {
         let loader = self.$loading.show();
         self.$store
           .dispatch("apis/get", {
-            url: `/dppu/${id}`
+            url: `/dppu/${self.form.dppu}`
           })
           .then(response => {
             if (response.error) {

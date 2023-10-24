@@ -21,6 +21,7 @@
         :maxlength="maxlength"
         :min="min"
         :max="max"
+        :plaintext="plaintext"
       />
     </b-input-group>
   </form-group>
@@ -43,6 +44,10 @@ export default {
     useHorizontal: {
       type: Boolean,
       default: true
+    },
+    plaintext: {
+      type: Boolean,
+      default: false
     },
     placeholder: String,
     type: {

@@ -172,6 +172,30 @@ export default new Router({
                     import("@/view/pages/general-task/sf-112/Form")
                 }
               ]
+            },
+            {
+              path: "sf-118",
+              component: () => import("@/view/pages/general-task/sf-118"),
+              children: [
+                {
+                  path: "/",
+                  name: "sf118",
+                  component: () =>
+                    import("@/view/pages/general-task/sf-118/Table.vue")
+                },
+                {
+                  path: "form/:id",
+                  name: "sf118Update",
+                  component: () =>
+                    import("@/view/pages/general-task/sf-118/Form")
+                },
+                {
+                  path: "form/:id/item/:iditem",
+                  name: "sf118UpdateItem",
+                  component: () =>
+                    import("@/view/pages/general-task/sf-118/Item")
+                }
+              ]
             }
           ]
         },

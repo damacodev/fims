@@ -16,10 +16,13 @@
         title="Reason for Rejection"
         ok-title="Reject"
         ok-variant="danger"
+        :no-close-on-backdrop="true"
+        :no-close-on-esc="true"
         @ok="handleReject"
       >
         <TextArea
           label="Reason"
+          placeholder="Please write your reason here..."
           v-model="remarks"
           :v="$v.remarks"
           :useHorizontal="false"

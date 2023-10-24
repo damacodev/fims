@@ -11,6 +11,7 @@
     :state="isValid"
     label-align="right"
     :label-class="labelClass"
+    :class="cssClass"
   >
     <slot
       :attrs="{ state: isValid }"
@@ -50,7 +51,8 @@ export default {
       type: String,
       default: "pr-5"
     },
-    description: String
+    description: String,
+    cssClass: String
   }
 };
 </script>

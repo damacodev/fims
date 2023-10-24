@@ -32,33 +32,45 @@
     <b-row class="p-2">
       <div class="card-body pb-0">
         <template v-if="buttonVisibility">
-          <InputText
+          <InputPlainText
             label="Depot Pengisian Pesawat Udara"
-            type="text"
+            css-class="m-0"
             v-model="form.dppu.label"
-            disabled
           />
-          <InputText
+          <InputPlainText
             label="Transaction #"
-            type="text"
+            css-class="m-0"
             v-model="form.transactionId"
-            disabled
           />
-          <InputText
+          <InputPlainText
             label="Transaction Date"
-            type="date"
             v-model="form.transactionDate"
-            :v="$v.form.transactionDate"
-            disabled
           />
           <TextArea
             label="Remarks"
+            placeholder="Please write your remarks here..."
             type="text"
             v-model="form.remarks"
             :v="$v.form.remarks"
           />
+          <b-row v-if="currentProgress.status == 'Rejected'">
+            <b-col lg="8" xl="5" offset="4">
+              <b-alert show variant="danger">
+                <h4 class="alert-heading">Rejected</h4>
+                <hr />
+                <p class="mb-0">
+                  {{ currentProgress.remarks }}
+                </p>
+              </b-alert>
+            </b-col>
+          </b-row>
         </template>
-        <FormHeader v-else :form="form" :currentProgress="currentProgress" />
+        <FormHeader
+          v-else
+          :form="form"
+          :currentProgress="currentProgress"
+          :showRemarks="true"
+        />
       </div>
     </b-row>
     <div v-show="$route.name != route.form">
@@ -90,7 +102,7 @@ export default {
     TableItem
   },
   data: () => ({
-    title: "112 SF - Conductivity Unit Record",
+    title: "112 SF - Storage Tank Water Draw Off Record",
     route: {
       form: "sf112Create",
       table: "sf112"
@@ -110,6 +122,7 @@ export default {
     },
     currentProgress: {
       status: null,
+      remarks: null,
       nextAction: {
         id: null,
         label: null
@@ -218,6 +231,7 @@ export default {
 
             self.currentProgress = {
               status: response.data.currentProgress.status,
+              remarks: response.data.currentProgress.remarks,
               nextAction: {
                 id: response.data.currentProgress.nextAction?.id,
                 label: response.data.currentProgress.nextAction?.label

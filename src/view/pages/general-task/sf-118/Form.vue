@@ -44,8 +44,10 @@
           />
           <InputPlainText
             label="Transaction Date"
+            css-class="m-0"
             v-model="transactionDateFormatting"
           />
+          <InputPlainText label="Shift" v-model="form.shift.label" />
           <TextArea
             label="Remarks"
             placeholder="Please write your remarks here..."
@@ -74,7 +76,12 @@
       </div>
     </b-row>
     <div v-show="$route.name != route.form">
-      <TableItem :rows="table.rows" :buttonVisibility="buttonVisibility" />
+      <TableItem
+        :transactionDate="form.transactionDate"
+        :rows="table.rows"
+        :buttonVisibility="buttonVisibility"
+        @onRowSelected="onRowSelected"
+      />
     </div>
   </div>
 </template>
@@ -98,10 +105,10 @@ export default {
     TableItem
   },
   data: () => ({
-    title: "110 SF - Filter Sump Record",
+    title: "118 SF - Refuellers Quality Control Record",
     route: {
-      form: "sf110Create",
-      table: "sf110"
+      form: "sf118Create",
+      table: "sf118"
     },
     form: {
       dppu: {
@@ -111,6 +118,10 @@ export default {
       dppuId: null,
       transactionId: "Auto Generated",
       transactionDate: getDate(),
+      shift: {
+        id: null,
+        label: null
+      },
       remarks: null,
       sendApproval: false,
       updatedBy: null,
@@ -204,7 +215,7 @@ export default {
       let loader = self.$loading.show();
       self.$store
         .dispatch("apis/get", {
-          url: `/board/standard-form/110/${self.$route.params.id}`
+          url: `/board/standard-form/118/${self.$route.params.id}`
         })
         .then(response => {
           if (response.error) {
@@ -219,10 +230,11 @@ export default {
               dppu: response.data.dppu,
               dppuId: response.data.dppu?.id,
               transactionId: response.data.transactionId,
-              transactionDate: dateFormat(
-                response.data.transactionDate,
-                "YYYY-MM-DD"
-              ),
+              transactionDate: response.data.transactionDate,
+              shift: {
+                id: response.data.shift?.id,
+                label: response.data.shift?.label
+              },
               remarks: response.data.remarks,
               updatedBy: response.data.updatedBy,
               updatedAt: response.data.updatedAt
@@ -237,15 +249,21 @@ export default {
               }
             };
 
-            self.table.rows = response.data.details.map(x => ({
-              id: x.id,
-              equipment: x.equipment,
-              resultId: x.result?.id ?? null,
-              result: x.result
-            }));
+            self.table.rows = response.data.details;
           }
         })
         .finally(() => loader.hide());
+    },
+    onRowSelected(item) {
+      const self = this;
+
+      self.$router.push({
+        name: "sf118UpdateItem",
+        params: {
+          id: self.$route.params.id,
+          iditem: item.id
+        }
+      });
     },
     handleSubmit() {
       const self = this;
@@ -262,7 +280,7 @@ export default {
         .then(dialog => {
           self.$store
             .dispatch("apis/put", {
-              url: `/board/standard-form/110/${self.$route.params.id}`,
+              url: `/board/standard-form/118/${self.$route.params.id}`,
               params: self.form
             })
             .then(response => {
@@ -301,7 +319,7 @@ export default {
 
           self.$store
             .dispatch("apis/put", {
-              url: `/board/standard-form/110/${self.$route.params.id}`,
+              url: `/board/standard-form/118/${self.$route.params.id}`,
               params: self.form
             })
             .then(response => {

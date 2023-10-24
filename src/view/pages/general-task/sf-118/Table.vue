@@ -64,14 +64,14 @@
 
 <script>
 import { mapGetters } from "vuex";
-import { sfCommon as columns } from "@/core/datasource/columns";
+import { sfCommonWithShift as columns } from "@/core/datasource/columns";
 import { standardFormStatus } from "@/core/datasource/options";
 import { getDate, getDppu, dateFormat, normalizer } from "@/core/utils";
 
 export default {
   data: () => ({
-    title: "112 SF",
-    subTitle: "Storage Tank Water Draw Off Record",
+    title: "118 SF",
+    subTitle: "Refuellers Quality Control Record",
     searchText: "Search by transaction #",
     serverParams: {
       pageNumber: 1,
@@ -122,7 +122,7 @@ export default {
     onRowSelected(items) {
       const self = this;
       self.$router.push({
-        name: "sf112Update",
+        name: "sf118Update",
         params: {
           id: items[0].id
         }
@@ -153,7 +153,7 @@ export default {
       self.table.isLoading = true;
       self.$store
         .dispatch("apis/get", {
-          url: "/board/standard-form/112",
+          url: "/board/standard-form/118",
           params: self.serverParams
         })
         .then(response => {

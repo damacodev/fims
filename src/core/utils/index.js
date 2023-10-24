@@ -301,6 +301,62 @@ export async function getAppearance() {
   return result;
 }
 
+export async function getColour() {
+  let result = [];
+
+  await store
+    .dispatch("apis/get", {
+      url: "/common/colour"
+    })
+    .then(response => {
+      result = response.data;
+    });
+
+  return result;
+}
+
+export async function getCleanlines() {
+  let result = [];
+
+  await store
+    .dispatch("apis/get", {
+      url: "/common/cleanlines"
+    })
+    .then(response => {
+      result = response.data;
+    });
+
+  return result;
+}
+
+export async function getFreeWater() {
+  let result = [];
+
+  await store
+    .dispatch("apis/get", {
+      url: "/common/free-water"
+    })
+    .then(response => {
+      result = response.data;
+    });
+
+  return result;
+}
+
+export async function getWaterDetector() {
+  let result = [];
+
+  await store
+    .dispatch("apis/get", {
+      url: "/common/water-detector"
+    })
+    .then(response => {
+      result = response.data;
+    });
+
+  return result;
+}
+
 // export function groupBy(list, keyGetter) {
 //   const map = new Map();
 //   list.forEach((item) => {
@@ -360,7 +416,7 @@ export function setDensity(params) {
 }
 
 export function setTemperature(params) {
-  return `${numberFormat(params)}°C`;
+  return `${numberFormat(params)} °C`;
 }
 
 export function setConductivity(params) {
