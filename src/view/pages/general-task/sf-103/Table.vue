@@ -20,6 +20,18 @@
         Create New Transaction
       </b-button>
     </template>
+    <template #search>
+      <div class="ml-2 mr-2 mb-2">
+        <date-range-picker
+          v-model="serverParams.dateRange"
+          style="width: 100%; cursor: pointer"
+          opens="center"
+          :locale-data="{ format: 'dd/mm/yyyy', separator: ' to ' }"
+          control-container-class="form-control"
+          @update="onFilter"
+        />
+      </div>
+    </template>
     <template #filter>
       <b-row class="p-3">
         <b-col xl="3">
@@ -33,9 +45,9 @@
         </b-col>
         <b-col xl="3">
           <b-form-input
-            placeholder="Transaction Date"
-            type="date"
-            v-model="serverParams.transactionDate"
+            placeholder="Transaction #"
+            autocomplete="off"
+            v-model="serverParams.keyword"
             @input="onFilter"
           ></b-form-input>
         </b-col>
@@ -84,7 +96,13 @@ import { sf103 as columns } from "@/core/datasource/columns";
 import { standardFormStatus } from "@/core/datasource/options";
 import { getDate, getDppu, dateFormat, normalizer } from "@/core/utils";
 
+import DateRangePicker from "vue2-daterange-picker";
+import "vue2-daterange-picker/dist/vue2-daterange-picker.css";
+
 export default {
+  components: {
+    DateRangePicker
+  },
   data: () => ({
     title: "103 SF",
     subTitle: "Bridger Quality Control Before Receipt Record",
@@ -92,11 +110,14 @@ export default {
     serverParams: {
       pageNumber: 1,
       pageSize: 20,
-      transactionDate: getDate(),
       keyword: null,
       dppuId: null,
       shiftId: null,
-      status: null
+      status: null,
+      dateRange: {
+        startDate: getDate(),
+        endDate: getDate()
+      }
     },
     table: {
       isLoading: false,
@@ -196,11 +217,21 @@ export default {
     getAll() {
       const self = this;
 
+      let _serverParams = {
+        pageNumber: self.serverParams.pageNumber,
+        pageSize: self.serverParams.pageSize,
+        keyword: self.serverParams.keyword,
+        dppuId: self.serverParams.dppuId,
+        shiftId: self.serverParams.shiftId,
+        status: self.serverParams.status,
+        startDate: self.serverParams.dateRange.startDate,
+        endDate: self.serverParams.dateRange.endDate
+      };
       self.table.isLoading = true;
       self.$store
         .dispatch("apis/get", {
           url: "/board/standard-form/103",
-          params: self.serverParams
+          params: _serverParams
         })
         .then(response => {
           if (response.error) {
