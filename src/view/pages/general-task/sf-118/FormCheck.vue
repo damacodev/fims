@@ -19,56 +19,72 @@
         <Select
           label="Colour"
           placeholder="Select colour"
-          v-model="form.colourId"
-          :v="$v.form.colourId"
+          v-model="form.colourIds"
+          :v="$v.form.colourIds"
           :options="options.colour"
-          :multiple="false"
+          :multiple="true"
           :useHorizontal="false"
         />
         <Select
           label="Cleanlines"
           placeholder="Select cleanlines"
-          v-model="form.cleanlinesId"
-          :v="$v.form.cleanlinesId"
+          v-model="form.cleanlinesIds"
+          :v="$v.form.cleanlinesIds"
           :options="options.cleanlines"
-          :multiple="false"
+          :multiple="true"
           :useHorizontal="false"
         />
         <Select
           label="Free Water"
           placeholder="Select free water"
-          v-model="form.freeWaterId"
-          :v="$v.form.freeWaterId"
+          v-model="form.freeWaterIds"
+          :v="$v.form.freeWaterIds"
           :options="options.freeWater"
-          :multiple="false"
+          :multiple="true"
           :useHorizontal="false"
         />
         <Select
-          label="Water Detector"
-          placeholder="Select water detector"
-          v-model="form.waterDetectorId"
-          :v="$v.form.waterDetectorId"
+          label="CWD"
+          placeholder="Select CWD"
+          v-model="form.waterDetectorIds"
+          :v="$v.form.waterDetectorIds"
           :options="options.waterDetector"
-          :multiple="false"
+          :multiple="true"
           :useHorizontal="false"
         />
       </div>
       <div v-else class="card-body">
         <PlainText
           label="Colour"
-          :value="form.colour == null ? '-' : form.colour.label"
+          :value="
+            form.colourIds == null || form.colourIds.length == 0
+              ? '-'
+              : form.colourIds.join('/')
+          "
         />
         <PlainText
           label="Cleanlines"
-          :value="form.cleanlines == null ? '-' : form.cleanlines.label"
+          :value="
+            form.cleanlinesIds == null || form.cleanlinesIds.length == 0
+              ? '-'
+              : form.cleanlinesIds.join('/')
+          "
         />
         <PlainText
           label="Free Water"
-          :value="form.freeWater == null ? '-' : form.freeWater.label"
+          :value="
+            form.freeWaterIds == null || form.freeWaterIds.length == 0
+              ? '-'
+              : form.freeWaterIds.join('/')
+          "
         />
         <PlainText
-          label="Water Detector"
-          :value="form.waterDetector == null ? '-' : form.waterDetector.label"
+          label="CWD"
+          :value="
+            form.waterDetectorIds == null || form.waterDetectorIds.length == 0
+              ? '-'
+              : form.waterDetectorIds.join('/')
+          "
         />
       </div>
     </template>
@@ -92,7 +108,8 @@ export default {
     },
     buttonVisibility: {
       type: Boolean,
-      default: true
+      // default: true,
+      required: true
     },
     form: Object,
     options: Object,
@@ -105,10 +122,10 @@ export default {
   },
   validations: {
     form: {
-      colourId: { required },
-      cleanlinesId: { required },
-      freeWaterId: { required },
-      waterDetectorId: { required }
+      colourIds: { required },
+      cleanlinesIds: { required },
+      freeWaterIds: { required },
+      waterDetectorIds: { required }
     }
   },
   methods: {
@@ -128,10 +145,10 @@ export default {
         _form = {
           standardForm118Id: self.$route.params.id,
           standardForm118DetailId: self.$route.params.iditem,
-          colourId: self.form.colourId,
-          cleanlinesId: self.form.cleanlinesId,
-          freeWaterId: self.form.freeWaterId,
-          waterDetectorId: self.form.waterDetectorId
+          colourIds: self.form.colourIds,
+          cleanlinesIds: self.form.cleanlinesIds,
+          freeWaterIds: self.form.freeWaterIds,
+          waterDetectorIds: self.form.waterDetectorIds
         };
 
       if (self.form.id == null && self.group == "AFTER_TOPING_UP") {

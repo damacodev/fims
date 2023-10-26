@@ -295,7 +295,10 @@ export async function getAppearance() {
       url: "/common/appearance"
     })
     .then(response => {
-      result = response.data;
+      result = response.data.map(x => ({
+        id: x.id,
+        label: `${x.id} - ${x.label}`
+      }));
     });
 
   return result;
@@ -309,7 +312,10 @@ export async function getColour() {
       url: "/common/colour"
     })
     .then(response => {
-      result = response.data;
+      result = response.data.map(x => ({
+        id: x.id,
+        label: `${x.id} - ${x.label}`
+      }));
     });
 
   return result;
@@ -323,7 +329,10 @@ export async function getCleanlines() {
       url: "/common/cleanlines"
     })
     .then(response => {
-      result = response.data;
+      result = response.data.map(x => ({
+        id: x.id,
+        label: `${x.id} - ${x.label}`
+      }));
     });
 
   return result;
@@ -337,7 +346,10 @@ export async function getFreeWater() {
       url: "/common/free-water"
     })
     .then(response => {
-      result = response.data;
+      result = response.data.map(x => ({
+        id: x.id,
+        label: `${x.id} - ${x.label}`
+      }));
     });
 
   return result;
@@ -351,7 +363,10 @@ export async function getWaterDetector() {
       url: "/common/water-detector"
     })
     .then(response => {
-      result = response.data;
+      result = response.data.map(x => ({
+        id: x.id,
+        label: `${x.id} - ${x.label}`
+      }));
     });
 
   return result;

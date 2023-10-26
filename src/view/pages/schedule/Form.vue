@@ -1,5 +1,5 @@
 <template>
-  <CardForm :title="title" :subTitle="subTitle">
+  <CardForm :title="title" :subTitle="subTitle" :backButton="true">
     <template slot="toolbar">
       <b-button
         v-show="$route.name != route.form"
@@ -10,11 +10,8 @@
       >
         Delete
       </b-button>
-      <b-button variant="primary" size="lg" class="mr-2" @click="handleSubmit">
+      <b-button variant="primary" size="lg" @click="handleSubmit">
         {{ textButton }}
-      </b-button>
-      <b-button variant="secondary" size="lg" @click="$router.go(-1)">
-        Back
       </b-button>
     </template>
     <template slot="form">
@@ -79,6 +76,17 @@
             :v="$v.form.repeatedOnDate"
           />
 
+          <RadioGroup
+            label="Shift Level Generation"
+            v-model="form.shiftLevelGeneration"
+            :options="options.yesNo"
+            :disabled="!options.dppuWithShift"
+            :description="
+              form.dppu != null && !options.dppuWithShift
+                ? `Shift hours at this DPPU have not been setup. You can't set this activity to the shift level. If needed, please setup shift hours on the DPPU page.`
+                : null
+            "
+          />
           <Select
             label="Default Role Assignment"
             placeholder="Choose Default Role Assignment"

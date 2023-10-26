@@ -1,15 +1,10 @@
 <template>
   <div>
-    <CardForm :title="cardTitle" :subTitle="cardSubTitle">
+    <CardForm :title="cardTitle" :subTitle="cardSubTitle" :backButton="true">
       <template #toolbar>
-        <b-button
-          variant="outline-primary"
-          class="mr-2"
-          @click="handleOpenLogs"
-        >
+        <b-button variant="outline-primary" @click="handleOpenLogs">
           View Logs
         </b-button>
-        <b-button variant="secondary" @click="$router.go(-1)"> Back </b-button>
       </template>
       <template #form>
         <div class="card-body">

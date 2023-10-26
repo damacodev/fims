@@ -1,5 +1,6 @@
 <template>
   <CardTable
+    :backButton="true"
     :title="title"
     :subTitle="subTitle"
     :searchText="searchText"
@@ -16,7 +17,7 @@
     @onSearch="onSearch"
   >
     <template #toolbar>
-      <b-button variant="primary" :to="{ name: 'sf103Create' }">
+      <b-button variant="primary" :to="{ name: 'sf103Create' }" class="mr-2">
         Create New Transaction
       </b-button>
     </template>

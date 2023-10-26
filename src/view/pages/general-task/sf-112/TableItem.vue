@@ -29,26 +29,36 @@
             <treeselect
               v-if="buttonVisibility"
               placeholder="Select result before"
-              v-model="row.resultBeforeId"
+              v-model="row.resultBeforeIds"
               :options="options.appearance"
               :appendToBody="true"
+              :multiple="true"
               @input="handleSubmit(row)"
             />
             <span v-else>
-              {{ row.resultBeforeId == null ? "-" : row.resultBefore.label }}
+              {{
+                row.resultBeforeIds.length == 0
+                  ? "-"
+                  : row.resultBeforeIds.join("/")
+              }}
             </span>
           </td>
           <td class="align-middle">
             <treeselect
               v-if="buttonVisibility"
               placeholder="Select result after"
-              v-model="row.resultAfterId"
+              v-model="row.resultAfterIds"
               :options="options.appearance"
               :appendToBody="true"
+              :multiple="true"
               @input="handleSubmit(row)"
             />
             <span v-else>
-              {{ row.resultAfterId == null ? "-" : row.resultAfter.label }}
+              {{
+                row.resultAfterIds.length == 0
+                  ? "-"
+                  : row.resultAfterIds.join("/")
+              }}
             </span>
           </td>
           <td class="align-middle">
@@ -102,8 +112,8 @@ export default {
           url: `/board/standard-form/112/${self.$route.params.id}/record/${row.id}`,
           params: {
             volume: row.volume,
-            resultBeforeId: row.resultBeforeId,
-            resultAfterId: row.resultAfterId,
+            resultBeforeIds: row.resultBeforeIds,
+            resultAfterIds: row.resultAfterIds,
             receiverTank: row.receiverTank
           }
         })

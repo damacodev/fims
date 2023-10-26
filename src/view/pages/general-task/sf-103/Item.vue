@@ -1,11 +1,11 @@
 <template>
-  <CardForm :title="title" :subTitle="subTitle">
+  <CardForm :title="title" :subTitle="subTitle" :backButton="true">
     <template slot="toolbar">
       <b-button
         v-show="$route.name != route.form && !currentProgress.locked"
         variant="outline-danger"
         size="lg"
-        class="mr-10"
+        class="mr-2"
         @click="handleDelete"
       >
         Delete
@@ -14,13 +14,9 @@
         v-show="!currentProgress.locked"
         variant="primary"
         size="lg"
-        class="mr-2"
         @click="handleSubmit"
       >
         {{ textButton }}
-      </b-button>
-      <b-button variant="secondary" size="lg" @click="$router.go(-1)">
-        Cancel
       </b-button>
     </template>
     <template slot="form">
@@ -167,10 +163,10 @@
               <Select
                 label="Appearance"
                 placeholder="Select appearance"
-                v-model="form.appearanceId"
-                :v="$v.form.appearanceId"
+                v-model="form.appearanceIds"
+                :v="$v.form.appearanceIds"
                 :options="options.appearance"
-                :multiple="false"
+                :multiple="true"
                 :useHorizontal="false"
               />
               <InputText
@@ -204,7 +200,7 @@
               <PlainText label="BPP No" :value="form.bppNo" />
               <PlainText label="Volume" :value="setVolume(form.volume)" />
               <PlainText label="Seal / Segel" :value="form.seal" />
-              <PlainText label="Appearance" :value="form.appearance.label" />
+              <PlainText label="Appearance" :value="form.appearanceIds" />
               <PlainText
                 label="Conductivity"
                 :value="setConductivity(form.conductivity)"
@@ -328,11 +324,7 @@ export default {
         densityAt15Celcius: null,
         maximumDifferential: null
       },
-      appearance: {
-        id: null,
-        label: null
-      },
-      appearanceId: null,
+      appearanceIds: null,
       conductivity: null,
       remarks: null
     },
@@ -355,28 +347,6 @@ export default {
       const self = this;
       return self.$route.name != self.route.form ? "Update" : "Submit";
     }
-    /* buttonVisibility() {
-      const self = this;
-      if (
-        ["New", "Rejected"].includes(self.currentProgress.status) &&
-        self.user.id != self.currentProgress.nextAction.id
-      ) {
-        return false;
-      } else if (
-        (self.$route.name != self.route.form &&
-          !["New", "Rejected"].includes(self.currentProgress.status)) ||
-        (self.currentProgress.status == "Rejected" &&
-          self.user.id != self.currentProgress.nextAction.id)
-      ) {
-        return false;
-      } else if (
-        self.currentProgress.status == "Rejected" &&
-        self.user.id == self.currentProgress.nextAction.id
-      ) {
-        return true;
-      }
-      return true;
-    }, */
   },
   validations: {
     form: {
@@ -398,7 +368,7 @@ export default {
         densityAt15Celcius: { required, decimal },
         maximumDifferential: { required, decimal }
       },
-      appearanceId: { required },
+      appearanceIds: { required },
       conductivity: { required, integer },
       remarks: { maxLength: maxLength(250) }
     }
@@ -415,7 +385,7 @@ export default {
       self.getById();
     }
 
-    /* self.form.time = "10:22";
+    self.form.time = "10:22";
     self.form.bridgerNo = "BR123";
     self.form.bppNo = "BPP123";
     self.form.volume = 9800;
@@ -432,8 +402,8 @@ export default {
       densityAt15Celcius: 54.22,
       maximumDifferential: 43.123
     };
-    self.form.appearanceId = "1E";
-    self.form.conductivity = 32; */
+    // self.form.appearanceIds = "1E";
+    self.form.conductivity = 32;
   },
   methods: {
     setVolume,
@@ -509,8 +479,7 @@ export default {
             self.form.seal = response.data.seal;
             self.form.receivingDocument = response.data.receivingDocument;
             self.form.visualCheck = response.data.visualCheck;
-            self.form.appearance = response.data.appearance;
-            self.form.appearanceId = response.data.appearance.id;
+            self.form.appearanceIds = response.data.appearanceIds;
             self.form.conductivity = response.data.conductivity;
             self.form.remarks = response.data.remarks;
           }

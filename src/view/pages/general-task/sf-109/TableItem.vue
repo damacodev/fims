@@ -15,26 +15,32 @@
             <treeselect
               v-if="buttonVisibility"
               placeholder="Select result"
-              v-model="row.resultId"
+              v-model="row.resultIds"
               :options="options.appearance"
               :appendToBody="true"
+              :multiple="true"
               @input="handleSubmit(index)"
             />
             <span v-else>
-              {{ row.result == null ? "-" : row.result.label }}
+              {{ row.resultIds.length == 0 ? "-" : row.resultIds.join("/") }}
             </span>
           </td>
           <td class="align-middle">
             <treeselect
               v-if="buttonVisibility"
               placeholder="Select after heavy rain"
-              v-model="row.afterHeavyRainId"
+              v-model="row.afterHeavyRainIds"
               :options="options.appearance"
               :appendToBody="true"
+              :multiple="true"
               @input="handleSubmit(index)"
             />
             <span v-else>
-              {{ row.afterHeavyRain == null ? "-" : row.afterHeavyRain.label }}
+              {{
+                row.afterHeavyRainIds.length == 0
+                  ? "-"
+                  : row.afterHeavyRainIds.join("/")
+              }}
             </span>
           </td>
         </b-tr>
@@ -71,8 +77,8 @@ export default {
         .dispatch("apis/put", {
           url: `/board/standard-form/109/${self.$route.params.id}/record/${self.rows[index].id}`,
           params: {
-            resultId: self.rows[index].resultId,
-            afterHeavyRainId: self.rows[index].afterHeavyRainId
+            resultIds: self.rows[index].resultIds,
+            afterHeavyRainIds: self.rows[index].afterHeavyRainIds
           }
         })
         .then(response => {

@@ -1,16 +1,13 @@
 <template>
-  <CardForm :title="title" :subTitle="subTitle">
+  <CardForm :title="title" :subTitle="subTitle" :backButton="true">
     <template #toolbar>
       <b-button-group class="mr-10" v-show="$route.name != route.form">
         <b-button variant="outline-danger" size="lg" @click="handleDelete">
           Delete
         </b-button>
       </b-button-group>
-      <b-button variant="primary" size="lg" class="mr-2" @click="handleSubmit">
+      <b-button variant="primary" size="lg" @click="handleSubmit">
         {{ textButton }}
-      </b-button>
-      <b-button variant="secondary" size="lg" @click="$router.go(-1)">
-        Back
       </b-button>
     </template>
     <template #form>

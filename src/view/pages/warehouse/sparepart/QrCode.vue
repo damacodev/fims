@@ -3,15 +3,15 @@
     <div class="card-header py-3">
       <div class="card-title align-items-start flex-column">
         <h3 class="card-label font-weight-bolder text-dark">
+          <b-button class="btn-icon mr-2" size="xs" @click="$router.go(-1)">
+            <i class="flaticon2-back" />
+          </b-button>
           Sparepart QR Code
         </h3>
       </div>
       <div class="card-toolbar">
-        <b-button variant="primary" size="lg" class="mr-2" @click="handlePrint">
+        <b-button variant="primary" size="lg" @click="handlePrint">
           Print
-        </b-button>
-        <b-button variant="secondary" size="lg" @click="$router.go(-1)">
-          Back
         </b-button>
       </div>
     </div>

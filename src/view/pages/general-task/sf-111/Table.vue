@@ -1,5 +1,6 @@
 <template>
   <CardTable
+    :backButton="true"
     :title="title"
     :subTitle="subTitle"
     :searchText="searchText"

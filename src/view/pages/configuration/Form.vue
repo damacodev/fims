@@ -1,11 +1,8 @@
 <template>
-  <CardForm :title="title" :subTitle="subTitle">
+  <CardForm :title="title" :subTitle="subTitle" :backButton="true">
     <template slot="toolbar">
-      <b-button variant="primary" size="lg" class="mr-2" @click="handleSubmit">
+      <b-button variant="primary" size="lg" @click="handleSubmit">
         {{ textButton }}
-      </b-button>
-      <b-button variant="secondary" size="lg" @click="$router.go(-1)">
-        Back
       </b-button>
     </template>
     <template slot="form">

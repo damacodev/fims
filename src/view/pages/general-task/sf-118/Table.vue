@@ -1,5 +1,6 @@
 <template>
   <CardTable
+    :backButton="true"
     :title="title"
     :subTitle="subTitle"
     :searchText="searchText"
@@ -75,11 +76,11 @@
       />
     </template>
     <template #cell(transactionDate)="data">
-      {{ dateFormat(data.value) }}</template
-    >
+      {{ dateFormat(data.value) }}
+    </template>
     <template #cell(transactionRecords)="data">
-      {{ data.item.details.length }} Records</template
-    >
+      {{ data.item.details.length }} Records
+    </template>
   </CardTable>
 </template>
 

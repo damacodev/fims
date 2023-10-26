@@ -60,7 +60,7 @@
           <td class="align-middle text-right">
             {{ row.visualCheck.maximumDifferential }}
           </td>
-          <td class="align-middle">{{ row.appearance.label }}</td>
+          <td class="align-middle">{{ row.appearanceIds.join("/") }}</td>
           <td class="align-middle text-right">
             {{ setConductivity(row.conductivity) }}
           </td>

@@ -2,8 +2,13 @@
   <div class="card card-custom">
     <div class="card-header py-3">
       <div class="card-title align-items-start flex-column">
-        <h3 class="card-label font-weight-bolder text-dark">{{ title }}</h3>
-        <span class="text-muted font-weight-bold font-size-sm mt-1">
+        <h3 class="card-label font-weight-bolder text-dark">
+          <b-button class="btn-icon mr-2" size="xs" @click="$router.go(-1)">
+            <i class="flaticon2-back" />
+          </b-button>
+          {{ title }}
+        </h3>
+        <span class="text-muted font-weight-bold font-size-sm mt-1 pl-10">
           {{ subTitle }}
         </span>
       </div>
@@ -21,12 +26,10 @@
           v-show="!currentProgress.locked"
           variant="primary"
           size="lg"
-          class="mr-2"
           @click="handleSubmit"
         >
           Update
         </b-button>
-        <b-button variant="secondary" size="lg" @click="back"> Back </b-button>
       </div>
     </div>
     <b-row class="p-2">
@@ -145,28 +148,6 @@ export default {
         ? "Update transaction"
         : "Create new transaction";
     }
-    /* buttonVisibility() {
-      const self = this;
-      if (
-        ["New", "Rejected"].includes(self.currentProgress.status) &&
-        self.user.id != self.currentProgress.nextAction.id
-      ) {
-        return false;
-      } else if (
-        (self.$route.name != self.route.form &&
-          !["New", "Rejected"].includes(self.currentProgress.status)) ||
-        (self.currentProgress.status == "Rejected" &&
-          self.user.id != self.currentProgress.nextAction.id)
-      ) {
-        return false;
-      } else if (
-        self.currentProgress.status == "Rejected" &&
-        self.user.id == self.currentProgress.nextAction.id
-      ) {
-        return true;
-      }
-      return true;
-    }, */
   },
   validations: {
     form: {
@@ -245,16 +226,7 @@ export default {
               }
             };
 
-            self.table.rows = response.data.details.map(x => ({
-              id: x.id,
-              equipment: x.equipment,
-              volume: x.volume,
-              resultBeforeId: x.resultBefore?.id ?? null,
-              resultBefore: x.resultBefore,
-              resultAfterId: x.resultAfter?.id ?? null,
-              resultAfter: x.resultAfter,
-              receiverTank: x.receiverTank
-            }));
+            self.table.rows = response.data.details;
           }
         })
         .finally(() => loader.hide());

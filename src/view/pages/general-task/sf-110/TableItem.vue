@@ -14,13 +14,14 @@
             <treeselect
               v-if="buttonVisibility"
               placeholder="Select result"
-              v-model="row.resultId"
+              v-model="row.resultIds"
               :options="options.appearance"
               :appendToBody="true"
+              :multiple="true"
               @input="handleSubmit(index)"
             />
             <span v-else>
-              {{ row.result == null ? "-" : row.result.label }}
+              {{ row.resultIds.length == 0 ? "-" : row.resultIds.join("/") }}
             </span>
           </td>
         </b-tr>
@@ -57,7 +58,7 @@ export default {
         .dispatch("apis/put", {
           url: `/board/standard-form/110/${self.$route.params.id}/record/${self.rows[index].id}`,
           params: {
-            resultId: self.rows[index].resultId
+            resultIds: self.rows[index].resultIds
           }
         })
         .then(response => {

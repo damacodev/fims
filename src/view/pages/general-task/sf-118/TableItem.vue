@@ -81,272 +81,328 @@
     <b-tbody>
       <template v-for="(row, index) in rows">
         <b-tr v-bind:key="index" @click="onRowSelected(row)">
-          <td class="align-middle">{{ row.equipment.label }}</td>
+          <td>{{ row.equipment.label }}</td>
 
           <!-- START EVERYDAY -->
-          <td class="align-middle">
-            <span>{{
-              row.everyDay.productTankDrain == null ||
-              row.everyDay.productTankDrain.colour == null
-                ? "-"
-                : row.everyDay.productTankDrain.colour.label
-            }}</span>
+          <td class="text-left">
+            <span v-if="row.everyDay.productTankDrain == null">-</span>
+            <template
+              v-else
+              v-for="(row, index) in row.everyDay.productTankDrain.colourIds"
+            >
+              <span v-bind:key="index">{{ row.label }}<br /></span>
+            </template>
           </td>
-          <td class="align-middle">
-            <span>{{
-              row.everyDay.productTankDrain == null ||
-              row.everyDay.productTankDrain.cleanlines == null
-                ? "-"
-                : row.everyDay.productTankDrain.cleanlines.label
-            }}</span>
+          <td class="text-left">
+            <span v-if="row.everyDay.productTankDrain == null">-</span>
+            <template
+              v-else
+              v-for="(row, index) in row.everyDay.productTankDrain
+                .cleanlinesIds"
+            >
+              <span v-bind:key="index">{{ row.label }}<br /></span>
+            </template>
           </td>
-          <td class="align-middle">
-            <span>{{
-              row.everyDay.productTankDrain == null ||
-              row.everyDay.productTankDrain.freeWater == null
-                ? "-"
-                : row.everyDay.productTankDrain.freeWater.label
-            }}</span>
+          <td class="text-left">
+            <span v-if="row.everyDay.productTankDrain == null">-</span>
+            <template
+              v-else
+              v-for="(row, index) in row.everyDay.productTankDrain.freeWaterIds"
+            >
+              <span v-bind:key="index">{{ row.label }}<br /></span>
+            </template>
           </td>
-          <td class="align-middle">
-            <span>{{
-              row.everyDay.productTankDrain == null ||
-              row.everyDay.productTankDrain.waterDetector == null
-                ? "-"
-                : row.everyDay.productTankDrain.waterDetector.label
-            }}</span>
+          <td class="text-left">
+            <span v-if="row.everyDay.productTankDrain == null">-</span>
+            <template
+              v-else
+              v-for="(row, index) in row.everyDay.productTankDrain
+                .waterDetectorIds"
+            >
+              <span v-bind:key="index">{{ row.label }}<br /></span>
+            </template>
           </td>
-          <td class="align-middle">
-            <span>{{
-              row.everyDay.beforeFilter == null ||
-              row.everyDay.beforeFilter.colour == null
-                ? "-"
-                : row.everyDay.beforeFilter.colour.label
-            }}</span>
+
+          <td class="text-left">
+            <span v-if="row.everyDay.beforeFilter == null">-</span>
+            <template
+              v-else
+              v-for="(row, index) in row.everyDay.beforeFilter.colourIds"
+            >
+              <span v-bind:key="index">{{ row.label }}<br /></span>
+            </template>
           </td>
-          <td class="align-middle">
-            <span>{{
-              row.everyDay.beforeFilter == null ||
-              row.everyDay.beforeFilter.cleanlines == null
-                ? "-"
-                : row.everyDay.beforeFilter.cleanlines.label
-            }}</span>
+          <td class="text-left">
+            <span v-if="row.everyDay.beforeFilter == null">-</span>
+            <template
+              v-else
+              v-for="(row, index) in row.everyDay.beforeFilter.cleanlinesIds"
+            >
+              <span v-bind:key="index">{{ row.label }}<br /></span>
+            </template>
           </td>
-          <td class="align-middle">
-            <span>{{
-              row.everyDay.beforeFilter == null ||
-              row.everyDay.beforeFilter.freeWater == null
-                ? "-"
-                : row.everyDay.beforeFilter.freeWater.label
-            }}</span>
+          <td class="text-left">
+            <span v-if="row.everyDay.beforeFilter == null">-</span>
+            <template
+              v-else
+              v-for="(row, index) in row.everyDay.beforeFilter.freeWaterIds"
+            >
+              <span v-bind:key="index">{{ row.label }}<br /></span>
+            </template>
           </td>
-          <td class="align-middle">
-            <span>{{
-              row.everyDay.beforeFilter == null ||
-              row.everyDay.beforeFilter.waterDetector == null
-                ? "-"
-                : row.everyDay.beforeFilter.waterDetector.label
-            }}</span>
+          <td class="text-left">
+            <span v-if="row.everyDay.beforeFilter == null">-</span>
+            <template
+              v-else
+              v-for="(row, index) in row.everyDay.beforeFilter.waterDetectorIds"
+            >
+              <span v-bind:key="index">{{ row.label }}<br /></span>
+            </template>
           </td>
-          <td class="align-middle">
-            <span>{{
-              row.everyDay.afterFilter == null ||
-              row.everyDay.afterFilter.colour == null
-                ? "-"
-                : row.everyDay.afterFilter.colour.label
-            }}</span>
+
+          <td class="text-left">
+            <span v-if="row.everyDay.afterFilter == null">-</span>
+            <template
+              v-else
+              v-for="(row, index) in row.everyDay.afterFilter.colourIds"
+            >
+              <span v-bind:key="index">{{ row.label }}<br /></span>
+            </template>
           </td>
-          <td class="align-middle">
-            <span>{{
-              row.everyDay.afterFilter == null ||
-              row.everyDay.afterFilter.cleanlines == null
-                ? "-"
-                : row.everyDay.afterFilter.cleanlines.label
-            }}</span>
+          <td class="text-left">
+            <span v-if="row.everyDay.afterFilter == null">-</span>
+            <template
+              v-else
+              v-for="(row, index) in row.everyDay.afterFilter.cleanlinesIds"
+            >
+              <span v-bind:key="index">{{ row.label }}<br /></span>
+            </template>
           </td>
-          <td class="align-middle">
-            <span>{{
-              row.everyDay.afterFilter == null ||
-              row.everyDay.afterFilter.freeWater == null
-                ? "-"
-                : row.everyDay.afterFilter.freeWater.label
-            }}</span>
+          <td class="text-left">
+            <span v-if="row.everyDay.afterFilter == null">-</span>
+            <template
+              v-else
+              v-for="(row, index) in row.everyDay.afterFilter.freeWaterIds"
+            >
+              <span v-bind:key="index">{{ row.label }}<br /></span>
+            </template>
           </td>
-          <td class="align-middle">
-            <span>{{
-              row.everyDay.afterFilter == null ||
-              row.everyDay.afterFilter.waterDetector == null
-                ? "-"
-                : row.everyDay.afterFilter.waterDetector.label
-            }}</span>
+          <td class="text-left">
+            <span v-if="row.everyDay.afterFilter == null">-</span>
+            <template
+              v-else
+              v-for="(row, index) in row.everyDay.afterFilter.waterDetectorIds"
+            >
+              <span v-bind:key="index">{{ row.label }}<br /></span>
+            </template>
           </td>
-          <td class="align-middle">
-            <span>{{
-              row.everyDay.recoveryTankDrain == null ||
-              row.everyDay.recoveryTankDrain.colour == null
-                ? "-"
-                : row.everyDay.recoveryTankDrain.colour.label
-            }}</span>
+
+          <td class="text-left">
+            <span v-if="row.everyDay.recoveryTankDrain == null">-</span>
+            <template
+              v-else
+              v-for="(row, index) in row.everyDay.recoveryTankDrain.colourIds"
+            >
+              <span v-bind:key="index">{{ row.label }}<br /></span>
+            </template>
           </td>
-          <td class="align-middle">
-            <span>{{
-              row.everyDay.recoveryTankDrain == null ||
-              row.everyDay.recoveryTankDrain.cleanlines == null
-                ? "-"
-                : row.everyDay.recoveryTankDrain.cleanlines.label
-            }}</span>
+          <td class="text-left">
+            <span v-if="row.everyDay.recoveryTankDrain == null">-</span>
+            <template
+              v-else
+              v-for="(row, index) in row.everyDay.recoveryTankDrain
+                .cleanlinesIds"
+            >
+              <span v-bind:key="index">{{ row.label }}<br /></span>
+            </template>
           </td>
-          <td class="align-middle">
-            <span>{{
-              row.everyDay.recoveryTankDrain == null ||
-              row.everyDay.recoveryTankDrain.freeWater == null
-                ? "-"
-                : row.everyDay.recoveryTankDrain.freeWater.label
-            }}</span>
+          <td class="text-left">
+            <span v-if="row.everyDay.recoveryTankDrain == null">-</span>
+            <template
+              v-else
+              v-for="(row, index) in row.everyDay.recoveryTankDrain
+                .freeWaterIds"
+            >
+              <span v-bind:key="index">{{ row.label }}<br /></span>
+            </template>
           </td>
-          <td class="align-middle">
-            <span>{{
-              row.everyDay.recoveryTankDrain == null ||
-              row.everyDay.recoveryTankDrain.waterDetector == null
-                ? "-"
-                : row.everyDay.recoveryTankDrain.waterDetector.label
-            }}</span>
+          <td class="text-left">
+            <span v-if="row.everyDay.recoveryTankDrain == null">-</span>
+            <template
+              v-else
+              v-for="(row, index) in row.everyDay.recoveryTankDrain
+                .waterDetectorIds"
+            >
+              <span v-bind:key="index">{{ row.label }}<br /></span>
+            </template>
           </td>
           <!-- END EVERYDAY -->
 
           <!-- START AFTER WASH -->
-          <td class="align-middle">
-            <span>{{
-              row.afterWash.productTankDrain == null ||
-              row.afterWash.productTankDrain.colour == null
-                ? "-"
-                : row.afterWash.productTankDrain.colour.label
-            }}</span>
+          <td class="text-left">
+            <span v-if="row.afterWash.productTankDrain == null">-</span>
+            <template
+              v-else
+              v-for="(row, index) in row.afterWash.productTankDrain.colourIds"
+            >
+              <span v-bind:key="index">{{ row.label }}<br /></span>
+            </template>
           </td>
-          <td class="align-middle">
-            <span>{{
-              row.afterWash.productTankDrain == null ||
-              row.afterWash.productTankDrain.cleanlines == null
-                ? "-"
-                : row.afterWash.productTankDrain.cleanlines.label
-            }}</span>
+          <td class="text-left">
+            <span v-if="row.afterWash.productTankDrain == null">-</span>
+            <template
+              v-else
+              v-for="(row, index) in row.afterWash.productTankDrain
+                .cleanlinesIds"
+            >
+              <span v-bind:key="index">{{ row.label }}<br /></span>
+            </template>
           </td>
-          <td class="align-middle">
-            <span>{{
-              row.afterWash.productTankDrain == null ||
-              row.afterWash.productTankDrain.freeWater == null
-                ? "-"
-                : row.afterWash.productTankDrain.freeWater.label
-            }}</span>
+          <td class="text-left">
+            <span v-if="row.afterWash.productTankDrain == null">-</span>
+            <template
+              v-else
+              v-for="(row, index) in row.afterWash.productTankDrain
+                .freeWaterIds"
+            >
+              <span v-bind:key="index">{{ row.label }}<br /></span>
+            </template>
           </td>
-          <td class="align-middle">
-            <span>{{
-              row.afterWash.productTankDrain == null ||
-              row.afterWash.productTankDrain.waterDetector == null
-                ? "-"
-                : row.afterWash.productTankDrain.waterDetector.label
-            }}</span>
+          <td class="text-left">
+            <span v-if="row.afterWash.productTankDrain == null">-</span>
+            <template
+              v-else
+              v-for="(row, index) in row.afterWash.productTankDrain
+                .waterDetectorIds"
+            >
+              <span v-bind:key="index">{{ row.label }}<br /></span>
+            </template>
           </td>
-          <td class="align-middle">
-            <span>{{
-              row.afterWash.recoveryTankDrain == null ||
-              row.afterWash.recoveryTankDrain.colour == null
-                ? "-"
-                : row.afterWash.recoveryTankDrain.colour.label
-            }}</span>
+
+          <td class="text-left">
+            <span v-if="row.afterWash.recoveryTankDrain == null">-</span>
+            <template
+              v-else
+              v-for="(row, index) in row.afterWash.recoveryTankDrain.colourIds"
+            >
+              <span v-bind:key="index">{{ row.label }}<br /></span>
+            </template>
           </td>
-          <td class="align-middle">
-            <span>{{
-              row.afterWash.recoveryTankDrain == null ||
-              row.afterWash.recoveryTankDrain.cleanlines == null
-                ? "-"
-                : row.afterWash.recoveryTankDrain.cleanlines.label
-            }}</span>
+          <td class="text-left">
+            <span v-if="row.afterWash.recoveryTankDrain == null">-</span>
+            <template
+              v-else
+              v-for="(row, index) in row.afterWash.recoveryTankDrain
+                .cleanlinesIds"
+            >
+              <span v-bind:key="index">{{ row.label }}<br /></span>
+            </template>
           </td>
-          <td class="align-middle">
-            <span>{{
-              row.afterWash.recoveryTankDrain == null ||
-              row.afterWash.recoveryTankDrain.freeWater == null
-                ? "-"
-                : row.afterWash.recoveryTankDrain.freeWater.label
-            }}</span>
+          <td class="text-left">
+            <span v-if="row.afterWash.recoveryTankDrain == null">-</span>
+            <template
+              v-else
+              v-for="(row, index) in row.afterWash.recoveryTankDrain
+                .freeWaterIds"
+            >
+              <span v-bind:key="index">{{ row.label }}<br /></span>
+            </template>
           </td>
-          <td class="align-middle">
-            <span>{{
-              row.afterWash.recoveryTankDrain == null ||
-              row.afterWash.recoveryTankDrain.waterDetector == null
-                ? "-"
-                : row.afterWash.recoveryTankDrain.waterDetector.label
-            }}</span>
+          <td class="text-left">
+            <span v-if="row.afterWash.recoveryTankDrain == null">-</span>
+            <template
+              v-else
+              v-for="(row, index) in row.afterWash.recoveryTankDrain
+                .waterDetectorIds"
+            >
+              <span v-bind:key="index">{{ row.label }}<br /></span>
+            </template>
           </td>
           <!-- END AFTER WASH -->
 
-          <!-- START AFTER WASH -->
-          <td class="align-middle">
-            <span>{{
-              row.afterHeavyRain.productTankDrain == null ||
-              row.afterHeavyRain.productTankDrain.colour == null
-                ? "-"
-                : row.afterHeavyRain.productTankDrain.colour.label
-            }}</span>
+          <!-- START AFTER HEAVY RAIN -->
+          <td class="text-left">
+            <span v-if="row.afterHeavyRain.productTankDrain == null">-</span>
+            <template
+              v-else
+              v-for="(row, index) in row.afterHeavyRain.productTankDrain
+                .colourIds"
+            >
+              <span v-bind:key="index">{{ row.label }}<br /></span>
+            </template>
           </td>
-          <td class="align-middle">
-            <span>{{
-              row.afterHeavyRain.productTankDrain == null ||
-              row.afterHeavyRain.productTankDrain.cleanlines == null
-                ? "-"
-                : row.afterHeavyRain.productTankDrain.cleanlines.label
-            }}</span>
+          <td class="text-left">
+            <span v-if="row.afterHeavyRain.productTankDrain == null">-</span>
+            <template
+              v-else
+              v-for="(row, index) in row.afterHeavyRain.productTankDrain
+                .cleanlinesIds"
+            >
+              <span v-bind:key="index">{{ row.label }}<br /></span>
+            </template>
           </td>
-          <td class="align-middle">
-            <span>{{
-              row.afterHeavyRain.productTankDrain == null ||
-              row.afterHeavyRain.productTankDrain.freeWater == null
-                ? "-"
-                : row.afterHeavyRain.productTankDrain.freeWater.label
-            }}</span>
+          <td class="text-left">
+            <span v-if="row.afterHeavyRain.productTankDrain == null">-</span>
+            <template
+              v-else
+              v-for="(row, index) in row.afterHeavyRain.productTankDrain
+                .freeWaterIds"
+            >
+              <span v-bind:key="index">{{ row.label }}<br /></span>
+            </template>
           </td>
-          <td class="align-middle">
-            <span>{{
-              row.afterHeavyRain.productTankDrain == null ||
-              row.afterHeavyRain.productTankDrain.waterDetector == null
-                ? "-"
-                : row.afterHeavyRain.productTankDrain.waterDetector.label
-            }}</span>
+          <td class="text-left">
+            <span v-if="row.afterHeavyRain.productTankDrain == null">-</span>
+            <template
+              v-else
+              v-for="(row, index) in row.afterHeavyRain.productTankDrain
+                .waterDetectorIds"
+            >
+              <span v-bind:key="index">{{ row.label }}<br /></span>
+            </template>
           </td>
-          <td class="align-middle">
-            <span>{{
-              row.afterHeavyRain.recoveryTankDrain == null ||
-              row.afterHeavyRain.recoveryTankDrain.colour == null
-                ? "-"
-                : row.afterHeavyRain.recoveryTankDrain.colour.label
-            }}</span>
+
+          <td class="text-left">
+            <span v-if="row.afterHeavyRain.recoveryTankDrain == null">-</span>
+            <template
+              v-else
+              v-for="(row, index) in row.afterHeavyRain.recoveryTankDrain
+                .colourIds"
+            >
+              <span v-bind:key="index">{{ row.label }}<br /></span>
+            </template>
           </td>
-          <td class="align-middle">
-            <span>{{
-              row.afterHeavyRain.recoveryTankDrain == null ||
-              row.afterHeavyRain.recoveryTankDrain.cleanlines == null
-                ? "-"
-                : row.afterHeavyRain.recoveryTankDrain.cleanlines.label
-            }}</span>
+          <td class="text-left">
+            <span v-if="row.afterHeavyRain.recoveryTankDrain == null">-</span>
+            <template
+              v-else
+              v-for="(row, index) in row.afterHeavyRain.recoveryTankDrain
+                .cleanlinesIds"
+            >
+              <span v-bind:key="index">{{ row.label }}<br /></span>
+            </template>
           </td>
-          <td class="align-middle">
-            <span>{{
-              row.afterHeavyRain.recoveryTankDrain == null ||
-              row.afterHeavyRain.recoveryTankDrain.freeWater == null
-                ? "-"
-                : row.afterHeavyRain.recoveryTankDrain.freeWater.label
-            }}</span>
+          <td class="text-left">
+            <span v-if="row.afterHeavyRain.recoveryTankDrain == null">-</span>
+            <template
+              v-else
+              v-for="(row, index) in row.afterHeavyRain.recoveryTankDrain
+                .freeWaterIds"
+            >
+              <span v-bind:key="index">{{ row.label }}<br /></span>
+            </template>
           </td>
-          <td class="align-middle">
-            <span>{{
-              row.afterHeavyRain.recoveryTankDrain == null ||
-              row.afterHeavyRain.recoveryTankDrain.waterDetector == null
-                ? "-"
-                : row.afterHeavyRain.recoveryTankDrain.waterDetector.label
-            }}</span>
+          <td class="text-left">
+            <span v-if="row.afterHeavyRain.recoveryTankDrain == null">-</span>
+            <template
+              v-else
+              v-for="(row, index) in row.afterHeavyRain.recoveryTankDrain
+                .waterDetectorIds"
+            >
+              <span v-bind:key="index">{{ row.label }}<br /></span>
+            </template>
           </td>
-          <!-- END AFTER WASH -->
+          <!-- END AFTER HEAVY RAIN -->
 
           <td class="align-middle">
             <span>{{ row.afterTopingUp.length }} Records</span>
@@ -367,6 +423,13 @@ export default {
   methods: {
     onRowSelected(params) {
       this.$emit("onRowSelected", params);
+    },
+    setValue(params) {
+      if (params.length == 0) {
+        return `<span>-</span>`;
+      } else {
+        return params.map(x => `<span>${x.label}</span>`);
+      }
     }
   }
 };

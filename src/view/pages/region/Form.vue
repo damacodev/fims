@@ -1,5 +1,5 @@
 <template>
-  <CardForm :title="title" :subTitle="subTitle">
+  <CardForm :title="title" :subTitle="subTitle" :backButton="true">
     <template #toolbar>
       <b-button
         v-show="$route.name != route.form"

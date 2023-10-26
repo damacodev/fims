@@ -2,8 +2,13 @@
   <div class="card card-custom">
     <div class="card-header py-3">
       <div class="card-title align-items-start flex-column">
-        <h3 class="card-label font-weight-bolder text-dark">{{ title }}</h3>
-        <span class="text-muted font-weight-bold font-size-sm mt-1">
+        <h3 class="card-label font-weight-bolder text-dark">
+          <b-button class="btn-icon mr-2" size="xs" @click="$router.go(-1)">
+            <i class="flaticon2-back" />
+          </b-button>
+          {{ title }}
+        </h3>
+        <span class="text-muted font-weight-bold font-size-sm mt-1 pl-10">
           {{ subTitle }}
         </span>
       </div>
@@ -17,16 +22,8 @@
         >
           Delete
         </b-button>
-        <b-button
-          variant="primary"
-          size="lg"
-          class="mr-2"
-          @click="handleSubmit"
-        >
+        <b-button variant="primary" size="lg" @click="handleSubmit">
           {{ textButton }}
-        </b-button>
-        <b-button variant="secondary" size="lg" @click="$router.go(-1)">
-          Back
         </b-button>
       </div>
     </div>
