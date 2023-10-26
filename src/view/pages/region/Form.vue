@@ -3,7 +3,7 @@
     <template #toolbar>
       <b-button
         v-show="$route.name != route.form"
-        class="mr-10"
+        class="mr-2"
         variant="outline-danger"
         size="lg"
         @click="handleDelete"

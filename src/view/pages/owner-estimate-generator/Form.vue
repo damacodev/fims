@@ -8,7 +8,7 @@
           </b-button>
           {{ title }}
         </h3>
-        <span class="text-muted font-weight-bold font-size-sm mt-1">
+        <span class="text-muted font-weight-bold font-size-sm mt-1 pl-10">
           {{ subTitle }}
         </span>
       </div>
@@ -17,7 +17,7 @@
           v-show="$route.name != route.form"
           variant="outline-danger"
           size="lg"
-          class="mr-10"
+          class="mr-2"
           @click="handleDelete"
         >
           Delete

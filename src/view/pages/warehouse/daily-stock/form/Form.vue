@@ -5,7 +5,6 @@
         v-show="$route.name != route.form"
         variant="outline-danger"
         size="lg"
-        class="mr-10"
         @click="handleDelete"
       >
         Delete

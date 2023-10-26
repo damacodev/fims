@@ -2,7 +2,7 @@
   <CardForm :title="title" :subTitle="subTitle" :backButton="true">
     <template #toolbar>
       <b-button-group
-        class="mr-10"
+        class="mr-2"
         v-show="$route.name != route.form && user.email != form.email"
       >
         <b-button

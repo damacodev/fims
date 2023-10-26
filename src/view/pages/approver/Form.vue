@@ -1,7 +1,7 @@
 <template>
   <CardForm :title="title" :subTitle="subTitle" :backButton="true">
     <template #toolbar>
-      <b-button-group class="mr-10" v-show="$route.name != route.form">
+      <b-button-group class="mr-2" v-show="$route.name != route.form">
         <b-button variant="outline-danger" size="lg" @click="handleDelete">
           Delete
         </b-button>
