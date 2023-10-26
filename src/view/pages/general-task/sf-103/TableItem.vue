@@ -29,42 +29,46 @@
     <b-tbody>
       <template v-for="(row, index) in rows">
         <b-tr v-bind:key="index" @click="onRowSelected(row)">
-          <td class="align-middle">
+          <td>
             {{ dateTimeFormat(row.recordTime, "HH:mm") }}
           </td>
-          <td class="align-middle">{{ row.bridgerNo }}</td>
-          <td class="align-middle">{{ row.bppNo }}</td>
-          <td class="align-middle text-right">
+          <td>{{ row.bridgerNo }}</td>
+          <td>{{ row.bppNo }}</td>
+          <td class="text-right">
             {{ setVolume(row.volume) }}
           </td>
-          <td class="align-middle">{{ row.seal }}</td>
-          <td class="align-middle">{{ row.receivingDocument.afrnNo }}</td>
-          <td class="align-middle text-right">
+          <td>{{ row.seal }}</td>
+          <td>{{ row.receivingDocument.afrnNo }}</td>
+          <td class="text-right">
             {{ setDensity(row.receivingDocument.densityObserved) }}
           </td>
-          <td class="align-middle text-right">
+          <td class="text-right">
             {{ setTemperature(row.receivingDocument.temperature) }}
           </td>
-          <td class="align-middle text-right">
+          <td class="text-right">
             {{ setDensity(row.receivingDocument.densityAt15Celcius) }}
           </td>
-          <td class="align-middle text-right">
+          <td class="text-right">
             {{ setDensity(row.visualCheck.densityObserved) }}
           </td>
-          <td class="align-middle text-right">
+          <td class="text-right">
             {{ setTemperature(row.visualCheck.temperature) }}
           </td>
-          <td class="align-middle text-right">
+          <td class="text-right">
             {{ setDensity(row.visualCheck.densityAt15Celcius) }}
           </td>
-          <td class="align-middle text-right">
+          <td class="text-right">
             {{ row.visualCheck.maximumDifferential }}
           </td>
-          <td class="align-middle">{{ row.appearanceIds.join("/") }}</td>
-          <td class="align-middle text-right">
+          <td class="text-left">
+            <template v-for="(row, index) in row.appearanceIds">
+              <span v-bind:key="index">{{ row.label }}<br /></span>
+            </template>
+          </td>
+          <td class="text-right">
             {{ setConductivity(row.conductivity) }}
           </td>
-          <td class="align-middle">{{ row.remarks }}</td>
+          <td>{{ row.remarks }}</td>
         </b-tr>
       </template>
     </b-tbody>

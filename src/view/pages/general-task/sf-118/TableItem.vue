@@ -404,7 +404,7 @@
           </td>
           <!-- END AFTER HEAVY RAIN -->
 
-          <td class="align-middle">
+          <td>
             <span>{{ row.afterTopingUp.length }} Records</span>
           </td>
         </b-tr>

@@ -228,7 +228,13 @@ export default {
               }
             };
 
-            self.table.rows = response.data.details;
+            self.table.rows = response.data.currentProgress.locked
+              ? response.data.details
+              : response.data.details.map(x => ({
+                  id: x.id,
+                  equipment: x.equipment,
+                  resultIds: x.resultIds.map(y => y.id)
+                }));
           }
         })
         .finally(() => loader.hide());

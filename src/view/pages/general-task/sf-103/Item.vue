@@ -200,7 +200,14 @@
               <PlainText label="BPP No" :value="form.bppNo" />
               <PlainText label="Volume" :value="setVolume(form.volume)" />
               <PlainText label="Seal / Segel" :value="form.seal" />
-              <PlainText label="Appearance" :value="form.appearanceIds" />
+              <PlainText label="Appearance">
+                <template #value>
+                  <span v-if="form.appearanceIds.length == 0">-</span>
+                  <template v-else v-for="(row, index) in form.appearanceIds">
+                    <span v-bind:key="index">{{ row.label }}<br /></span>
+                  </template>
+                </template>
+              </PlainText>
               <PlainText
                 label="Conductivity"
                 :value="setConductivity(form.conductivity)"
@@ -385,7 +392,7 @@ export default {
       self.getById();
     }
 
-    self.form.time = "10:22";
+    /* self.form.time = "10:22";
     self.form.bridgerNo = "BR123";
     self.form.bppNo = "BPP123";
     self.form.volume = 9800;
@@ -403,7 +410,7 @@ export default {
       maximumDifferential: 43.123
     };
     // self.form.appearanceIds = "1E";
-    self.form.conductivity = 32;
+    self.form.conductivity = 32; */
   },
   methods: {
     setVolume,
@@ -479,7 +486,9 @@ export default {
             self.form.seal = response.data.seal;
             self.form.receivingDocument = response.data.receivingDocument;
             self.form.visualCheck = response.data.visualCheck;
-            self.form.appearanceIds = response.data.appearanceIds;
+            self.form.appearanceIds = !self.currentProgress.locked
+              ? response.data.appearanceIds
+              : response.data.appearanceIds.map(x => x.id);
             self.form.conductivity = response.data.conductivity;
             self.form.remarks = response.data.remarks;
           }

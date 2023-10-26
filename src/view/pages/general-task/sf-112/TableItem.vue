@@ -12,8 +12,13 @@
     <b-tbody>
       <template v-for="(row, index) in rows">
         <b-tr v-bind:key="index">
-          <td class="align-middle">{{ row.equipment.label }}</td>
-          <td class="align-middle" style="width: 150px;">
+          <td v-bind:class="buttonVisibility ? `align-middle` : ``">
+            {{ row.equipment.label }}
+          </td>
+          <td
+            v-bind:class="buttonVisibility ? `align-middle` : ``"
+            style="width: 150px"
+          >
             <b-input-group v-if="buttonVisibility" append="L">
               <b-input
                 v-model="row.volume"
@@ -25,7 +30,7 @@
               {{ row.volume == null ? "-" : setVolume(row.volume) }}
             </span>
           </td>
-          <td class="align-middle">
+          <td v-bind:class="buttonVisibility ? `align-middle` : ``">
             <treeselect
               v-if="buttonVisibility"
               placeholder="Select result before"
@@ -35,15 +40,14 @@
               :multiple="true"
               @input="handleSubmit(row)"
             />
-            <span v-else>
-              {{
-                row.resultBeforeIds.length == 0
-                  ? "-"
-                  : row.resultBeforeIds.join("/")
-              }}
-            </span>
+            <template v-else>
+              <span v-if="row.resultBeforeIds.length == 0">-</span>
+              <template v-else v-for="(row, index) in row.resultBeforeIds">
+                <span v-bind:key="index">{{ row.label }}<br /></span>
+              </template>
+            </template>
           </td>
-          <td class="align-middle">
+          <td v-bind:class="buttonVisibility ? `align-middle` : ``">
             <treeselect
               v-if="buttonVisibility"
               placeholder="Select result after"
@@ -53,21 +57,20 @@
               :multiple="true"
               @input="handleSubmit(row)"
             />
-            <span v-else>
-              {{
-                row.resultAfterIds.length == 0
-                  ? "-"
-                  : row.resultAfterIds.join("/")
-              }}
-            </span>
+            <template v-else>
+              <span v-if="row.resultAfterIds.length == 0">-</span>
+              <template v-else v-for="(row, index) in row.resultAfterIds">
+                <span v-bind:key="index">{{ row.label }}<br /></span>
+              </template>
+            </template>
           </td>
-          <td class="align-middle">
+          <td v-bind:class="buttonVisibility ? `align-middle` : ``">
             <b-input
               v-if="buttonVisibility"
               v-model="row.receiverTank"
               type="text"
               @blur="handleSubmit(row)"
-              style="width: 200px;"
+              style="width: 200px"
             />
             <span v-else>
               {{ row.receiverTank == null ? "-" : row.receiverTank }}

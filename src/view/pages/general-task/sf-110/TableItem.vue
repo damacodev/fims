@@ -9,8 +9,10 @@
     <b-tbody>
       <template v-for="(row, index) in rows">
         <b-tr v-bind:key="index">
-          <td class="align-middle" width="50%">{{ row.equipment.label }}</td>
-          <td class="align-middle" width="50%">
+          <td v-bind:class="buttonVisibility ? `align-middle` : ``" width="50%">
+            {{ row.equipment.label }}
+          </td>
+          <td v-bind:class="buttonVisibility ? `align-middle` : ``" width="50%">
             <treeselect
               v-if="buttonVisibility"
               placeholder="Select result"
@@ -20,9 +22,12 @@
               :multiple="true"
               @input="handleSubmit(index)"
             />
-            <span v-else>
-              {{ row.resultIds.length == 0 ? "-" : row.resultIds.join("/") }}
-            </span>
+            <template v-else>
+              <span v-if="row.resultIds.length == 0">-</span>
+              <template v-else v-for="(row, index) in row.resultIds">
+                <span v-bind:key="index">{{ row.label }}<br /></span>
+              </template>
+            </template>
           </td>
         </b-tr>
       </template>
