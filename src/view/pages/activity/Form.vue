@@ -302,7 +302,7 @@ export default {
     changeStandardForm(params) {
       const self = this;
 
-      self.form.title = null;
+      if (self.$route.name == self.route.form) self.form.title = null;
 
       let find = self.options.standardForm.find(x => x.id == params);
       if (isNullOrEmpty(self.form.title)) self.form.title = find.label;

@@ -116,6 +116,7 @@ export function indonesianDatetime(date) {
 }
 
 export function dateTimeFormat(date, format) {
+  if (date == null) return "-";
   moment.locale("en-id");
   format = format || "DD/MM/YYYY HH:mm:ss";
   return moment(date).format(format);

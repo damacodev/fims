@@ -79,6 +79,9 @@
     <template #cell(plant)="data">
       {{ data.item.dppu.map(x => x.label).join(", ") }}
     </template>
+    <template #cell(lastSignedIn)="data">
+      {{ dateTimeFormat(data.item.lastSignedIn) }}
+    </template>
     <template #cell(actived)="data">
       <span v-show="data.item.actived" class="text-success">Active</span>
       <span v-show="!data.item.actived" class="text-danger">Inactive</span>
@@ -90,7 +93,7 @@
 import { mapGetters } from "vuex";
 import { userManagement as columns } from "@/core/datasource/columns";
 import { status } from "@/core/datasource/options";
-import { getDppu, getRole } from "@/core/utils";
+import { getDppu, getRole, dateTimeFormat } from "@/core/utils";
 
 export default {
   data: () => ({
@@ -149,6 +152,7 @@ export default {
     self.getAll();
   },
   methods: {
+    dateTimeFormat,
     updateParams(newProps) {
       this.serverParams = Object.assign({}, this.serverParams, newProps);
     },

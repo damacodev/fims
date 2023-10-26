@@ -137,6 +137,11 @@ export const userManagement = [
     thClass: "align-middle"
   },
   {
+    label: "Last Signed In",
+    key: "lastSignedIn",
+    thClass: "align-middle"
+  },
+  {
     label: "Status",
     key: "actived",
     thClass: "align-middle"
