@@ -16,7 +16,6 @@
         <b-button
           v-show="currentProgress.locked"
           variant="outline-primary"
-          class="mr-2"
           @click="handleDownload"
         >
           Download
@@ -25,7 +24,7 @@
           v-show="$route.name != route.form && !currentProgress.locked"
           variant="outline-danger"
           size="lg"
-          class="mr-10"
+          class="mr-2"
           @click="handleDelete"
         >
           Delete
@@ -47,7 +46,6 @@
           v-show="!currentProgress.locked"
           variant="primary"
           size="lg"
-          class="mr-2"
           @click="handleSubmit"
         >
           {{ textButton }}
