@@ -196,6 +196,30 @@ export default new Router({
                     import("@/view/pages/general-task/sf-118/Item")
                 }
               ]
+            },
+            {
+              path: "sf-123",
+              component: () => import("@/view/pages/general-task/sf-123"),
+              children: [
+                {
+                  path: "/",
+                  name: "sf123",
+                  component: () =>
+                    import("@/view/pages/general-task/sf-123/Table.vue")
+                },
+                {
+                  path: "form/:id",
+                  name: "sf123Update",
+                  component: () =>
+                    import("@/view/pages/general-task/sf-123/Form")
+                },
+                {
+                  path: "form/:id/item/:iditem",
+                  name: "sf123UpdateItem",
+                  component: () =>
+                    import("@/view/pages/general-task/sf-123/Item")
+                }
+              ]
             }
           ]
         },
