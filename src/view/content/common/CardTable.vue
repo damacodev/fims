@@ -35,7 +35,8 @@
             button-variant="outline-secondary"
             class="ml-2 mb-2"
           >
-            <i class="fas fa-filter"></i> Add Filter
+            <i class="fas fa-filter"></i>
+            {{ addFilter ? "Hide" : "Show" }} Filter
           </b-form-checkbox>
         </b-col>
         <b-col xl="4">

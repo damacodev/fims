@@ -7,9 +7,16 @@
     :use-label="useLabel"
     :use-horizontal="useHorizontal"
   >
-    <money v-model="model" v-bind="money" :class="contentClass"></money>
+    <b-input-group :append="append">
+      <money v-model="model" v-bind="money" :class="contentClass"></money>
+    </b-input-group>
   </form-group>
 </template>
+
+<style lang="sass" scoped>
+.input-group-text
+  border: unset !important
+</style>
 
 <script>
 import { Money } from "v-money";
@@ -41,18 +48,38 @@ export default {
     value: {
       type: [String, Number],
       required: false
-    }
+    },
+    usePrefix: {
+      type: Boolean,
+      default: true
+    },
+    precision: {
+      type: Number,
+      default: 0
+    },
+    append: String
   },
-  data: () => ({
-    money: {
-      decimal: ",",
-      thousands: ".",
-      prefix: "Rp ",
-      precision: 0,
-      masked: false /* doesn't work with directive */
-    }
-  }),
   computed: {
+    money() {
+      const self = this;
+
+      if (self.usePrefix) {
+        return {
+          decimal: ",",
+          thousands: ".",
+          prefix: "Rp ",
+          precision: self.precision,
+          masked: false /* doesn't work with directive */
+        };
+      } else {
+        return {
+          decimal: ",",
+          thousands: ".",
+          precision: self.precision,
+          masked: false /* doesn't work with directive */
+        };
+      }
+    },
     model: {
       get() {
         return this.value;

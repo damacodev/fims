@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="d-flex align-items-center justify-content-between"
-    :class="mb ? 'mb-2' : ''"
-  >
+  <div class="d-flex justify-content-between" :class="mb ? 'mb-2' : ''">
     <span class="mr-2">{{ label }}</span>
     <span v-if="oldValue != null && value != oldValue" class="text-right">
       <span class="text-decoration-line-through text-muted">{{

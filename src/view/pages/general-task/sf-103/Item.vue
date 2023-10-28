@@ -20,276 +20,36 @@
       </b-button>
     </template>
     <template slot="form">
-      <b-form @submit.stop.prevent="handleSubmit">
-        <div class="card-body">
-          <FormHeader
-            :form="form"
-            :currentProgress="currentProgress"
-            :showRemarks="false"
-          />
-          <hr />
-          <b-row v-if="!currentProgress.locked">
-            <b-col lg="3">
-              <b-row>
-                <b-col lg="12">
-                  <h5 class="font-weight-bold mb-6">General Data</h5>
-                </b-col>
-              </b-row>
-              <InputText
-                label="Record Time"
-                type="time"
-                v-model="form.time"
-                :v="$v.form.time"
-                :useHorizontal="false"
-              />
-              <InputText
-                label="Bridger No"
-                type="text"
-                v-model="form.bridgerNo"
-                :v="$v.form.bridgerNo"
-                :useHorizontal="false"
-              />
-              <InputText
-                label="BPP No"
-                type="text"
-                v-model="form.bppNo"
-                :v="$v.form.bppNo"
-                :useHorizontal="false"
-              />
-              <InputText
-                label="Volume"
-                type="number"
-                v-model="form.volume"
-                :v="$v.form.volume"
-                :step="2"
-                :useHorizontal="false"
-                append="LTR"
-              />
-              <InputText
-                label="Seal / Segel"
-                type="text"
-                v-model="form.seal"
-                :v="$v.form.seal"
-                :useHorizontal="false"
-              />
-            </b-col>
-            <b-col lg="3">
-              <b-row>
-                <b-col lg="12">
-                  <h5 class="font-weight-bold mb-6">Receiving Document</h5>
-                </b-col>
-              </b-row>
-              <InputText
-                label="Aviation Fuel Delivery Release Note"
-                type="text"
-                v-model="form.receivingDocument.afrnNo"
-                :v="$v.form.receivingDocument.afrnNo"
-                :useHorizontal="false"
-              />
-              <InputText
-                label="Density Observed"
-                type="number"
-                v-model="form.receivingDocument.densityObserved"
-                :v="$v.form.receivingDocument.densityObserved"
-                :step="2"
-                :useHorizontal="false"
-                append="Kg/L"
-              />
-              <InputText
-                label="Temperature"
-                type="number"
-                v-model="form.receivingDocument.temperature"
-                :v="$v.form.receivingDocument.temperature"
-                :useHorizontal="false"
-                append="°C"
-              />
-              <InputText
-                label="Density 15°C"
-                type="number"
-                v-model="form.receivingDocument.densityAt15Celcius"
-                :v="$v.form.receivingDocument.densityAt15Celcius"
-                :step="2"
-                :useHorizontal="false"
-                append="Kg/L"
-              />
-            </b-col>
-            <b-col lg="3">
-              <b-row>
-                <b-col lg="12">
-                  <h5 class="font-weight-bold mb-6">Visual Check</h5>
-                </b-col>
-              </b-row>
-              <InputText
-                label="Density Observed"
-                type="number"
-                v-model="form.visualCheck.densityObserved"
-                :v="$v.form.visualCheck.densityObserved"
-                :step="2"
-                :useHorizontal="false"
-                append="Kg/L"
-              />
-              <InputText
-                label="Temperature"
-                type="number"
-                v-model="form.visualCheck.temperature"
-                :v="$v.form.visualCheck.temperature"
-                :useHorizontal="false"
-                append="°C"
-              />
-              <InputText
-                label="Density 15°C"
-                type="number"
-                v-model="form.visualCheck.densityAt15Celcius"
-                :v="$v.form.visualCheck.densityAt15Celcius"
-                :step="2"
-                :useHorizontal="false"
-                append="Kg/L"
-              />
-              <InputText
-                label="DIFF.max 0.003 Kg/L"
-                type="number"
-                v-model="form.visualCheck.maximumDifferential"
-                :v="$v.form.visualCheck.maximumDifferential"
-                :step="2"
-                :useHorizontal="false"
-              />
-            </b-col>
-            <b-col lg="3">
-              <b-row>
-                <b-col lg="12">
-                  <h5 class="font-weight-bold mb-6">Result</h5>
-                </b-col>
-              </b-row>
-              <Select
-                label="Appearance"
-                placeholder="Select appearance"
-                v-model="form.appearanceIds"
-                :v="$v.form.appearanceIds"
-                :options="options.appearance"
-                :multiple="true"
-                :useHorizontal="false"
-              />
-              <InputText
-                label="Conductivity"
-                type="number"
-                v-model="form.conductivity"
-                :v="$v.form.conductivity"
-                :step="2"
-                :useHorizontal="false"
-                append="pS/m"
-              />
-              <TextArea
-                label="Remarks"
-                type="text"
-                v-model="form.remarks"
-                :v="$v.form.remarks"
-                :useHorizontal="false"
-                :rows="6"
-              />
-            </b-col>
-          </b-row>
-          <b-row v-else>
-            <b-col lg="4">
-              <b-row>
-                <b-col lg="12">
-                  <h5 class="font-weight-bold mb-6">General Data</h5>
-                </b-col>
-              </b-row>
-              <PlainText label="Record Time" :value="form.time" />
-              <PlainText label="Bridger No" :value="form.bridgerNo" />
-              <PlainText label="BPP No" :value="form.bppNo" />
-              <PlainText label="Volume" :value="setVolume(form.volume)" />
-              <PlainText label="Seal / Segel" :value="form.seal" />
-              <PlainText label="Appearance">
-                <template #value>
-                  <span v-if="form.appearanceIds.length == 0">-</span>
-                  <template v-else v-for="(row, index) in form.appearanceIds">
-                    <span v-bind:key="index">{{ row.label }}<br /></span>
-                  </template>
-                </template>
-              </PlainText>
-              <PlainText
-                label="Conductivity"
-                :value="setConductivity(form.conductivity)"
-              />
-              <PlainText label="Remarks" :value="form.remarks" />
-            </b-col>
-            <b-col lg="4">
-              <b-row>
-                <b-col lg="12">
-                  <h5 class="font-weight-bold mb-6">Receiving Document</h5>
-                </b-col>
-              </b-row>
-              <PlainText
-                label="Aviation Fuel Delivery Release Note"
-                :value="form.receivingDocument.afrnNo"
-              />
-              <PlainText
-                label="Density Observed"
-                :value="setDensity(form.receivingDocument.densityObserved)"
-              />
-              <PlainText
-                label="Temperature"
-                :value="setTemperature(form.receivingDocument.temperature)"
-              />
-              <PlainText
-                label="Density 15°C"
-                :value="setDensity(form.receivingDocument.densityAt15Celcius)"
-              />
-            </b-col>
-            <b-col lg="4">
-              <b-row>
-                <b-col lg="12">
-                  <h5 class="font-weight-bold mb-6">Visual Check</h5>
-                </b-col>
-              </b-row>
-              <PlainText
-                label="Density Observed"
-                :value="setDensity(form.visualCheck.densityObserved)"
-              />
-              <PlainText
-                label="Temperature"
-                :value="setTemperature(form.visualCheck.temperature)"
-              />
-              <PlainText
-                label="Density 15°C"
-                :value="setDensity(form.visualCheck.densityAt15Celcius)"
-              />
-              <PlainText
-                label="DIFF.max 0.003 Kg/L"
-                :value="form.visualCheck.maximumDifferential"
-              />
-            </b-col>
-          </b-row>
-        </div>
-      </b-form>
+      <FormItem
+        v-if="!currentProgress.locked"
+        :form="form"
+        :currentProgress="currentProgress"
+        :validations="$v"
+        @onSubmit="handleSubmit"
+      />
+      <FormPlain v-else :form="form" :currentProgress="currentProgress" />
     </template>
   </CardForm>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
-import FormHeader from "./FormHeader.vue";
-import { apiUrl } from "@/core/services/api.url";
+import FormItem from "./FormItem.vue";
+import FormPlain from "./FormPlain.vue";
+
+import { dateFormat, dateTimeFormat } from "@/core/utils";
+
 import {
   required,
   integer,
   decimal,
   maxLength
 } from "vuelidate/lib/validators";
-import {
-  dateFormat,
-  dateTimeFormat,
-  getAppearance,
-  setVolume,
-  setDensity,
-  setTemperature,
-  setConductivity
-} from "@/core/utils";
 
 export default {
   components: {
-    FormHeader
+    FormItem,
+    FormPlain
   },
   data: () => ({
     title: "103 SF - Bridger Quality Control Before Receipt Record",
@@ -297,7 +57,6 @@ export default {
     route: {
       form: "sf103CreateItem"
     },
-    baseUrl: process.env.NODE_ENV === "production" ? apiUrl.prod : apiUrl.dev,
     form: {
       standardForm103Id: null,
       dppu: {
@@ -319,13 +78,17 @@ export default {
       bppNo: null,
       volume: null,
       seal: null,
+      tankBatchDocument: {
+        testReportNo: null,
+        densityAt15Celcius: null
+      },
       receivingDocument: {
         afrnNo: null,
         densityObserved: null,
         temperature: null,
         densityAt15Celcius: null
       },
-      visualCheck: {
+      controlCheck: {
         densityObserved: null,
         temperature: null,
         densityAt15Celcius: null,
@@ -333,7 +96,7 @@ export default {
       },
       appearanceIds: null,
       conductivity: null,
-      remarks: null
+      tankNo: null
     },
     currentProgress: {
       locked: null,
@@ -343,18 +106,8 @@ export default {
         id: null,
         label: null
       }
-    },
-    options: {
-      appearance: []
     }
   }),
-  computed: {
-    ...mapGetters("auth", ["user"]),
-    textButton() {
-      const self = this;
-      return self.$route.name != self.route.form ? "Update" : "Submit";
-    }
-  },
   validations: {
     form: {
       standardForm103Id: { required },
@@ -363,13 +116,17 @@ export default {
       bppNo: { required },
       volume: { required, decimal },
       seal: { required },
+      tankBatchDocument: {
+        testReportNo: { required },
+        densityAt15Celcius: { required, decimal }
+      },
       receivingDocument: {
         afrnNo: { required },
         densityObserved: { required, decimal },
         temperature: { required, integer },
         densityAt15Celcius: { required, decimal }
       },
-      visualCheck: {
+      controlCheck: {
         densityObserved: { required, decimal },
         temperature: { required, integer },
         densityAt15Celcius: { required, decimal },
@@ -377,16 +134,19 @@ export default {
       },
       appearanceIds: { required },
       conductivity: { required, integer },
-      remarks: { maxLength: maxLength(250) }
+      tankNo: { required, maxLength: maxLength(50) }
+    }
+  },
+  computed: {
+    ...mapGetters("auth", ["user"]),
+    textButton() {
+      const self = this;
+      return self.$route.name != self.route.form ? "Update" : "Submit";
     }
   },
   created() {
     const self = this;
     self.get();
-
-    getAppearance().then(response => {
-      self.options.appearance = response;
-    });
 
     if (self.$route.name != self.route.form) {
       self.getById();
@@ -403,7 +163,7 @@ export default {
       temperature: 26,
       densityAt15Celcius: 67.2
     };
-    self.form.visualCheck = {
+    self.form.controlCheck = {
       densityObserved: 87.4,
       temperature: 31,
       densityAt15Celcius: 54.22,
@@ -413,10 +173,6 @@ export default {
     self.form.conductivity = 32; */
   },
   methods: {
-    setVolume,
-    setDensity,
-    setTemperature,
-    setConductivity,
     get() {
       const self = this;
 
@@ -484,13 +240,14 @@ export default {
             self.form.bppNo = response.data.bppNo;
             self.form.volume = response.data.volume;
             self.form.seal = response.data.seal;
+            self.form.tankBatchDocument = response.data.tankBatchDocument;
             self.form.receivingDocument = response.data.receivingDocument;
-            self.form.visualCheck = response.data.visualCheck;
-            self.form.appearanceIds = !self.currentProgress.locked
+            self.form.controlCheck = response.data.controlCheck;
+            self.form.appearanceIds = self.currentProgress.locked
               ? response.data.appearanceIds
               : response.data.appearanceIds.map(x => x.id);
             self.form.conductivity = response.data.conductivity;
-            self.form.remarks = response.data.remarks;
+            self.form.tankNo = response.data.tankNo;
           }
         })
         .finally(() => loader.hide());
