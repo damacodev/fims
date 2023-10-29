@@ -20,9 +20,10 @@
             style="width: 150px"
           >
             <b-input-group v-if="buttonVisibility" append="L">
-              <b-input
+              <money
                 v-model="row.volume"
-                type="number"
+                v-bind="money"
+                class="form-control"
                 @blur="handleSubmit(row)"
               />
             </b-input-group>
@@ -83,17 +84,26 @@
 </template>
 
 <script>
+import { Money } from "v-money";
 import { getAppearance } from "@/core/utils";
-
 import { setVolume } from "@/core/utils";
 
 export default {
+  components: {
+    Money
+  },
   props: {
     transactionDate: String,
     rows: Array,
     buttonVisibility: Boolean
   },
   data: () => ({
+    money: {
+      decimal: ",",
+      thousands: ".",
+      precision: 0,
+      masked: false /* doesn't work with directive */
+    },
     options: {
       appearance: []
     }

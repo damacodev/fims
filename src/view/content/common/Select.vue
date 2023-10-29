@@ -20,9 +20,29 @@
       :load-options="loadOptions"
       :default-expand-level="1"
       :placeholder="placeholder"
+      :class="cssClass"
     />
   </form-group>
 </template>
+
+<style lang="sass">
+.vue-treeselect--open-below .vue-treeselect__menu
+  margin-top: -8px !important
+
+.vue-treeselect--open-above .vue-treeselect__menu
+  margin-bottom: -8px !important
+
+.vue-treeselect__control
+  border-radius: 0.83rem !important
+  height: 38.4px !important
+
+.vue-treeselect__large .vue-treeselect__control
+  height: 44px !important
+
+.vue-treeselect__large .vue-treeselect__placeholder,
+.vue-treeselect__large .vue-treeselect__single-value
+  padding-top: 4px !important
+</style>
 
 <script>
 export default {
@@ -60,7 +80,11 @@ export default {
       type: Boolean,
       default: false
     },
-    loadOptions: Function
+    loadOptions: Function,
+    cssClass: {
+      type: String,
+      default: "vue-treeselect__large"
+    }
   },
   computed: {
     model: {

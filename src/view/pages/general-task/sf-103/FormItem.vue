@@ -11,7 +11,7 @@
         <b-col lg="12">
           <b-row>
             <b-col lg="12">
-              <h5 class="font-weight-bold mb-6">General Data</h5>
+              <h5 class="font-weight-bolder mb-6">General Data</h5>
             </b-col>
           </b-row>
           <b-row>
@@ -52,7 +52,7 @@
                 :v="validations.form.volume"
                 :useHorizontal="false"
                 :usePrefix="false"
-                :precision="2"
+                :precision="4"
                 append="LTR"
               />
             </b-col>
@@ -68,7 +68,7 @@
           </b-row>
           <b-row>
             <b-col lg="12">
-              <h5 class="font-weight-bold mb-6">Tank Batch Document</h5>
+              <h5 class="font-weight-bolder mb-6">Tank Batch Document</h5>
             </b-col>
           </b-row>
           <b-row>
@@ -89,7 +89,7 @@
                 :v="validations.form.tankBatchDocument.densityAt15Celcius"
                 :useHorizontal="false"
                 :usePrefix="false"
-                :precision="2"
+                :precision="4"
                 append="Kg/L"
                 @input="calculate"
               />
@@ -97,7 +97,7 @@
           </b-row>
           <b-row>
             <b-col lg="12">
-              <h5 class="font-weight-bold mb-6">Receiving Document</h5>
+              <h5 class="font-weight-bolder mb-6">Receiving Document</h5>
             </b-col>
           </b-row>
           <b-row>
@@ -118,7 +118,7 @@
                 :v="validations.form.receivingDocument.densityObserved"
                 :useHorizontal="false"
                 :usePrefix="false"
-                :precision="2"
+                :precision="4"
                 append="Kg/L"
               />
             </b-col>
@@ -142,14 +142,14 @@
                 :v="validations.form.receivingDocument.densityAt15Celcius"
                 :useHorizontal="false"
                 :usePrefix="false"
-                :precision="2"
+                :precision="4"
                 append="Kg/L"
               />
             </b-col>
           </b-row>
           <b-row>
             <b-col lg="12">
-              <h5 class="font-weight-bold mb-6">Control Check</h5>
+              <h5 class="font-weight-bolder mb-6">Control Check</h5>
             </b-col>
           </b-row>
           <b-row>
@@ -161,7 +161,7 @@
                 :v="validations.form.controlCheck.densityObserved"
                 :useHorizontal="false"
                 :usePrefix="false"
-                :precision="2"
+                :precision="4"
                 append="Kg/L"
               />
             </b-col>
@@ -185,7 +185,7 @@
                 :v="validations.form.controlCheck.densityAt15Celcius"
                 :useHorizontal="false"
                 :usePrefix="false"
-                :precision="2"
+                :precision="4"
                 append="Kg/L"
                 @input="calculate"
               />
@@ -197,14 +197,14 @@
                 v-model="form.controlCheck.maximumDifferential"
                 :v="validations.form.controlCheck.maximumDifferential"
                 :usePrefix="false"
-                :precision="2"
+                :precision="4"
                 :useHorizontal="false"
               />
             </b-col>
           </b-row>
           <b-row>
             <b-col lg="12">
-              <h5 class="font-weight-bold mb-6">Product Received</h5>
+              <h5 class="font-weight-bolder mb-6">Product Received</h5>
             </b-col>
           </b-row>
           <b-row>

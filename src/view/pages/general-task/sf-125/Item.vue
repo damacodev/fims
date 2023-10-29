@@ -52,13 +52,13 @@ export default {
     FormPlain
   },
   data: () => ({
-    title: "103 SF - Bridger Quality Control Before Receipt Record",
+    title: "125 SF - Data Penerimaan Avtur",
     subTitle: "You can make a record here",
     route: {
-      form: "sf103CreateItem"
+      form: "sf125CreateItem"
     },
     form: {
-      standardForm103Id: null,
+      standardForm125Id: null,
       dppu: {
         id: null,
         label: null
@@ -69,34 +69,36 @@ export default {
         id: null,
         label: null
       },
-      grade: null,
       updatedBy: null,
       updatedAt: null,
       time: null,
       recordTime: null,
-      bridgerNo: null,
-      bppNo: null,
-      volume: null,
-      seal: null,
-      tankBatchDocument: {
-        testReportNo: null,
-        densityAt15Celcius: null
+      equipment: {
+        id: null,
+        label: null
       },
-      receivingDocument: {
-        afrnNo: null,
-        densityObserved: null,
-        temperature: null,
-        densityAt15Celcius: null
+      equipmentId: null,
+      strainer: {
+        s101A: null,
+        s101B: null,
+        s101C: null,
+        s101D: null
       },
-      controlCheck: {
-        densityObserved: null,
-        temperature: null,
-        densityAt15Celcius: null,
-        maximumDifferential: null
+      microFiber: {
+        s102A: null,
+        s102B: null
       },
-      appearanceIds: [],
-      conductivity: null,
-      tankNo: null
+      filterSeparator: {
+        s103A: null,
+        s103B: null
+      },
+      densityObserved: null,
+      temperatureObserved: null,
+      elcond: null,
+      flowRate: null,
+      jumlahTransfer: null,
+      visualCheckIds: [],
+      remarks: null
     },
     currentProgress: {
       locked: null,
@@ -110,31 +112,29 @@ export default {
   }),
   validations: {
     form: {
-      standardForm103Id: { required },
+      standardForm125Id: { required },
       time: { required },
-      bridgerNo: { required },
-      bppNo: { required },
-      volume: { required, decimal },
-      seal: { required },
-      tankBatchDocument: {
-        testReportNo: { required },
-        densityAt15Celcius: { required, decimal }
+      equipmentId: { required },
+      strainer: {
+        s101A: { required },
+        s101B: { required },
+        s101C: { required },
+        s101D: { required }
       },
-      receivingDocument: {
-        afrnNo: { required },
-        densityObserved: { required, decimal },
-        temperature: { required, integer },
-        densityAt15Celcius: { required, decimal }
+      microFiber: {
+        s102A: { required, integer },
+        s102B: { required, integer }
       },
-      controlCheck: {
-        densityObserved: { required, decimal },
-        temperature: { required, integer },
-        densityAt15Celcius: { required, decimal },
-        maximumDifferential: { required, decimal }
+      filterSeparator: {
+        s103A: { required, integer },
+        s103B: { required, integer }
       },
-      appearanceIds: { required },
-      conductivity: { required, integer },
-      tankNo: { required, maxLength: maxLength(50) }
+      densityObserved: { required, decimal },
+      temperatureObserved: { required },
+      elcond: { required },
+      flowRate: { required, decimal },
+      visualCheckIds: { required },
+      remarks: { maxLength: maxLength(50) }
     }
   },
   computed: {
@@ -147,26 +147,6 @@ export default {
   created() {
     const self = this;
     self.get();
-
-    /* self.form.time = "10:22";
-    self.form.bridgerNo = "BR123";
-    self.form.bppNo = "BPP123";
-    self.form.volume = 9800;
-    self.form.seal = "S123";
-    self.form.receivingDocument = {
-      afrnNo: "AFRN123",
-      densityObserved: 90.8,
-      temperature: 26,
-      densityAt15Celcius: 67.2
-    };
-    self.form.controlCheck = {
-      densityObserved: 87.4,
-      temperature: 31,
-      densityAt15Celcius: 54.22,
-      maximumDifferential: 43.123
-    };
-    // self.form.appearanceIds = "1E";
-    self.form.conductivity = 32; */
   },
   methods: {
     get() {
@@ -175,7 +155,7 @@ export default {
       let loader = self.$loading.show();
       self.$store
         .dispatch("apis/get", {
-          url: `/board/standard-form/103/${self.$route.params.id}`
+          url: `/board/standard-form/125/${self.$route.params.id}`
         })
         .then(response => {
           if (response.error) {
@@ -186,7 +166,7 @@ export default {
 
             self.$router.push({ name: self.route.table });
           } else {
-            self.form.standardForm103Id = response.data.id;
+            self.form.standardForm125Id = response.data.id;
             self.form.dppu = response.data.dppu;
             self.form.transactionId = response.data.transactionId;
             self.form.transactionDate = dateFormat(
@@ -224,7 +204,7 @@ export default {
       let loader = self.$loading.show();
       self.$store
         .dispatch("apis/get", {
-          url: `/board/standard-form/103/record/${self.$route.params.iditem}`
+          url: `/board/standard-form/125/record/${self.$route.params.iditem}`
         })
         .then(response => {
           if (response.error) {
@@ -236,18 +216,20 @@ export default {
             self.$router.push({ name: self.route.table });
           } else {
             self.form.time = dateTimeFormat(response.data.recordTime, "HH:mm");
-            self.form.bridgerNo = response.data.bridgerNo;
-            self.form.bppNo = response.data.bppNo;
-            self.form.volume = response.data.volume;
-            self.form.seal = response.data.seal;
-            self.form.tankBatchDocument = response.data.tankBatchDocument;
-            self.form.receivingDocument = response.data.receivingDocument;
-            self.form.controlCheck = response.data.controlCheck;
-            self.form.appearanceIds = self.currentProgress.locked
-              ? response.data.appearanceIds
-              : response.data.appearanceIds.map(x => x.id);
-            self.form.conductivity = response.data.conductivity;
-            self.form.tankNo = response.data.tankNo;
+            self.form.equipment = response.data.equipment;
+            self.form.equipmentId = response.data.equipment.id;
+            self.form.strainer = response.data.strainer;
+            self.form.microFiber = response.data.microFiber;
+            self.form.filterSeparator = response.data.filterSeparator;
+            self.form.densityObserved = response.data.densityObserved;
+            self.form.temperatureObserved = response.data.temperatureObserved;
+            self.form.elcond = response.data.elcond;
+            self.form.flowRate = response.data.flowRate;
+            self.form.jumlahTransfer = response.data.jumlahTransfer;
+            self.form.visualCheckIds = self.currentProgress.locked
+              ? response.data.visualCheckIds
+              : response.data.visualCheckIds.map(x => x.id);
+            self.form.remarks = response.data.remarks;
           }
         })
         .finally(() => loader.hide());
@@ -267,12 +249,12 @@ export default {
         _confirmText = "You are about to submit this record. Are you sure ?";
         _okText = "Yes, Submit";
         _action = "apis/post";
-        _url = "/board/standard-form/103/record";
+        _url = "/board/standard-form/125/record";
       } else {
         _confirmText = "You are about to update this record. Are you sure ?";
         _okText = "Yes, Update";
         _action = "apis/put";
-        _url = `/board/standard-form/103/record/${self.$route.params.iditem}`;
+        _url = `/board/standard-form/125/record/${self.$route.params.iditem}`;
       }
 
       self.$dialog
@@ -321,7 +303,7 @@ export default {
         .then(dialog => {
           self.$store
             .dispatch("apis/remove", {
-              url: `/board/standard-form/103/record/${self.$route.params.iditem}`
+              url: `/board/standard-form/125/record/${self.$route.params.iditem}`
             })
             .then(response => {
               dialog.close();

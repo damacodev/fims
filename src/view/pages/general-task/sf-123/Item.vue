@@ -95,48 +95,48 @@ export default {
       everyDay: {
         recoveryTank: {
           id: null,
-          colourIds: null,
-          cleanlinesIds: null,
-          freeWaterIds: null,
+          colourIds: [],
+          cleanlinesIds: [],
+          freeWaterIds: [],
           waterDetectorIds: null
         },
         pipeSystem: {
           id: null,
-          colourIds: null,
-          cleanlinesIds: null,
-          freeWaterIds: null,
+          colourIds: [],
+          cleanlinesIds: [],
+          freeWaterIds: [],
           waterDetectorIds: null
         },
         beforeFilter: {
           id: null,
-          colourIds: null,
-          cleanlinesIds: null,
-          freeWaterIds: null,
+          colourIds: [],
+          cleanlinesIds: [],
+          freeWaterIds: [],
           waterDetectorIds: null
         },
         afterFilter: {
           id: null,
-          colourIds: null,
-          cleanlinesIds: null,
-          freeWaterIds: null,
+          colourIds: [],
+          cleanlinesIds: [],
+          freeWaterIds: [],
           waterDetectorIds: null
         }
       },
       afterWash: {
         recoveryTank: {
           id: null,
-          colourIds: null,
-          cleanlinesIds: null,
-          freeWaterIds: null,
+          colourIds: [],
+          cleanlinesIds: [],
+          freeWaterIds: [],
           waterDetectorIds: null
         }
       },
       afterHeavyRain: {
         recoveryTank: {
           id: null,
-          colourIds: null,
-          cleanlinesIds: null,
-          freeWaterIds: null,
+          colourIds: [],
+          cleanlinesIds: [],
+          freeWaterIds: [],
           waterDetectorIds: null
         }
       }
@@ -180,8 +180,6 @@ export default {
     });
 
     self.get();
-
-    self.getById();
   },
   methods: {
     get() {
@@ -223,6 +221,8 @@ export default {
                 label: response.data.currentProgress.nextAction?.label
               }
             };
+
+            self.getById();
           }
         })
         .finally(() => loader.hide());

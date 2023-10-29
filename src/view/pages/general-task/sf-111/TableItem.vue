@@ -27,9 +27,10 @@
           </td>
           <td class="align-middle">
             <b-input-group v-if="buttonVisibility" append="pS/m">
-              <b-input
+              <money
                 v-model="row.conductivity"
-                type="number"
+                v-bind="money"
+                class="form-control"
                 @blur="handleSubmit(row)"
               />
             </b-input-group>
@@ -62,6 +63,7 @@
 </template>
 
 <script>
+import { Money } from "v-money";
 import {
   dateAdd,
   dateFormat,
@@ -70,11 +72,22 @@ import {
 } from "@/core/utils";
 
 export default {
+  components: {
+    Money
+  },
   props: {
     transactionDate: String,
     rows: Array,
     buttonVisibility: Boolean
   },
+  data: () => ({
+    money: {
+      decimal: ",",
+      thousands: ".",
+      precision: 0,
+      masked: false /* doesn't work with directive */
+    }
+  }),
   methods: {
     dateAdd,
     dateFormat,

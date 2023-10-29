@@ -10,7 +10,7 @@
       <b-col lg="4">
         <b-row>
           <b-col lg="12">
-            <h5 class="font-weight-bold mb-6">General Data</h5>
+            <h5 class="font-weight-bolder mb-6">General Data</h5>
           </b-col>
         </b-row>
         <PlainText label="Record Time" :value="form.time" />
@@ -21,7 +21,7 @@
 
         <b-row class="mt-6">
           <b-col lg="12">
-            <h5 class="font-weight-bold mb-6">Tank Batch Document</h5>
+            <h5 class="font-weight-bolder mb-6">Tank Batch Document</h5>
           </b-col>
         </b-row>
         <PlainText
@@ -36,7 +36,7 @@
       <b-col lg="4">
         <b-row>
           <b-col lg="12">
-            <h5 class="font-weight-bold mb-6">Receiving Document</h5>
+            <h5 class="font-weight-bolder mb-6">Receiving Document</h5>
           </b-col>
         </b-row>
         <PlainText
@@ -59,7 +59,7 @@
       <b-col lg="4">
         <b-row>
           <b-col lg="12">
-            <h5 class="font-weight-bold mb-6">Control Check</h5>
+            <h5 class="font-weight-bolder mb-6">Control Check</h5>
           </b-col>
         </b-row>
         <PlainText
@@ -81,7 +81,7 @@
 
         <b-row class="mt-6">
           <b-col lg="12">
-            <h5 class="font-weight-bold mb-6">Product Received</h5>
+            <h5 class="font-weight-bolder mb-6">Product Received</h5>
           </b-col>
         </b-row>
         <PlainText label="Appearance">

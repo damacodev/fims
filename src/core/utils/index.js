@@ -296,10 +296,7 @@ export async function getAppearance() {
       url: "/common/appearance"
     })
     .then(response => {
-      result = response.data.map(x => ({
-        id: x.id,
-        label: `${x.id} - ${x.label}`
-      }));
+      result = response.data;
     });
 
   return result;
@@ -313,10 +310,7 @@ export async function getColour() {
       url: "/common/colour"
     })
     .then(response => {
-      result = response.data.map(x => ({
-        id: x.id,
-        label: `${x.id} - ${x.label}`
-      }));
+      result = response.data;
     });
 
   return result;
@@ -330,10 +324,7 @@ export async function getCleanlines() {
       url: "/common/cleanlines"
     })
     .then(response => {
-      result = response.data.map(x => ({
-        id: x.id,
-        label: `${x.id} - ${x.label}`
-      }));
+      result = response.data;
     });
 
   return result;
@@ -347,10 +338,7 @@ export async function getFreeWater() {
       url: "/common/free-water"
     })
     .then(response => {
-      result = response.data.map(x => ({
-        id: x.id,
-        label: `${x.id} - ${x.label}`
-      }));
+      result = response.data;
     });
 
   return result;
@@ -364,10 +352,21 @@ export async function getWaterDetector() {
       url: "/common/water-detector"
     })
     .then(response => {
-      result = response.data.map(x => ({
-        id: x.id,
-        label: `${x.id} - ${x.label}`
-      }));
+      result = response.data;
+    });
+
+  return result;
+}
+
+export async function getVisualCheck() {
+  let result = [];
+
+  await store
+    .dispatch("apis/get", {
+      url: "/common/visual-check"
+    })
+    .then(response => {
+      result = response.data;
     });
 
   return result;
@@ -423,8 +422,8 @@ export function normalizer(node) {
   };
 }
 
-export function setVolume(params) {
-  return `${numberFormat(params)} L`;
+export function setVolume(params, uom = "L") {
+  return `${numberFormat(params)} ${uom}`;
 }
 
 export function setDensity(params) {
@@ -437,4 +436,12 @@ export function setTemperature(params) {
 
 export function setConductivity(params) {
   return `${numberFormat(params)} pS/m`;
+}
+
+export function setPsi(params) {
+  return `${numberFormat(params)} Psi`;
+}
+
+export function setFlowRate(params) {
+  return `${numberFormat(params)} Ltr/Mnt`;
 }
