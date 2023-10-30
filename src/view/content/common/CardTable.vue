@@ -66,6 +66,7 @@
         <slot name="filter" />
       </div>
       <b-table
+        class="text-nowrap"
         :hover="selectable"
         :selectable="selectable"
         responsive

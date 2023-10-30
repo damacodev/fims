@@ -989,6 +989,67 @@ export const sf103 = [
   }
 ];
 
+export const sf127 = [
+  {
+    label: "Nomor Berita Acara",
+    key: "transactionId",
+    thClass: "align-middle"
+  },
+  {
+    label: "DPPU",
+    key: "dppu.label",
+    thClass: "align-middle"
+  },
+  {
+    label: "Transaction Date",
+    key: "transactionDate",
+    thClass: "align-middle"
+  },
+  {
+    label: "Meter Name",
+    key: "meterName",
+    thClass: "align-middle"
+  },
+  {
+    label: "Start Meter",
+    key: "startMeter",
+    thClass: "align-middle",
+    tdClass: "text-right"
+  },
+  {
+    label: "End Meter",
+    key: "endMeter",
+    thClass: "align-middle",
+    tdClass: "text-right"
+  },
+  {
+    label: "Differential",
+    key: "differential",
+    thClass: "align-middle",
+    tdClass: "text-right"
+  },
+  {
+    label: "Pelaksana 1",
+    key: "pelaksana1.label",
+    thClass: "align-middle"
+  },
+  {
+    label: "Pelaksana 2",
+    key: "pelaksana2.label",
+    thClass: "align-middle"
+  },
+  {
+    label: "Pengawas",
+    key: "pengawas.label",
+    thClass: "align-middle"
+  },
+  {
+    label: "Status",
+    key: "currentProgress.status",
+    thClass: "align-middle"
+  }
+];
+
 export const sfCommon = [
   {
     label: "Transaction #",

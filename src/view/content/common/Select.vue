@@ -21,7 +21,11 @@
       :default-expand-level="1"
       :placeholder="placeholder"
       :class="cssClass"
-    />
+    >
+      <template v-for="(_, slotName) of $scopedSlots" v-slot:[slotName]="scope">
+        <slot :name="slotName" v-bind="scope" />
+      </template>
+    </treeselect>
   </form-group>
 </template>
 

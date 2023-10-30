@@ -58,25 +58,31 @@ export function parseError(e) {
 }
 
 export function getDay(date) {
-  moment.locale("en-id");
+  moment.locale("id-id");
   let format = "YYYY-MM-DD";
   return moment(date, format).format("dddd");
 }
 
 export function getDate() {
-  moment.locale("en-id");
+  moment.locale("id-id");
   let format = "YYYY-MM-DD";
   return moment().format(format);
 }
 
+export function getDateTime() {
+  moment.locale("id-id");
+  let format = "YYYY-MM-DD HH:mm";
+  return moment().format(format);
+}
+
 export function getYear() {
-  moment.locale("en-id");
+  moment.locale("id-id");
   let format = "YYYY";
   return moment().format(format);
 }
 
 export function startDate() {
-  moment.locale("en-id");
+  moment.locale("id-id");
   let format = "YYYY-MM-DD";
   return moment().format("D") == 1
     ? moment()
@@ -89,7 +95,7 @@ export function startDate() {
 }
 
 export function yearStart() {
-  moment.locale("en-id");
+  moment.locale("id-id");
   let format = "YYYY-MM-DD";
   return moment()
     .startOf("year")
@@ -97,7 +103,7 @@ export function yearStart() {
 }
 
 export function yearEnd() {
-  moment.locale("en-id");
+  moment.locale("id-id");
   let format = "YYYY-MM-DD";
   return moment()
     .endOf("year")
@@ -105,19 +111,19 @@ export function yearEnd() {
 }
 
 export function dateFormat(date, format) {
-  moment.locale("en-id");
+  moment.locale("id-id");
   format = format || "DD/MM/YYYY";
   return moment(date).format(format);
 }
 
 export function indonesianDatetime(date) {
-  moment.locale("en-id");
+  moment.locale("id-id");
   return moment(date).add(7, "hours");
 }
 
 export function dateTimeFormat(date, format) {
   if (date == null) return "-";
-  moment.locale("en-id");
+  // moment.locale("id-id");
   format = format || "DD/MM/YYYY HH:mm:ss";
   return moment(date).format(format);
 }
@@ -148,7 +154,7 @@ export function numberUnFormat(number) {
 }
 
 export function isLastDateOfMonth(date) {
-  moment.locale("en-id");
+  moment.locale("id-id");
   let format = "YYYY-MM-DD";
   return (
     moment(date).format(format) ==
@@ -159,7 +165,7 @@ export function isLastDateOfMonth(date) {
 }
 
 export function dateAdd(date, length, period) {
-  moment.locale("en-id");
+  moment.locale("id-id");
 
   return moment(date)
     .add(length, period)
@@ -187,7 +193,7 @@ export function convertAmpersand(text) {
 }
 
 export function hoursAgo(date) {
-  moment.locale("en-id");
+  moment.locale("id-id");
   let now = moment(new Date());
   let end = moment(date);
   let duration = moment.duration(now.diff(end));
