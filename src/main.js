@@ -25,6 +25,7 @@ import "@/core/plugins/inline-svg";
 import "@/core/plugins/loading";
 import "@/core/plugins/message";
 import "@/core/plugins/metronic";
+import "@/core/plugins/onesignal-vue";
 import "@/core/plugins/perfect-scrollbar";
 import "@/core/plugins/portal-vue";
 import "@/core/plugins/vuedraggable";
@@ -46,5 +47,11 @@ new Vue({
   router,
   store,
   i18n,
-  render: h => h(App)
+  render: h => h(App),
+  beforeMount() {
+    this.$OneSignal.init({
+      appId: "a9844465-954e-4e9c-8450-cae8d5496998",
+      allowLocalhostAsSecureOrigin: true
+    });
+  }
 }).$mount("#app");

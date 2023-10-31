@@ -1011,19 +1011,19 @@ export const sf127 = [
     thClass: "align-middle"
   },
   {
-    label: "Start Meter",
-    key: "startMeter",
-    thClass: "align-middle",
-    tdClass: "text-right"
-  },
-  {
-    label: "End Meter",
+    label: "Meter Akhir",
     key: "endMeter",
     thClass: "align-middle",
     tdClass: "text-right"
   },
   {
-    label: "Differential",
+    label: "Meter Awal",
+    key: "startMeter",
+    thClass: "align-middle",
+    tdClass: "text-right"
+  },
+  {
+    label: "Selisih",
     key: "differential",
     thClass: "align-middle",
     tdClass: "text-right"

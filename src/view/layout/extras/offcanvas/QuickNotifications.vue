@@ -13,13 +13,7 @@
       class="offcanvas offcanvas-right p-10"
     >
       <div
-        class="
-          offcanvas-header
-          d-flex
-          align-items-center
-          justify-content-between
-          mb-10
-        "
+        class="offcanvas-header d-flex align-items-center justify-content-between mb-10"
       >
         <h3 class="font-weight-bold m-0">
           Notifications
@@ -130,12 +124,14 @@ export default {
   computed: {
     ...mapGetters("auth", ["user"])
   },
+  beforeCreate() {
+    this.$OneSignal.User.PushSubscription.optIn();
+  },
   created() {
     this.getNotification();
     this.subscribe();
   },
   mounted() {
-    // Init Quick Offcanvas Panel
     KTLayoutQuickNotifications.init(this.$refs["kt_quick_notifications"]);
   },
   methods: {

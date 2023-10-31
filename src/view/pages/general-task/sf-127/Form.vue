@@ -90,11 +90,39 @@
             v-model="form.meterName"
             :v="$v.form.meterName"
           />
-          <TextEditor
-            label="Pekerjaan"
-            v-model="form.activity"
-            :v="$v.form.activity"
-          />
+          <form-group label="Pekerjaan" :validator="$v.form.activities">
+            <b-input-group class="mb-4">
+              <b-input
+                v-model="inputText"
+                class="form-control-lg"
+                autocomplete="off"
+                v-on:keyup.enter="addToActivities"
+              />
+              <b-input-group-append>
+                <b-button @click="addToActivities">Add</b-button>
+              </b-input-group-append>
+            </b-input-group>
+
+            <draggable
+              v-model="form.activities"
+              @start="drag = true"
+              @end="drag = false"
+            >
+              <b-alert
+                v-for="(item, index) in form.activities"
+                v-bind:key="item"
+                variant="light"
+                style="cursor: move"
+                show
+              >
+                {{ item }}
+                <b-btn-close
+                  class="ml-3"
+                  @click="removeFromActivities(index)"
+                />
+              </b-alert>
+            </draggable>
+          </form-group>
           <InputMoney
             label="Meter Akhir"
             v-model="form.endMeter"
@@ -207,6 +235,8 @@
 </template>
 
 <script>
+import TemplateBeritaAcara from "./TemplateBeritaAcara.vue";
+
 import VueDocumentEditor from "vue-document-editor";
 import { mapGetters } from "vuex";
 import FormHeader from "./FormHeader.vue";
@@ -233,6 +263,7 @@ export default {
       form: "sf127Create",
       table: "sf127"
     },
+    inputText: null,
     form: {
       dppu: {
         id: null,
@@ -242,7 +273,7 @@ export default {
       transactionId: null,
       transactionDate: getDateTime(),
       meterName: null,
-      activity: "",
+      activities: [],
       startMeter: null,
       endMeter: null,
       differential: null,
@@ -261,6 +292,11 @@ export default {
       sendApproval: false,
       updatedBy: null,
       updatedAt: null
+    },
+    approveProgress: {
+      pelaksana1: null,
+      pelaksana2: null,
+      pengawas: null
     },
     currentProgress: {
       locked: null,
@@ -296,7 +332,7 @@ export default {
       transactionId: { required, maxLength: maxLength(50) },
       transactionDate: { required },
       meterName: { required, maxLength: maxLength(50) },
-      activity: { required, maxLength: maxLength(500) },
+      activities: { required, maxLength: maxLength(500) },
       startMeter: { required, decimal },
       endMeter: { required, decimal },
       differential: { required, decimal },
@@ -339,6 +375,15 @@ export default {
     dateFormat,
     numberFormat,
     getDate,
+    addToActivities() {
+      const self = this;
+      self.form.activities.push(self.inputText);
+      self.inputText = null;
+    },
+    removeFromActivities(index) {
+      const self = this;
+      self.form.activities.splice(index, 1);
+    },
     calculateDifferential() {
       const self = this;
       self.form.differential = self.form.endMeter - self.form.startMeter;
@@ -395,7 +440,7 @@ export default {
                 "YYYY-MM-DD HH:mm"
               ),
               meterName: response.data.meterName,
-              activity: response.data.activity,
+              activities: response.data.activities,
               startMeter: response.data.startMeter,
               endMeter: response.data.endMeter,
               differential: response.data.differential,
@@ -425,100 +470,20 @@ export default {
               }
             };
 
+            self.approveProgress = {
+              pelaksana1: response.data.approveProgress.pelaksana1,
+              pelaksana2: response.data.approveProgress.pelaksana2,
+              pengawas: response.data.approveProgress.pengawas
+            };
+
             self.content = [
-              `
-<table class="table table-borderless">
-  <thead>
-    <tr>
-      <td class="align-middle text-center" width="80%">
-        <h4 class="font-weight-bolder">
-          BERITA ACARA<br>
-          PERUBAHAN METER<br>
-        </h4>
-        <span>N0 : 1234/F11340/2010 - S3</span>
-      </td>
-      <td class="align-middle">
-        <img src="https://www.pertamina.com/Media/Image/Pertamina.png" height="40px">
-      </td>
-    </tr>
-  </thead>
-</table>
-<p class="mt-10">
-Pada hari ini ${self.dateFormat(
-                self.form.transactionDate,
-                "dddd"
-              )}, Tanggal  ${self.dateFormat(
-                self.form.transactionDate,
-                "DD MMMM YYYY"
-              )}, Jam ${self.dateFormat(
-                self.form.transactionDate,
-                "HH:mm"
-              )} telah dilaksanakan pekerjaan,
-${self.form.activity}
-</p>
-
-<table class="table table-borderless mt-8">
-  <tbody>
-    <tr>
-      <td class="text-left p-0" colspan="3">Sehingga terjadi perubahan totalisator meter penyerahan ${
-        self.form.meterName
-      }</td>
-    </tr>
-    <tr>
-      <td class="text-left m-0 p-0" width="100px">Sebanyak</td>
-      <td class="text-center m-0 p-0" width="20px">:</td>
-      <td class="text-left m-0 p-0">${self.numberFormat(
-        self.form.differential
-      )} Liter</td>
-    </tr>
-    <tr>
-      <td class="text-left m-0 p-0 pt-5">Meter Akhir</td>
-      <td class="text-center m-0 p-0 pt-5">:</td>
-      <td class="text-left m-0 p-0 pt-5">${self.numberFormat(
-        self.form.endMeter
-      )}</td>
-    </tr>
-    <tr>
-      <td class="text-left m-0 p-0">Meter Awal</td>
-      <td class="text-center m-0 p-0">:</td>
-      <td class="text-left m-0 p-0">${self.numberFormat(
-        self.form.startMeter
-      )}</td>
-    </tr>
-    <tr>
-      <td class="text-left m-0 p-0 pt-5">Selisih</td>
-      <td class="text-center m-0 p-0 pt-5">:</td>
-      <td class="text-left m-0 p-0 pt-5">${self.numberFormat(
-        self.form.differential
-      )}</td>
-    </tr>
-  </tbody>
-</table>
-
-<p class="mt-10">Demikian Berita Acara ini dibuat untuk dipergunakan seperlunya.</p>
-
-<table class="table table-borderless mt-10">
-  <tbody>
-    <tr>
-      <td class="text-center">
-        Pelaksana II
-        <p class="mt-20 font-weight-bolder">${self.form.pelaksana2.label}</p>
-      </td>
-      <td class="text-center">
-        Pelaksana I
-        <p class="mt-20 font-weight-bolder">${self.form.pelaksana1.label}</p>
-      </td>
-    </tr>
-    <tr>
-      <td class="text-center" colspan="2">
-        Mengetahui,
-        <br>Pengawas
-        <p class="mt-20 font-weight-bolder">${self.form.pengawas.label}</p>
-      </td>
-    </tr>
-  </tbody>
-</table>
-`
+              {
+                template: TemplateBeritaAcara,
+                props: {
+                  form: self.form,
+                  approveProgress: self.approveProgress
+                }
+              }
             ];
           }
         })
@@ -553,7 +518,7 @@ ${self.form.activity}
         transactionId: self.form.transactionId,
         transactionDate: self.form.transactionDate,
         meterName: self.form.meterName,
-        activity: self.form.activity,
+        activities: self.form.activities,
         startMeter: self.form.startMeter,
         endMeter: self.form.endMeter,
         pelaksana1: self.form.pelaksana1.id,
@@ -603,7 +568,7 @@ ${self.form.activity}
                       "YYYY-MM-DD HH:mm"
                     ),
                     meterName: response.data.meterName,
-                    activity: response.data.activity,
+                    activities: response.data.activities,
                     startMeter: response.data.startMeter,
                     endMeter: response.data.endMeter,
                     differential: response.data.differential,
@@ -690,7 +655,7 @@ ${self.form.activity}
             transactionId: self.form.transactionId,
             transactionDate: self.form.transactionDate,
             meterName: self.form.meterName,
-            activity: self.form.activity,
+            activities: self.form.activities,
             startMeter: self.form.startMeter,
             endMeter: self.form.endMeter,
             pelaksana1: self.form.pelaksana1.id,
