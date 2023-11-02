@@ -25,6 +25,7 @@
     :invalid-feedback="firstErrorMessage"
     :state="isValid"
     :label-class="labelClass"
+    :class="cssClass"
   >
     <slot
       :attrs="{ state: isValid }"

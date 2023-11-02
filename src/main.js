@@ -32,6 +32,7 @@ import "@/core/plugins/vuedraggable";
 import "@/core/plugins/vuejs-dialog";
 import "@/core/plugins/vuelidate";
 import "@/core/plugins/vue-cal";
+import "@/core/plugins/vue-fragment";
 import "@/core/plugins/vue-html-to-paper";
 import "@/core/plugins/vue-phone-number-input";
 import "@/core/plugins/vue-password-strength-meter";

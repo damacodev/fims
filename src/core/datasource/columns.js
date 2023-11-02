@@ -989,6 +989,49 @@ export const sf103 = [
   }
 ];
 
+export const sf119 = [
+  {
+    label: "Transaction #",
+    key: "transactionId",
+    thClass: "align-middle"
+  },
+  {
+    label: "DPPU",
+    key: "dppu.label",
+    thClass: "align-middle"
+  },
+  {
+    label: "Transaction Date",
+    key: "transactionDate",
+    thClass: "align-middle"
+  },
+  {
+    label: "Equipment",
+    key: "equipment.label",
+    thClass: "align-middle"
+  },
+  {
+    label: "Shift",
+    key: "shift.label",
+    thClass: "align-middle"
+  },
+  {
+    label: "Shift Group",
+    key: "shiftGroup",
+    thClass: "align-middle"
+  },
+  {
+    label: "General Condition",
+    key: "generalCondition",
+    thClass: "align-middle"
+  },
+  {
+    label: "Status",
+    key: "currentProgress.status",
+    thClass: "align-middle"
+  }
+];
+
 export const sf127 = [
   {
     label: "Nomor Berita Acara",

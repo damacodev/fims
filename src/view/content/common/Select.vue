@@ -36,7 +36,7 @@
 .vue-treeselect--open-above .vue-treeselect__menu
   margin-bottom: -8px !important
 
-.vue-treeselect__control
+.vue-treeselect__large .vue-treeselect__control
   border-radius: 0.83rem !important
   height: 38.4px !important
 

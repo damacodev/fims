@@ -1,6 +1,6 @@
 <template>
   <div class="card card-custom">
-    <div class="card-header py-3">
+    <div class="card-header">
       <div class="card-title align-items-start flex-column">
         <h3 class="card-label font-weight-bolder text-dark">
           <b-button

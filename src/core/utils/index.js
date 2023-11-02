@@ -378,6 +378,34 @@ export async function getVisualCheck() {
   return result;
 }
 
+export async function getChecklistResult() {
+  let result = [];
+
+  await store
+    .dispatch("apis/get", {
+      url: "/common/checklist-result"
+    })
+    .then(response => {
+      result = response.data;
+    });
+
+  return result;
+}
+
+export async function getGeneralCondition() {
+  let result = [];
+
+  await store
+    .dispatch("apis/get", {
+      url: "/common/general-condition"
+    })
+    .then(response => {
+      result = response.data;
+    });
+
+  return result;
+}
+
 // export function groupBy(list, keyGetter) {
 //   const map = new Map();
 //   list.forEach((item) => {

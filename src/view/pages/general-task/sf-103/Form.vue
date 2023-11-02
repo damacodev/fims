@@ -135,13 +135,7 @@ import { mapGetters } from "vuex";
 import FormHeader from "./FormHeader.vue";
 import TableItem from "./TableItem.vue";
 import { required } from "vuelidate/lib/validators";
-import {
-  getDppu,
-  numberFormat,
-  getDate,
-  dateFormat,
-  isNullOrEmpty
-} from "@/core/utils";
+import { getDppu, numberFormat, getDate, dateFormat } from "@/core/utils";
 
 export default {
   components: {
@@ -235,12 +229,6 @@ export default {
     dateFormat,
     numberFormat,
     getDate,
-    back() {
-      const self = this;
-
-      if (isNullOrEmpty(self.$route.query.from || "")) self.$router.go(-1);
-      else window.close();
-    },
     changeDppu() {
       const self = this;
 

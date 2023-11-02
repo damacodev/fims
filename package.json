@@ -44,6 +44,7 @@
         "vue-cal": "^3.10.0",
         "vue-cropperjs": "^4.1.0",
         "vue-document-editor": "1",
+        "vue-fragment": "^1.6.0",
         "vue-highlight.js": "^3.1.0",
         "vue-html-to-paper": "^1.4.4",
         "vue-i18n": "^8.17.4",

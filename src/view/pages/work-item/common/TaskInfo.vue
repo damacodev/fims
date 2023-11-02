@@ -37,7 +37,7 @@ export default {
     cardSubTitle: String,
     taskType: String,
     taskTitle: String,
-    taskPeriod: Object,
+    taskPeriod: [Object, String],
     createdBy: String,
     createdAt: String,
     histories: Array
