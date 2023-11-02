@@ -141,10 +141,10 @@ export default {
       form: "sf119Create",
       table: "sf119"
     },
-    /* form: {
+    form: {
       dppu: {
         id: null,
-        label: null,
+        label: null
       },
       dppuId: null,
       transactionId: "Auto Generated",
@@ -154,240 +154,240 @@ export default {
       shiftGroup: null,
       generalCondition: {
         id: null,
-        label: null,
+        label: null
       },
       cleanliness: {
         result: {
           id: null,
-          label: null,
+          label: null
         },
-        remarks: null,
+        remarks: null
       },
       truckConditions: {
         fuel: {
           result: {
             id: null,
-            label: null,
+            label: null
           },
-          remarks: null,
+          remarks: null
         },
         radiatorCondition: {
           result: {
             id: null,
-            label: null,
+            label: null
           },
-          remarks: null,
+          remarks: null
         },
         lubricant: {
           result: {
             id: null,
-            label: null,
+            label: null
           },
-          remarks: null,
+          remarks: null
         },
         batteryCondition: {
           result: {
             id: null,
-            label: null,
+            label: null
           },
-          remarks: null,
+          remarks: null
         },
         brake: {
           result: {
             id: null,
-            label: null,
+            label: null
           },
-          remarks: null,
+          remarks: null
         },
         generalConditionOfEngine: {
           result: {
             id: null,
-            label: null,
+            label: null
           },
-          remarks: null,
+          remarks: null
         },
         horn: {
           result: {
             id: null,
-            label: null,
+            label: null
           },
-          remarks: null,
+          remarks: null
         },
         wiper: {
           result: {
             id: null,
-            label: null,
+            label: null
           },
-          remarks: null,
+          remarks: null
         },
         headAndTailLampsCondition: {
           result: {
             id: null,
-            label: null,
+            label: null
           },
-          remarks: null,
+          remarks: null
         },
         signLamps: {
           result: {
             id: null,
-            label: null,
+            label: null
           },
-          remarks: null,
+          remarks: null
         },
         beaconLight: {
           result: {
             id: null,
-            label: null,
+            label: null
           },
-          remarks: null,
+          remarks: null
         },
         fuelingLamps: {
           result: {
             id: null,
-            label: null,
+            label: null
           },
-          remarks: null,
+          remarks: null
         },
         ptoOrHydraulicPump: {
           result: {
             id: null,
-            label: null,
+            label: null
           },
-          remarks: null,
+          remarks: null
         },
         compressor: {
           result: {
             id: null,
-            label: null,
+            label: null
           },
-          remarks: null,
+          remarks: null
         },
         mirrors: {
           result: {
             id: null,
-            label: null,
+            label: null
           },
-          remarks: null,
+          remarks: null
         },
         tires: {
           result: {
             id: null,
-            label: null,
+            label: null
           },
-          remarks: null,
+          remarks: null
         },
         generalConditionOfTransmission: {
           result: {
             id: null,
-            label: null,
+            label: null
           },
-          remarks: null,
+          remarks: null
         },
         hydraulicLadderOrPlatform: {
           result: {
             id: null,
-            label: null,
+            label: null
           },
-          remarks: null,
+          remarks: null
         },
         rearwardGearWarning: {
           result: {
             id: null,
-            label: null,
+            label: null
           },
-          remarks: null,
-        },
+          remarks: null
+        }
       },
       tankCondition: {
         stepCondition: {
           result: {
             id: null,
-            label: null,
+            label: null
           },
-          remarks: null,
+          remarks: null
         },
         jetLevelSensorCondition: {
           result: {
             id: null,
-            label: null,
+            label: null
           },
-          remarks: null,
+          remarks: null
         },
         pressureVacumValveOrFreeVent: {
           result: {
             id: null,
-            label: null,
+            label: null
           },
-          remarks: null,
+          remarks: null
         },
         waterDrainLineTank: {
           result: {
             id: null,
-            label: null,
+            label: null
           },
-          remarks: null,
-        },
+          remarks: null
+        }
       },
       safetyEquipments: {
         flameTrapCondition: {
           result: {
             id: null,
-            label: null,
+            label: null
           },
-          remarks: null,
+          remarks: null
         },
         groundingAndOrBondingCableCondition: {
           result: {
             id: null,
-            label: null,
+            label: null
           },
-          remarks: null,
+          remarks: null
         },
         interlockSystem: {
           result: {
             id: null,
-            label: null,
+            label: null
           },
-          remarks: null,
+          remarks: null
         },
         sealOverrideInterlockSystem: {
           result: {
             id: null,
-            label: null,
+            label: null
           },
-          remarks: null,
+          remarks: null
         },
         sealOverrideDeadman: {
           result: {
             id: null,
-            label: null,
+            label: null
           },
-          remarks: null,
+          remarks: null
         },
         fireExtinguishers: {
           result: {
             id: null,
-            label: null,
+            label: null
           },
           seal: null,
           number: null,
           lastChecked: null,
-          pressureIndicator: null,
+          pressureIndicator: null
         },
         safetySigns: {
           result: {
             id: null,
-            label: null,
+            label: null
           },
-          remarks: null,
+          remarks: null
         },
         safetyCone: {
           result: {
             id: null,
-            label: null,
+            label: null
           },
-          remarks: null,
-        },
+          remarks: null
+        }
       },
       refuelingEquipments: {
         before: {
@@ -395,181 +395,181 @@ export default {
             rear: {
               result: {
                 id: null,
-                label: null,
+                label: null
               },
-              remarks: null,
+              remarks: null
             },
             front: {
               result: {
                 id: null,
-                label: null,
+                label: null
               },
-              remarks: null,
-            },
+              remarks: null
+            }
           },
           platformHosesCondition: {
             left: {
               result: {
                 id: null,
-                label: null,
+                label: null
               },
-              remarks: null,
+              remarks: null
             },
             right: {
               result: {
                 id: null,
-                label: null,
+                label: null
               },
-              remarks: null,
-            },
+              remarks: null
+            }
           },
           flowMeterCondition: {
             result: {
               id: null,
-              label: null,
+              label: null
             },
             remarks: null,
-            calibrationExpiresDate: null,
+            calibrationExpiresDate: null
           },
           deadmanControlCondition: {
             result: {
               id: null,
-              label: null,
+              label: null
             },
-            remarks: null,
+            remarks: null
           },
           inputCouplerCondition: {
             result: {
               id: null,
-              label: null,
+              label: null
             },
-            remarks: null,
+            remarks: null
           },
           lastFilterChange: {
             result: {
               id: null,
-              label: null,
+              label: null
             },
-            date: null,
+            date: null
           },
           pcvAndRegulator: {
             result: {
               id: null,
-              label: null,
+              label: null
             },
-            remarks: null,
+            remarks: null
           },
           nitrogenPressureIndicator: {
             result: {
               id: null,
-              label: null,
+              label: null
             },
-            value: null,
-          },
+            value: null
+          }
         },
         during: {
           inletPressureIndicator: {
             result: {
               id: null,
-              label: null,
+              label: null
             },
-            value: null,
+            value: null
           },
           pcvMonitorIndicator: {
             result: {
               id: null,
-              label: null,
+              label: null
             },
-            value: null,
+            value: null
           },
           pcvAirReferenceIndicator: {
             result: {
               id: null,
-              label: null,
+              label: null
             },
-            value: null,
+            value: null
           },
           pdgIndicator: {
             result: {
               id: null,
-              label: null,
+              label: null
             },
             value: null,
-            flowRate: null,
-          },
-        },
+            flowRate: null
+          }
+        }
       },
       others: {
         operatingHoursRecord: {
           result: {
             id: null,
-            label: null,
+            label: null
           },
-          remarks: null,
+          remarks: null
         },
         rubberBlock: {
           result: {
             id: null,
-            label: null,
+            label: null
           },
-          remarks: null,
+          remarks: null
         },
         oilAbsorbent: {
           result: {
             id: null,
-            label: null,
+            label: null
           },
-          remarks: null,
+          remarks: null
         },
         sightGlass: {
           result: {
             id: null,
-            label: null,
+            label: null
           },
-          remarks: null,
+          remarks: null
         },
         ladderWellness: {
           result: {
             id: null,
-            label: null,
+            label: null
           },
-          remarks: null,
+          remarks: null
         },
         fuelLeaks: {
           result: {
             id: null,
-            label: null,
+            label: null
           },
-          remarks: null,
+          remarks: null
         },
         dustCapInputCoupler: {
           result: {
             id: null,
-            label: null,
+            label: null
           },
-          remarks: null,
+          remarks: null
         },
         bucketWithBondingWire: {
           result: {
             id: null,
-            label: null,
+            label: null
           },
-          remarks: null,
+          remarks: null
         },
         filterSumpsAndTankSumpsDrain: {
           result: {
             id: null,
-            label: null,
+            label: null
           },
           filterSumps: null,
-          tankSumpsDrain: null,
-        },
+          tankSumpsDrain: null
+        }
       },
       sendApproval: false,
       updatedBy: null,
-      updatedAt: null,
-    }, */
-    form: {
+      updatedAt: null
+    },
+    /* form: {
       dppu: {
         id: null,
         label: null
@@ -992,7 +992,7 @@ export default {
       sendApproval: false,
       updatedBy: null,
       updatedAt: null
-    },
+    }, */
     currentProgress: {
       locked: null,
       status: null,
