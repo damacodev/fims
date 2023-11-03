@@ -55,12 +55,7 @@
             label="Status"
             :options="status"
           />
-          <Select
-            v-if="form.role != 0"
-            label="Plant"
-            v-model="form.plant"
-            :options="plant"
-          />
+          <Select label="Plant" v-model="form.plant" :options="plant" />
         </div>
       </b-form>
     </template>
@@ -207,7 +202,7 @@ export default {
             : "",
         role: self.form.role,
         actived: self.form.actived,
-        dppu: self.form.role != 0 ? self.form.plant : []
+        dppu: self.form.plant
       };
 
       let _confirmText = "",
