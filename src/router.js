@@ -222,6 +222,30 @@ export default new Router({
               ]
             },
             {
+              path: "sf-120",
+              component: () => import("@/view/pages/general-task/sf-120"),
+              children: [
+                {
+                  path: "/",
+                  name: "sf120",
+                  component: () =>
+                    import("@/view/pages/general-task/sf-120/Table.vue")
+                },
+                {
+                  path: "form",
+                  name: "sf120Create",
+                  component: () =>
+                    import("@/view/pages/general-task/sf-120/Form")
+                },
+                {
+                  path: "form/:id",
+                  name: "sf120Update",
+                  component: () =>
+                    import("@/view/pages/general-task/sf-120/Form")
+                }
+              ]
+            },
+            {
               path: "sf-123",
               component: () => import("@/view/pages/general-task/sf-123"),
               children: [

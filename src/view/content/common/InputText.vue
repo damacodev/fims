@@ -8,6 +8,9 @@
     :use-horizontal="useHorizontal"
   >
     <b-input-group :append="append">
+      <template v-for="(_, slotName) of $scopedSlots" v-slot:[slotName]="scope">
+        <slot :name="slotName" v-bind="scope" />
+      </template>
       <b-form-input
         slot-scope="{ attrs }"
         v-bind="attrs"
@@ -22,6 +25,7 @@
         :min="min"
         :max="max"
         :plaintext="plaintext"
+        :disabled="disabled"
       />
     </b-input-group>
   </form-group>
@@ -46,6 +50,10 @@ export default {
       default: true
     },
     plaintext: {
+      type: Boolean,
+      default: false
+    },
+    disabled: {
       type: Boolean,
       default: false
     },

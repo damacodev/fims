@@ -61,6 +61,12 @@ export const available = [
   { text: "Unavailable", value: false }
 ];
 
+export const refuelingProgram = [
+  { text: "Not Refueling", value: "Not Refueling" },
+  { text: "Cancel", value: "Cancel" },
+  { text: "Delay", value: "Delay" }
+];
+
 import { getYear } from "@/core/utils";
 let year = [];
 for (let i = getYear(); i > 1900; i--) {
