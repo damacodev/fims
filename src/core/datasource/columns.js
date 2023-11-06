@@ -107,6 +107,11 @@ export const approver = [
     label: "Name",
     key: "approver.label",
     thClass: "align-middle"
+  },
+  {
+    label: "Position",
+    key: "position",
+    thClass: "align-middle"
   }
 ];
 

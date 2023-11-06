@@ -57,6 +57,9 @@
         :href="{ name: 'approverCreate' }"
       />
     </template>
+    <template #cell(position)="data">
+      {{ data.value || "-" }}
+    </template>
   </CardTable>
 </template>
 

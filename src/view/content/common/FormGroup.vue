@@ -2,7 +2,9 @@
   <b-form-group
     v-if="useHorizontal"
     :label-cols-lg="labelCols"
+    :label-cols-xl="labelColsXl"
     :content-cols-lg="contentCols"
+    :content-cols-xl="contentColsXl"
     :label="useLabel ? label : ''"
     :description="description"
     :invalid-feedback="firstErrorMessage"
@@ -61,6 +63,14 @@ export default {
     contentCols: {
       type: String,
       default: "8"
+    },
+    labelColsXl: {
+      type: String,
+      default: "4"
+    },
+    contentColsXl: {
+      type: String,
+      default: "5"
     },
     description: String,
     cssClass: String

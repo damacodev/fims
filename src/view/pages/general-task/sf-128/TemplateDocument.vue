@@ -80,7 +80,7 @@
         </b-tr>
       </b-tbody>
     </b-table-simple>
-    <p class="mt-10">
+    <p class="mt-4">
       Check and complete the following before release of aviation fuel tanks
       (following acceptance test) :
     </p>
@@ -297,37 +297,63 @@
       </b-tbody>
     </b-table-simple>
 
-    <table class="table table-borderless mt-10">
+    <table class="table table-borderless mt-4">
       <tbody>
         <tr>
-          <td class="text-left">Quality Controller by :</td>
-          <td class="text-left">Released by :</td>
+          <td class="text-left">
+            Quality Controller by :
+            <br />
+            {{
+              approveProgress.qualityControllerBy == null
+                ? "-"
+                : approveProgress.qualityControllerBy.position
+            }}
+          </td>
+          <td class="text-left">
+            Released by :
+            <br />
+            {{
+              approveProgress.releasedBy == null
+                ? "-"
+                : approveProgress.releasedBy.position
+            }}
+          </td>
         </tr>
         <tr>
-          <td class="text-center" height="80">
-            <!-- <vue-qr
-              :text="approveProgress.pelaksana2"
+          <td height="80">
+            <vue-qr
+              v-if="approveProgress.qualityControllerBy != null"
+              :text="approveProgress.qualityControllerBy.id"
               :size="80"
               :margin="0"
-            ></vue-qr> -->
+            />
           </td>
-          <td class="text-center" height="80">
-            <!-- <vue-qr
-              :text="approveProgress.pelaksana1"
+          <td height="80">
+            <vue-qr
+              v-if="approveProgress.releasedBy != null"
+              :text="approveProgress.releasedBy.id"
               :size="80"
               :margin="0"
-            ></vue-qr> -->
+            />
           </td>
         </tr>
         <tr>
-          <td class="text-center">
+          <td>
             <p class="font-weight-bolder">
-              <!-- {{ form.pelaksana2.label }} -->
+              {{
+                approveProgress.qualityControllerBy == null
+                  ? "-"
+                  : approveProgress.qualityControllerBy.name
+              }}
             </p>
           </td>
-          <td class="text-center">
+          <td>
             <p class="font-weight-bolder">
-              <!-- {{ form.pelaksana1.label }} -->
+              {{
+                approveProgress.releasedBy == null
+                  ? "-"
+                  : approveProgress.releasedBy.name
+              }}
             </p>
           </td>
         </tr>
@@ -337,12 +363,12 @@
 </template>
 
 <script>
-// import VueQr from "vue-qr";
+import VueQr from "vue-qr";
 import { numberFormat, dateFormat } from "@/core/utils";
 
 export default {
   components: {
-    // VueQr
+    VueQr
   },
   props: {
     form: Object,

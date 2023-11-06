@@ -39,6 +39,12 @@
             :options="options.approver"
             :multiple="false"
           />
+          <InputText
+            label="Position"
+            type="text"
+            v-model="form.position"
+            :v="$v.form.position"
+          />
         </div>
       </b-form>
     </template>
@@ -47,7 +53,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-import { required } from "vuelidate/lib/validators";
+import { required, maxLength } from "vuelidate/lib/validators";
 import { getDppu, normalizer } from "@/core/utils";
 
 export default {
@@ -60,7 +66,8 @@ export default {
     form: {
       dppuId: null,
       standardFormId: null,
-      approver: null
+      approver: null,
+      position: null
     },
     options: {
       dppu: [],
@@ -72,7 +79,8 @@ export default {
     form: {
       dppuId: { required },
       standardFormId: { required },
-      approver: { required }
+      approver: { required },
+      position: { maxLength: maxLength(100) }
     }
   },
   computed: {
@@ -181,7 +189,8 @@ export default {
             self.form = {
               dppuId: response.data.dppu.id,
               standardFormId: response.data.standardForm.id,
-              approver: response.data.approver.id
+              approver: response.data.approver.id,
+              position: response.data.position
             };
           }
         })

@@ -9,6 +9,8 @@
     :label-align="labelAlign"
     :label-cols="labelCols"
     :content-cols="contentCols"
+    :label-cols-xl="labelColsXl"
+    :content-cols-xl="contentColsXl"
     css-class="text-right"
   >
     <b-form-radio-group
@@ -51,7 +53,9 @@ export default {
     formClass: String,
     labelAlign: String,
     labelCols: String,
-    contentCols: String
+    contentCols: String,
+    labelColsXl: String,
+    contentColsXl: String
   },
   computed: {
     model: {

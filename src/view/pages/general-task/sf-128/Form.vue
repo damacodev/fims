@@ -193,6 +193,8 @@
                 labelAlign="left"
                 labelCols="9"
                 contentCols="3"
+                labelColsXl="9"
+                contentColsXl="3"
                 :options="options.yesNo"
               />
               <RadioGroup
@@ -201,6 +203,8 @@
                 labelAlign="left"
                 labelCols="9"
                 contentCols="3"
+                labelColsXl="9"
+                contentColsXl="3"
                 :options="options.yesNo"
               />
               <RadioGroup
@@ -209,6 +213,8 @@
                 labelAlign="left"
                 labelCols="9"
                 contentCols="3"
+                labelColsXl="9"
+                contentColsXl="3"
                 :options="options.yesNo"
               />
               <RadioGroup
@@ -217,6 +223,8 @@
                 labelAlign="left"
                 labelCols="9"
                 contentCols="3"
+                labelColsXl="9"
+                contentColsXl="3"
                 :options="options.yesNo"
               />
               <RadioGroup
@@ -225,6 +233,8 @@
                 labelAlign="left"
                 labelCols="9"
                 contentCols="3"
+                labelColsXl="9"
+                contentColsXl="3"
                 :options="options.yesNo"
               />
               <RadioGroup
@@ -233,6 +243,8 @@
                 labelAlign="left"
                 labelCols="9"
                 contentCols="3"
+                labelColsXl="9"
+                contentColsXl="3"
                 :options="options.yesNo"
               />
               <RadioGroup
@@ -241,6 +253,8 @@
                 labelAlign="left"
                 labelCols="9"
                 contentCols="3"
+                labelColsXl="9"
+                contentColsXl="3"
                 :options="options.yesNo"
               />
             </b-col>
@@ -499,6 +513,10 @@ export default {
       updatedBy: null,
       updatedAt: null
     },
+    approveProgress: {
+      qualityControllerBy: null,
+      releasedBy: null
+    },
     currentProgress: {
       locked: null,
       status: null,
@@ -706,12 +724,18 @@ export default {
               }
             };
 
+            self.approveProgress = {
+              qualityControllerBy:
+                response.data.approveProgress.qualityControllerBy,
+              releasedBy: response.data.approveProgress.releasedBy
+            };
+
             self.content = [
               {
                 template: TemplateDocument,
                 props: {
-                  form: self.form
-                  // approveProgress: self.approveProgress
+                  form: self.form,
+                  approveProgress: self.approveProgress
                 }
               }
             ];
