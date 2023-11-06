@@ -6,6 +6,7 @@
     :label-class="labelClass"
     :use-label="useLabel"
     :use-horizontal="useHorizontal"
+    :label-align="labelAlign"
   >
     <b-input-group :append="append">
       <template v-for="(_, slotName) of $scopedSlots" v-slot:[slotName]="scope">
@@ -80,7 +81,8 @@ export default {
     maxlength: Number,
     min: [Number, Date, String],
     max: [Number, Date, String],
-    append: String
+    append: String,
+    labelAlign: String
   },
   computed: {
     model: {

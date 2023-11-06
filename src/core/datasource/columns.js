@@ -1126,6 +1126,54 @@ export const sf127 = [
   }
 ];
 
+export const sf128 = [
+  {
+    label: "Transaction #",
+    key: "transactionId",
+    thClass: "align-middle"
+  },
+  {
+    label: "DPPU",
+    key: "dppu.label",
+    thClass: "align-middle"
+  },
+  {
+    label: "Number",
+    key: "number",
+    thClass: "align-middle"
+  },
+  {
+    label: "Tank No.",
+    key: "tank.label",
+    thClass: "align-middle"
+  },
+  {
+    label: "Grade",
+    key: "grade.grade",
+    thClass: "align-middle"
+  },
+  {
+    label: "Source",
+    key: "source.source",
+    thClass: "align-middle"
+  },
+  {
+    label: "Re-Certification",
+    key: "reCertification.no",
+    thClass: "align-middle"
+  },
+  {
+    label: "Ex. Certificate of Quality No.",
+    key: "exCertificate.no",
+    thClass: "align-middle"
+  },
+  {
+    label: "Status",
+    key: "currentProgress.status",
+    thClass: "align-middle"
+  }
+];
+
 export const sfCommon = [
   {
     label: "Transaction #",

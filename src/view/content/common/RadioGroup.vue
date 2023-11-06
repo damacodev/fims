@@ -5,6 +5,11 @@
     :description="description"
     :use-label="useLabel"
     :use-horizontal="useHorizontal"
+    :class="formClass"
+    :label-align="labelAlign"
+    :label-cols="labelCols"
+    :content-cols="contentCols"
+    css-class="text-right"
   >
     <b-form-radio-group
       button-variant="outline-success"
@@ -42,7 +47,11 @@ export default {
     },
     v: Object,
     value: [String, Boolean, Number],
-    options: Array
+    options: Array,
+    formClass: String,
+    labelAlign: String,
+    labelCols: String,
+    contentCols: String
   },
   computed: {
     model: {

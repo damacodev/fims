@@ -1,15 +1,13 @@
 <template>
   <b-form-group
     v-if="useHorizontal"
-    label-cols-lg="4"
-    label-cols-xl="4"
-    content-cols-lg="8"
-    content-cols-xl="5"
+    :label-cols-lg="labelCols"
+    :content-cols-lg="contentCols"
     :label="useLabel ? label : ''"
     :description="description"
     :invalid-feedback="firstErrorMessage"
     :state="isValid"
-    label-align="right"
+    :label-align="labelAlign"
     :label-class="labelClass"
     :class="cssClass"
   >
@@ -48,9 +46,21 @@ export default {
       type: Boolean,
       default: true
     },
+    labelAlign: {
+      type: String,
+      default: "right"
+    },
     labelClass: {
       type: String,
       default: "pr-5"
+    },
+    labelCols: {
+      type: String,
+      default: "4"
+    },
+    contentCols: {
+      type: String,
+      default: "8"
     },
     description: String,
     cssClass: String

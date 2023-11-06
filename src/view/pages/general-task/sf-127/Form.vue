@@ -1,6 +1,4 @@
 <template>
-  <!-- eslint-disable-next-line vue/max-attributes-per-line -->
-
   <div class="card card-custom">
     <div class="card-header py-3">
       <div class="card-title align-items-start flex-column">
@@ -235,7 +233,7 @@
 </template>
 
 <script>
-import TemplateBeritaAcara from "./TemplateBeritaAcara.vue";
+import TemplateDocument from "./TemplateDocument.vue";
 
 import VueDocumentEditor from "vue-document-editor";
 import { mapGetters } from "vuex";
@@ -478,7 +476,7 @@ export default {
 
             self.content = [
               {
-                template: TemplateBeritaAcara,
+                template: TemplateDocument,
                 props: {
                   form: self.form,
                   approveProgress: self.approveProgress
