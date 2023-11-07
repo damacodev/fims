@@ -11,7 +11,7 @@
     :content-cols="contentCols"
     :label-cols-xl="labelColsXl"
     :content-cols-xl="contentColsXl"
-    css-class="text-right"
+    :css-class="cssClass"
   >
     <b-form-radio-group
       button-variant="outline-success"
@@ -55,7 +55,11 @@ export default {
     labelCols: String,
     contentCols: String,
     labelColsXl: String,
-    contentColsXl: String
+    contentColsXl: String,
+    cssClass: {
+      type: String,
+      default: "text-left"
+    }
   },
   computed: {
     model: {

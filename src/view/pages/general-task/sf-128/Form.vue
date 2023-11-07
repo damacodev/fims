@@ -196,6 +196,7 @@
                 labelColsXl="9"
                 contentColsXl="3"
                 :options="options.yesNo"
+                cssClass="text-right"
               />
               <RadioGroup
                 v-model="form.question.tankBatchRelease"
@@ -206,6 +207,7 @@
                 labelColsXl="9"
                 contentColsXl="3"
                 :options="options.yesNo"
+                cssClass="text-right"
               />
               <RadioGroup
                 v-model="form.question.settlingTimeRequirement"
@@ -216,6 +218,7 @@
                 labelColsXl="9"
                 contentColsXl="3"
                 :options="options.yesNo"
+                cssClass="text-right"
               />
               <RadioGroup
                 v-model="form.question.tankHasRemained"
@@ -226,6 +229,7 @@
                 labelColsXl="9"
                 contentColsXl="3"
                 :options="options.yesNo"
+                cssClass="text-right"
               />
               <RadioGroup
                 v-model="form.question.tankSumpSamples"
@@ -236,6 +240,7 @@
                 labelColsXl="9"
                 contentColsXl="3"
                 :options="options.yesNo"
+                cssClass="text-right"
               />
               <RadioGroup
                 v-model="form.question.tankDrained"
@@ -246,6 +251,7 @@
                 labelColsXl="9"
                 contentColsXl="3"
                 :options="options.yesNo"
+                cssClass="text-right"
               />
               <RadioGroup
                 v-model="form.question.electricalConductivity"
@@ -256,6 +262,7 @@
                 labelColsXl="9"
                 contentColsXl="3"
                 :options="options.yesNo"
+                cssClass="text-right"
               />
             </b-col>
             <b-col lg="6">
