@@ -47,7 +47,6 @@
                 label="S 101-A"
                 type="text"
                 v-model="form.strainer.s101A"
-                :v="validations.form.strainer.s101A"
                 :useHorizontal="false"
               />
             </b-col>
@@ -56,7 +55,6 @@
                 label="S 101-B"
                 type="text"
                 v-model="form.strainer.s101B"
-                :v="validations.form.strainer.s101B"
                 :useHorizontal="false"
               />
             </b-col>
@@ -65,7 +63,6 @@
                 label="S 101-C"
                 type="text"
                 v-model="form.strainer.s101C"
-                :v="validations.form.strainer.s101C"
                 :useHorizontal="false"
               />
             </b-col>
@@ -74,7 +71,6 @@
                 label="S 101-D"
                 type="text"
                 v-model="form.strainer.s101D"
-                :v="validations.form.strainer.s101D"
                 :useHorizontal="false"
               />
             </b-col>

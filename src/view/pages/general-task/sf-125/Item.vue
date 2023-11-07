@@ -115,12 +115,6 @@ export default {
       standardForm125Id: { required },
       time: { required },
       equipmentId: { required },
-      strainer: {
-        s101A: { required },
-        s101B: { required },
-        s101C: { required },
-        s101D: { required }
-      },
       microFiber: {
         s102A: { required, integer },
         s102B: { required, integer }

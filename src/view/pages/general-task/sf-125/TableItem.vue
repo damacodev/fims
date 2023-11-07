@@ -39,10 +39,10 @@
             {{ dateTimeFormat(row.recordTime, "HH:mm") }}
           </td>
           <td>{{ row.equipment.label }}</td>
-          <td>{{ row.strainer == null ? "-" : row.strainer.s101A }}</td>
-          <td>{{ row.strainer == null ? "-" : row.strainer.s101B }}</td>
-          <td>{{ row.strainer == null ? "-" : row.strainer.s101C }}</td>
-          <td>{{ row.strainer == null ? "-" : row.strainer.s101D }}</td>
+          <td>{{ row.strainer.s101A == null ? "-" : row.strainer.s101A }}</td>
+          <td>{{ row.strainer.s101B == null ? "-" : row.strainer.s101B }}</td>
+          <td>{{ row.strainer.s101C == null ? "-" : row.strainer.s101C }}</td>
+          <td>{{ row.strainer.s101D == null ? "-" : row.strainer.s101D }}</td>
           <td class="text-right">
             {{ row.microFiber == null ? "-" : setPsi(row.microFiber.s102A) }}
           </td>
@@ -72,7 +72,9 @@
           <td class="text-right">{{ setVolume(row.jumlahTransfer, "KL") }}</td>
           <td class="text-left">
             <template v-for="(row, index) in row.visualCheckIds">
-              <span v-bind:key="index">{{ row.label }}<br /></span>
+              <span v-bind:key="index"
+                >{{ `${row.value} - ${row.label}` }}<br
+              /></span>
             </template>
           </td>
           <td>{{ row.remarks }}</td>
