@@ -376,6 +376,27 @@ export default new Router({
             }
           ]
         },
+        {
+          path: "/document-number",
+          component: () => import("@/view/pages/document-number"),
+          children: [
+            {
+              path: "/",
+              name: "documentNumber",
+              component: () => import("@/view/pages/document-number/Table.vue")
+            },
+            {
+              path: "form",
+              name: "documentNumberCreate",
+              component: () => import("@/view/pages/document-number/Form.vue")
+            },
+            {
+              path: "form/:id",
+              name: "documentNumberUpdate",
+              component: () => import("@/view/pages/document-number/Form.vue")
+            }
+          ]
+        },
 
         {
           path: "/documents",

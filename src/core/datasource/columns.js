@@ -115,6 +115,24 @@ export const approver = [
   }
 ];
 
+export const documentNumber = [
+  {
+    label: "DPPU",
+    key: "dppu.label",
+    thClass: "align-middle"
+  },
+  {
+    label: "Standard Form",
+    key: "standardForm.label",
+    thClass: "align-middle"
+  },
+  {
+    label: "Format",
+    key: "format",
+    thClass: "align-middle"
+  }
+];
+
 export const userManagement = [
   {
     label: "Full Name",
@@ -958,13 +976,13 @@ export const technician = [
 
 export const sf103 = [
   {
-    label: "Transaction #",
-    key: "transactionId",
+    label: "DPPU",
+    key: "dppu.label",
     thClass: "align-middle"
   },
   {
-    label: "DPPU",
-    key: "dppu.label",
+    label: "Transaction #",
+    key: "transactionId",
     thClass: "align-middle"
   },
   {
@@ -996,13 +1014,13 @@ export const sf103 = [
 
 export const sf119 = [
   {
-    label: "Transaction #",
-    key: "transactionId",
+    label: "DPPU",
+    key: "dppu.label",
     thClass: "align-middle"
   },
   {
-    label: "DPPU",
-    key: "dppu.label",
+    label: "Transaction #",
+    key: "transactionId",
     thClass: "align-middle"
   },
   {
@@ -1039,13 +1057,13 @@ export const sf119 = [
 
 export const sf120 = [
   {
-    label: "Transaction #",
-    key: "transactionId",
+    label: "DPPU",
+    key: "dppu.label",
     thClass: "align-middle"
   },
   {
-    label: "DPPU",
-    key: "dppu.label",
+    label: "Transaction #",
+    key: "transactionId",
     thClass: "align-middle"
   },
   {
@@ -1072,18 +1090,23 @@ export const sf120 = [
 
 export const sf127 = [
   {
-    label: "Nomor Berita Acara",
-    key: "transactionId",
-    thClass: "align-middle"
-  },
-  {
     label: "DPPU",
     key: "dppu.label",
     thClass: "align-middle"
   },
   {
-    label: "Transaction Date",
-    key: "transactionDate",
+    label: "Transaction #",
+    key: "transactionId",
+    thClass: "align-middle"
+  },
+  {
+    label: "Nomor Berita Acara",
+    key: "nomorBeritaAcara",
+    thClass: "align-middle"
+  },
+  {
+    label: "Tanggal Pekerjaan",
+    key: "tanggalPekerjaan",
     thClass: "align-middle"
   },
   {
@@ -1133,13 +1156,13 @@ export const sf127 = [
 
 export const sf128 = [
   {
-    label: "Transaction #",
-    key: "transactionId",
+    label: "DPPU",
+    key: "dppu.label",
     thClass: "align-middle"
   },
   {
-    label: "DPPU",
-    key: "dppu.label",
+    label: "Transaction #",
+    key: "transactionId",
     thClass: "align-middle"
   },
   {
@@ -1181,13 +1204,13 @@ export const sf128 = [
 
 export const sfCommon = [
   {
-    label: "Transaction #",
-    key: "transactionId",
+    label: "DPPU",
+    key: "dppu.label",
     thClass: "align-middle"
   },
   {
-    label: "DPPU",
-    key: "dppu.label",
+    label: "Transaction #",
+    key: "transactionId",
     thClass: "align-middle"
   },
   {
@@ -1209,13 +1232,13 @@ export const sfCommon = [
 
 export const sfCommonWithShift = [
   {
-    label: "Transaction #",
-    key: "transactionId",
+    label: "DPPU",
+    key: "dppu.label",
     thClass: "align-middle"
   },
   {
-    label: "DPPU",
-    key: "dppu.label",
+    label: "Transaction #",
+    key: "transactionId",
     thClass: "align-middle"
   },
   {

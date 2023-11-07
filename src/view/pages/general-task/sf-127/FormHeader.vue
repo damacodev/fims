@@ -5,12 +5,7 @@
         label="Depot Pengisian Pesawat Udara"
         :value="form.dppu.label"
       />
-      <PlainText label="Nomor Berita Acara" :value="form.transactionId" />
-      <PlainText
-        label="Transaction Date"
-        :value="dateFormat(form.transactionDate, `dddd, DD MMMM YYYY HH:mm`)"
-      />
-      <PlainText label="Meter Name" :value="form.meterName" />
+      <PlainText label="Transaction #" :value="form.transactionId" />
       <PlainText label="Status">
         <template #value>
           <b-badge

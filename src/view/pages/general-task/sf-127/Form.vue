@@ -58,151 +58,208 @@
       </div>
     </div>
     <b-row class="p-2">
-      <div class="card-body pb-0">
+      <div
+        class="card-body pb-0"
+        v-bind:class="!currentProgress.locked ? `ml-10 mr-10` : ``"
+      >
         <template v-if="!currentProgress.locked && !isPreview">
-          <Select
-            v-if="multipleDppu"
-            label="Depot Pengisian Pesawat Udara"
-            v-model="form.dppuId"
-            :v="$v.form.dppuId"
-            :options="options.dppu"
-            :multiple="false"
-            :disabled="$route.name != route.form"
-          />
-          <InputText
-            label="Nomor Berita Acara"
-            type="text"
-            v-model="form.transactionId"
-            :v="$v.form.transactionId"
-          />
-          <InputText
-            label="Tanggal Pekerjaan"
-            type="datetime-local"
-            v-model="form.transactionDate"
-            :v="$v.form.transactionDate"
-            :max="getDate()"
-          />
-          <InputText
-            label="Meter Name"
-            type="text"
-            v-model="form.meterName"
-            :v="$v.form.meterName"
-          />
-          <form-group label="Pekerjaan" :validator="$v.form.activities">
-            <b-input-group class="mb-4">
-              <b-input
-                v-model="inputText"
-                class="form-control-lg"
-                autocomplete="off"
-                v-on:keyup.enter="addToActivities"
+          <b-row>
+            <b-col lg="6">
+              <Select
+                v-if="multipleDppu"
+                label="Depot Pengisian Pesawat Udara"
+                v-model="form.dppuId"
+                :v="$v.form.dppuId"
+                :options="options.dppu"
+                :useHorizontal="false"
+                :multiple="false"
+                :disabled="$route.name != route.form"
               />
-              <b-input-group-append>
-                <b-button @click="addToActivities">Add</b-button>
-              </b-input-group-append>
-            </b-input-group>
-
-            <draggable
-              v-model="form.activities"
-              @start="drag = true"
-              @end="drag = false"
-            >
-              <b-alert
-                v-for="(item, index) in form.activities"
-                v-bind:key="item"
-                variant="light"
-                style="cursor: move"
-                show
+            </b-col>
+          </b-row>
+          <b-row>
+            <b-col lg="6">
+              <InputText
+                label="Transaction #"
+                type="text"
+                v-model="form.transactionId"
+                :v="$v.form.transactionId"
+                :useHorizontal="false"
+                disabled
+              />
+            </b-col>
+            <b-col lg="6">
+              <InputText
+                label="Nomor Berita Acara"
+                type="text"
+                v-model="form.nomorBeritaAcara"
+                :v="$v.form.nomorBeritaAcara"
+                :useHorizontal="false"
+                disabled
+              />
+            </b-col>
+          </b-row>
+          <b-row>
+            <b-col lg="6">
+              <InputText
+                label="Tanggal Pekerjaan"
+                type="datetime-local"
+                v-model="form.tanggalPekerjaan"
+                :v="$v.form.tanggalPekerjaan"
+                :max="getDate()"
+                :useHorizontal="false"
+              />
+              <form-group
+                label="Pekerjaan"
+                :validator="$v.form.pekerjaan"
+                :useHorizontal="false"
               >
-                {{ item }}
-                <b-btn-close
-                  class="ml-3"
-                  @click="removeFromActivities(index)"
-                />
-              </b-alert>
-            </draggable>
-          </form-group>
-          <InputMoney
-            label="Meter Akhir"
-            v-model="form.endMeter"
-            :v="$v.form.endMeter"
-            :usePrefix="false"
-            @input="calculateDifferential"
-          />
-          <InputMoney
-            label="Meter Awal"
-            v-model="form.startMeter"
-            :v="$v.form.startMeter"
-            :usePrefix="false"
-            @input="calculateDifferential"
-          />
-          <InputMoney
-            label="Selisih"
-            v-model="form.differential"
-            :v="$v.form.differential"
-            :usePrefix="false"
-            append="Liter"
-            disabled
-          />
-          <Select
-            label="Pelaksana 1"
-            placeholder="Search Pelaksana 1"
-            v-model="form.pelaksana1.id"
-            :v="$v.form.pelaksana1"
-            :options="options.account"
-            :multiple="false"
-          >
-            <label
-              slot="option-label"
-              slot-scope="{ node, labelClassName }"
-              :class="labelClassName"
-            >
-              {{ node.label }}
-              <br />
-              <small class="font-weight-bolder">
-                {{ node.raw.role }}
-              </small>
-            </label>
-          </Select>
-          <Select
-            label="Pelaksana 2"
-            placeholder="Search Pelaksana 2"
-            v-model="form.pelaksana2.id"
-            :v="$v.form.pelaksana2"
-            :options="options.account"
-            :multiple="false"
-          >
-            <label
-              slot="option-label"
-              slot-scope="{ node, labelClassName }"
-              :class="labelClassName"
-            >
-              {{ node.label }}
-              <br />
-              <small class="font-weight-bolder">
-                {{ node.raw.role }}
-              </small>
-            </label>
-          </Select>
-          <Select
-            label="Pengawas"
-            placeholder="Search Pengawas"
-            v-model="form.pengawas.id"
-            :v="$v.form.pengawas.id"
-            :options="options.account"
-            :multiple="false"
-          >
-            <label
-              slot="option-label"
-              slot-scope="{ node, labelClassName }"
-              :class="labelClassName"
-            >
-              {{ node.label }}
-              <br />
-              <small class="font-weight-bolder">
-                {{ node.raw.role }}
-              </small>
-            </label>
-          </Select>
+                <b-input-group class="mb-4">
+                  <b-input
+                    v-model="inputText"
+                    class="form-control-lg"
+                    autocomplete="off"
+                    v-on:keyup.enter="addToActivities"
+                  />
+                  <b-input-group-append>
+                    <b-button @click="addToActivities">Add</b-button>
+                  </b-input-group-append>
+                </b-input-group>
+
+                <draggable
+                  v-model="form.pekerjaan"
+                  @start="drag = true"
+                  @end="drag = false"
+                >
+                  <b-alert
+                    v-for="(item, index) in form.pekerjaan"
+                    v-bind:key="item"
+                    variant="light"
+                    style="cursor: move"
+                    show
+                  >
+                    {{ item }}
+                    <b-btn-close
+                      class="ml-3"
+                      @click="removeFromActivities(index)"
+                    />
+                  </b-alert>
+                </draggable>
+              </form-group>
+            </b-col>
+            <b-col lg="6">
+              <InputText
+                label="Meter Name"
+                type="text"
+                v-model="form.meterName"
+                :v="$v.form.meterName"
+                :useHorizontal="false"
+              />
+              <b-row>
+                <b-col lg="6">
+                  <InputMoney
+                    label="Meter Akhir"
+                    v-model="form.endMeter"
+                    :v="$v.form.endMeter"
+                    :usePrefix="false"
+                    @input="calculateDifferential"
+                    :useHorizontal="false"
+                  />
+                </b-col>
+                <b-col lg="6">
+                  <InputMoney
+                    label="Meter Awal"
+                    v-model="form.startMeter"
+                    :v="$v.form.startMeter"
+                    :usePrefix="false"
+                    @input="calculateDifferential"
+                    :useHorizontal="false"
+                  />
+                </b-col>
+              </b-row>
+              <InputMoney
+                label="Selisih"
+                v-model="form.differential"
+                :v="$v.form.differential"
+                :usePrefix="false"
+                append="Liter"
+                disabled
+                :useHorizontal="false"
+              />
+            </b-col>
+          </b-row>
+          <b-row>
+            <b-col lg="4">
+              <Select
+                label="Pelaksana 1"
+                placeholder="Search Pelaksana 1"
+                v-model="form.pelaksana1.id"
+                :v="$v.form.pelaksana1"
+                :options="options.account"
+                :multiple="false"
+                :useHorizontal="false"
+              >
+                <label
+                  slot="option-label"
+                  slot-scope="{ node, labelClassName }"
+                  :class="labelClassName"
+                >
+                  {{ node.label }}
+                  <br />
+                  <small class="font-weight-bolder">
+                    {{ node.raw.role }}
+                  </small>
+                </label>
+              </Select>
+            </b-col>
+            <b-col lg="4">
+              <Select
+                label="Pelaksana 2"
+                placeholder="Search Pelaksana 2"
+                v-model="form.pelaksana2.id"
+                :v="$v.form.pelaksana2"
+                :options="options.account"
+                :multiple="false"
+                :useHorizontal="false"
+              >
+                <label
+                  slot="option-label"
+                  slot-scope="{ node, labelClassName }"
+                  :class="labelClassName"
+                >
+                  {{ node.label }}
+                  <br />
+                  <small class="font-weight-bolder">
+                    {{ node.raw.role }}
+                  </small>
+                </label>
+              </Select>
+            </b-col>
+            <b-col lg="4">
+              <Select
+                label="Pengawas"
+                placeholder="Search Pengawas"
+                v-model="form.pengawas.id"
+                :v="$v.form.pengawas.id"
+                :options="options.account"
+                :multiple="false"
+                :useHorizontal="false"
+              >
+                <label
+                  slot="option-label"
+                  slot-scope="{ node, labelClassName }"
+                  :class="labelClassName"
+                >
+                  {{ node.label }}
+                  <br />
+                  <small class="font-weight-bolder">
+                    {{ node.raw.role }}
+                  </small>
+                </label>
+              </Select>
+            </b-col>
+          </b-row>
+
           <b-row v-if="currentProgress.status == 'Rejected'">
             <b-col lg="8" xl="5" offset="4">
               <b-alert show variant="danger">
@@ -233,11 +290,11 @@
 </template>
 
 <script>
-import TemplateDocument from "./TemplateDocument.vue";
-
 import VueDocumentEditor from "vue-document-editor";
-import { mapGetters } from "vuex";
+import TemplateDocument from "./TemplateDocument.vue";
 import FormHeader from "./FormHeader.vue";
+
+import { mapGetters } from "vuex";
 import { required, decimal, maxLength } from "vuelidate/lib/validators";
 import {
   getDppu,
@@ -268,10 +325,11 @@ export default {
         label: null
       },
       dppuId: null,
-      transactionId: null,
-      transactionDate: getDateTime(),
+      transactionId: "Auto Generated",
+      nomorBeritaAcara: "Auto Generated",
+      tanggalPekerjaan: getDateTime(),
       meterName: null,
-      activities: [],
+      pekerjaan: [],
       startMeter: null,
       endMeter: null,
       differential: null,
@@ -328,9 +386,9 @@ export default {
     form: {
       dppuId: { required },
       transactionId: { required, maxLength: maxLength(50) },
-      transactionDate: { required },
+      tanggalPekerjaan: { required },
       meterName: { required, maxLength: maxLength(50) },
-      activities: { required, maxLength: maxLength(500) },
+      pekerjaan: { required, maxLength: maxLength(500) },
       startMeter: { required, decimal },
       endMeter: { required, decimal },
       differential: { required, decimal },
@@ -375,12 +433,12 @@ export default {
     getDate,
     addToActivities() {
       const self = this;
-      self.form.activities.push(self.inputText);
+      self.form.pekerjaan.push(self.inputText);
       self.inputText = null;
     },
     removeFromActivities(index) {
       const self = this;
-      self.form.activities.splice(index, 1);
+      self.form.pekerjaan.splice(index, 1);
     },
     calculateDifferential() {
       const self = this;
@@ -433,12 +491,14 @@ export default {
               dppu: response.data.dppu,
               dppuId: response.data.dppu?.id,
               transactionId: response.data.transactionId,
-              transactionDate: dateFormat(
-                response.data.transactionDate,
+              nomorBeritaAcara:
+                response.data.nomorBeritaAcara || "Auto Generated",
+              tanggalPekerjaan: dateFormat(
+                response.data.tanggalPekerjaan,
                 "YYYY-MM-DD HH:mm"
               ),
+              pekerjaan: response.data.pekerjaan,
               meterName: response.data.meterName,
-              activities: response.data.activities,
               startMeter: response.data.startMeter,
               endMeter: response.data.endMeter,
               differential: response.data.differential,
@@ -468,11 +528,13 @@ export default {
               }
             };
 
-            self.approveProgress = {
-              pelaksana1: response.data.approveProgress.pelaksana1,
-              pelaksana2: response.data.approveProgress.pelaksana2,
-              pengawas: response.data.approveProgress.pengawas
-            };
+            if (response.data.approveProgress != null) {
+              self.approveProgress = {
+                pelaksana1: response.data.approveProgress.pelaksana1,
+                pelaksana2: response.data.approveProgress.pelaksana2,
+                pengawas: response.data.approveProgress.pengawas
+              };
+            }
 
             self.content = [
               {
@@ -514,9 +576,9 @@ export default {
       let _form = {
         dppuId: self.form.dppuId,
         transactionId: self.form.transactionId,
-        transactionDate: self.form.transactionDate,
+        tanggalPekerjaan: self.form.tanggalPekerjaan,
         meterName: self.form.meterName,
-        activities: self.form.activities,
+        pekerjaan: self.form.pekerjaan,
         startMeter: self.form.startMeter,
         endMeter: self.form.endMeter,
         pelaksana1: self.form.pelaksana1.id,
@@ -561,12 +623,12 @@ export default {
                     dppu: response.data.dppu,
                     dppuId: response.data.dppu?.id,
                     transactionId: response.data.transactionId,
-                    transactionDate: dateFormat(
-                      response.data.transactionDate,
+                    tanggalPekerjaan: dateFormat(
+                      response.data.tanggalPekerjaan,
                       "YYYY-MM-DD HH:mm"
                     ),
                     meterName: response.data.meterName,
-                    activities: response.data.activities,
+                    pekerjaan: response.data.pekerjaan,
                     startMeter: response.data.startMeter,
                     endMeter: response.data.endMeter,
                     differential: response.data.differential,
@@ -651,9 +713,9 @@ export default {
           let _form = {
             dppuId: self.form.dppuId,
             transactionId: self.form.transactionId,
-            transactionDate: self.form.transactionDate,
+            tanggalPekerjaan: self.form.tanggalPekerjaan,
             meterName: self.form.meterName,
-            activities: self.form.activities,
+            pekerjaan: self.form.pekerjaan,
             startMeter: self.form.startMeter,
             endMeter: self.form.endMeter,
             pelaksana1: self.form.pelaksana1.id,

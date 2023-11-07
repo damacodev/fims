@@ -21,7 +21,6 @@
             :v="$v.form.dppuId"
             :options="options.dppu"
             :multiple="false"
-            @input="changeDppu"
             :disabled="$route.name != route.form"
           />
           <Select
@@ -32,18 +31,11 @@
             :multiple="false"
             :disabled="$route.name != route.form"
           />
-          <Select
-            label="Approver"
-            v-model="form.approver"
-            :v="$v.form.approver"
-            :options="options.approver"
-            :multiple="false"
-          />
           <InputText
-            label="Position"
+            label="Format"
             type="text"
-            v-model="form.position"
-            :v="$v.form.position"
+            v-model="form.format"
+            :v="$v.form.format"
           />
         </div>
       </b-form>
@@ -58,29 +50,26 @@ import { getDppu, normalizer } from "@/core/utils";
 
 export default {
   data: () => ({
-    title: "Approver",
+    title: "Document Number",
     route: {
-      form: "approverCreate",
-      table: "approver"
+      form: "documentNumberCreate",
+      table: "documentNumber"
     },
     form: {
       dppuId: null,
       standardFormId: null,
-      approver: null,
-      position: null
+      format: null
     },
     options: {
       dppu: [],
-      standardForm: [],
-      approver: []
+      standardForm: []
     }
   }),
   validations: {
     form: {
       dppuId: { required },
       standardFormId: { required },
-      approver: { required },
-      position: { maxLength: maxLength(100) }
+      format: { maxLength: maxLength(100) }
     }
   },
   computed: {
@@ -88,8 +77,8 @@ export default {
     subTitle() {
       const self = this;
       return self.$route.name != self.route.form
-        ? "Update approver"
-        : "Create new approver";
+        ? "Update document number"
+        : "Create new document number";
     },
     textButton() {
       const self = this;
@@ -113,11 +102,10 @@ export default {
     }
     if (self.dppu) {
       self.form.dppuId = self.dppu.id;
-      self.changeDppu();
     }
 
     if (self.$route.name != self.route.form) {
-      self.heading = "Update Approver";
+      self.heading = "Update Document Number";
       self.get();
     }
   },
@@ -130,7 +118,7 @@ export default {
         .dispatch("apis/get", {
           url: `/common/standard-form`,
           params: {
-            approverProcess: true
+            numberingDocument: true
           }
         })
         .then(response => {
@@ -144,41 +132,13 @@ export default {
           }
         });
     },
-    changeDppu() {
-      const self = this;
-
-      self.options.approver = [];
-      if (self.form.dppuId != null) {
-        self.$store
-          .dispatch("apis/get", {
-            url: "/account",
-            params: {
-              dppu: self.form.dppuId,
-              actived: true
-            }
-          })
-          .then(response => {
-            if (response.error) {
-              self.$message.error({
-                zIndex: 10000,
-                message: response.message
-              });
-            } else {
-              self.options.approver = response.data.data.map(x => ({
-                id: x.id,
-                label: x.fullName
-              }));
-            }
-          });
-      }
-    },
     get() {
       const self = this;
 
       let loader = self.$loading.show();
       self.$store
         .dispatch("apis/get", {
-          url: `/approver/${self.$route.params.id}`
+          url: `/documentnumber/${self.$route.params.id}`
         })
         .then(response => {
           if (response.error) {
@@ -192,8 +152,7 @@ export default {
             self.form = {
               dppuId: response.data.dppu.id,
               standardFormId: response.data.standardForm.id,
-              approver: response.data.approver.id,
-              position: response.data.position
+              format: response.data.format
             };
           }
         })
@@ -211,15 +170,17 @@ export default {
         _url = "";
 
       if (self.$route.name == self.route.form) {
-        _confirmText = "You are about to submit this approver. Are you sure ?";
+        _confirmText =
+          "You are about to submit this document number. Are you sure ?";
         _okText = "Yes, Submit";
         _action = "apis/post";
-        _url = "/approver";
+        _url = "/documentnumber";
       } else {
-        _confirmText = "You are about to update this approver. Are you sure ?";
+        _confirmText =
+          "You are about to update this document number. Are you sure ?";
         _okText = "Yes, Update";
         _action = "apis/put";
-        _url = `/approver/${self.$route.params.id}`;
+        _url = `/documentnumber/${self.$route.params.id}`;
       }
 
       self.$dialog
@@ -256,15 +217,18 @@ export default {
       const self = this;
 
       self.$dialog
-        .confirm("You are about to delete this approver. Are you sure ?", {
-          okText: "Yes, Delete",
-          cancelText: "Cancel",
-          loader: true
-        })
+        .confirm(
+          "You are about to delete this document number. Are you sure ?",
+          {
+            okText: "Yes, Delete",
+            cancelText: "Cancel",
+            loader: true
+          }
+        )
         .then(dialog => {
           self.$store
             .dispatch("apis/remove", {
-              url: `/approver/${self.$route.params.id}`
+              url: `/documentnumber/${self.$route.params.id}`
             })
             .then(response => {
               dialog.close();

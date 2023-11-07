@@ -8,7 +8,7 @@
               BERITA ACARA<br />
               PERUBAHAN METER<br />
             </h4>
-            <span>N0 : {{ form.transactionId }}</span>
+            <span>N0 : {{ form.nomorBeritaAcara }}</span>
           </td>
           <td class="align-middle">
             <img
@@ -20,13 +20,13 @@
       </thead>
     </table>
     <p class="mt-10">
-      Pada hari ini {{ dateFormat(form.transactionDate, "dddd") }}, Tanggal
-      {{ dateFormat(form.transactionDate, "DD MMMM YYYY") }}, Jam
-      {{ dateFormat(form.transactionDate, "HH:mm") }} telah dilaksanakan
+      Pada hari ini {{ dateFormat(form.tanggalPekerjaan, "dddd") }}, Tanggal
+      {{ dateFormat(form.tanggalPekerjaan, "DD MMMM YYYY") }}, Jam
+      {{ dateFormat(form.tanggalPekerjaan, "HH:mm") }} telah dilaksanakan
       pekerjaan,
     </p>
     <ol>
-      <li v-for="(activity, index) in form.activities" v-bind:key="index">
+      <li v-for="(activity, index) in form.pekerjaan" v-bind:key="index">
         {{ activity }}
       </li>
     </ol>

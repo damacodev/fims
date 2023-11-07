@@ -18,7 +18,7 @@
   >
     <template #toolbar>
       <b-button variant="primary" :to="{ name: 'sf127Create' }" class="mr-2">
-        Create New Berita Acara
+        Create New Transaction
       </b-button>
     </template>
     <template #search>
@@ -78,11 +78,14 @@
       <EmptyTable
         :title="`${subTitle} are managed from here`"
         :description="`All ${subTitle} will be displayed on this page`"
-        button-label="Create New Berita Acara"
+        button-label="Create New Transaction"
         :href="{ name: 'sf127Create' }"
       />
     </template>
-    <template #cell(transactionDate)="data">
+    <template #cell(nomorBeritaAcara)="data">
+      {{ data.value || "-" }}
+    </template>
+    <template #cell(tanggalPekerjaan)="data">
       {{ dateTimeFormat(data.value, "DD/MM/YYYY HH:mm") }}
     </template>
     <template #cell(startMeter)="data">

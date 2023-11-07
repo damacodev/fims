@@ -96,6 +96,11 @@
         icon="flaticon-users"
       />
       <li-menu
+        :to="{ name: 'documentNumber' }"
+        text="Document Number"
+        icon="flaticon-exclamation-2"
+      />
+      <li-menu
         :to="{ name: 'technician' }"
         text="Technician"
         icon="flaticon-user"
