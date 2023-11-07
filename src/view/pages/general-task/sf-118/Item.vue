@@ -105,28 +105,44 @@ export default {
           colourIds: [],
           cleanlinesIds: [],
           freeWaterIds: [],
-          waterDetectorIds: null
+          waterDetectorIds: [],
+          colour: [],
+          cleanlines: [],
+          freeWater: [],
+          waterDetector: []
         },
         beforeFilter: {
           id: null,
           colourIds: [],
           cleanlinesIds: [],
           freeWaterIds: [],
-          waterDetectorIds: null
+          waterDetectorIds: [],
+          colour: [],
+          cleanlines: [],
+          freeWater: [],
+          waterDetector: []
         },
         afterFilter: {
           id: null,
           colourIds: [],
           cleanlinesIds: [],
           freeWaterIds: [],
-          waterDetectorIds: null
+          waterDetectorIds: [],
+          colour: [],
+          cleanlines: [],
+          freeWater: [],
+          waterDetector: []
         },
         recoveryTankDrain: {
           id: null,
           colourIds: [],
           cleanlinesIds: [],
           freeWaterIds: [],
-          waterDetectorIds: null
+          waterDetectorIds: [],
+          colour: [],
+          cleanlines: [],
+          freeWater: [],
+          waterDetector: []
         }
       },
       afterWash: {
@@ -135,14 +151,22 @@ export default {
           colourIds: [],
           cleanlinesIds: [],
           freeWaterIds: [],
-          waterDetectorIds: null
+          waterDetectorIds: [],
+          colour: [],
+          cleanlines: [],
+          freeWater: [],
+          waterDetector: []
         },
         recoveryTankDrain: {
           id: null,
           colourIds: [],
           cleanlinesIds: [],
           freeWaterIds: [],
-          waterDetectorIds: null
+          waterDetectorIds: [],
+          colour: [],
+          cleanlines: [],
+          freeWater: [],
+          waterDetector: []
         }
       },
       afterHeavyRain: {
@@ -151,14 +175,22 @@ export default {
           colourIds: [],
           cleanlinesIds: [],
           freeWaterIds: [],
-          waterDetectorIds: null
+          waterDetectorIds: [],
+          colour: [],
+          cleanlines: [],
+          freeWater: [],
+          waterDetector: []
         },
         recoveryTankDrain: {
           id: null,
           colourIds: [],
           cleanlinesIds: [],
           freeWaterIds: [],
-          waterDetectorIds: null
+          waterDetectorIds: [],
+          colour: [],
+          cleanlines: [],
+          freeWater: [],
+          waterDetector: []
         }
       },
       afterTopingUp: []
@@ -273,60 +305,84 @@ export default {
                 colourIds: response.data.everyDay.productTankDrain?.colourIds.map(
                   x => x.id
                 ),
+                colour: response.data.everyDay.productTankDrain?.colourIds,
                 cleanlinesIds: response.data.everyDay.productTankDrain?.cleanlinesIds.map(
                   x => x.id
                 ),
+                cleanlines:
+                  response.data.everyDay.productTankDrain?.cleanlinesIds,
                 freeWaterIds: response.data.everyDay.productTankDrain?.freeWaterIds.map(
                   x => x.id
                 ),
+                freeWater:
+                  response.data.everyDay.productTankDrain?.freeWaterIds,
                 waterDetectorIds: response.data.everyDay.productTankDrain?.waterDetectorIds.map(
                   x => x.id
-                )
+                ),
+                waterDetector:
+                  response.data.everyDay.productTankDrain?.waterDetectorIds
               },
               beforeFilter: {
                 id: response.data.everyDay.beforeFilter?.id,
                 colourIds: response.data.everyDay.beforeFilter?.colourIds.map(
                   x => x.id
                 ),
+                colour: response.data.everyDay.beforeFilter?.colourIds,
                 cleanlinesIds: response.data.everyDay.beforeFilter?.cleanlinesIds.map(
                   x => x.id
                 ),
+                cleanlines: response.data.everyDay.beforeFilter?.cleanlinesIds,
                 freeWaterIds: response.data.everyDay.beforeFilter?.freeWaterIds.map(
                   x => x.id
                 ),
+                freeWater: response.data.everyDay.beforeFilter?.freeWaterIds,
                 waterDetectorIds: response.data.everyDay.beforeFilter?.waterDetectorIds.map(
                   x => x.id
-                )
+                ),
+                waterDetector:
+                  response.data.everyDay.beforeFilter?.waterDetectorIds
               },
               afterFilter: {
                 id: response.data.everyDay.afterFilter?.id,
                 colourIds: response.data.everyDay.afterFilter?.colourIds.map(
                   x => x.id
                 ),
+                colour: response.data.everyDay.afterFilter?.colourIds,
                 cleanlinesIds: response.data.everyDay.afterFilter?.cleanlinesIds.map(
                   x => x.id
                 ),
+                cleanlines: response.data.everyDay.afterFilter?.cleanlinesIds,
                 freeWaterIds: response.data.everyDay.afterFilter?.freeWaterIds.map(
                   x => x.id
                 ),
+                freeWater: response.data.everyDay.afterFilter?.freeWaterIds,
                 waterDetectorIds: response.data.everyDay.afterFilter?.waterDetectorIds.map(
                   x => x.id
-                )
+                ),
+                waterDetector:
+                  response.data.everyDay.afterFilter?.waterDetectorIds
               },
               recoveryTankDrain: {
                 id: response.data.everyDay.recoveryTankDrain?.id,
                 colourIds: response.data.everyDay.recoveryTankDrain?.colourIds.map(
                   x => x.id
                 ),
+                colour: response.data.everyDay.recoveryTankDrain?.colourIds,
                 cleanlinesIds: response.data.everyDay.recoveryTankDrain?.cleanlinesIds.map(
                   x => x.id
                 ),
+                cleanlines:
+                  response.data.everyDay.recoveryTankDrain?.cleanlinesIds,
                 freeWaterIds: response.data.everyDay.recoveryTankDrain?.freeWaterIds.map(
                   x => x.id
                 ),
+                freeWater:
+                  response.data.everyDay.recoveryTankDrain?.freeWaterIds,
                 waterDetectorIds: response.data.everyDay.recoveryTankDrain?.waterDetectorIds.map(
                   x => x.id
-                )
+                ),
+                waterDetector:
+                  response.data.everyDay.recoveryTankDrain?.waterDetectorIds
               }
             };
             self.form.afterWash = {
@@ -335,30 +391,44 @@ export default {
                 colourIds: response.data.afterWash.productTankDrain?.colourIds.map(
                   x => x.id
                 ),
+                colour: response.data.afterWash.productTankDrain?.colourIds,
                 cleanlinesIds: response.data.afterWash.productTankDrain?.cleanlinesIds.map(
                   x => x.id
                 ),
+                cleanlines:
+                  response.data.afterWash.productTankDrain?.cleanlinesIds,
                 freeWaterIds: response.data.afterWash.productTankDrain?.freeWaterIds.map(
                   x => x.id
                 ),
+                freeWater:
+                  response.data.afterWash.productTankDrain?.freeWaterIds,
                 waterDetectorIds: response.data.afterWash.productTankDrain?.waterDetectorIds.map(
                   x => x.id
-                )
+                ),
+                waterDetector:
+                  response.data.afterWash.productTankDrain?.waterDetectorIds
               },
               recoveryTankDrain: {
                 id: response.data.afterWash.recoveryTankDrain?.id,
                 colourIds: response.data.afterWash.recoveryTankDrain?.colourIds.map(
                   x => x.id
                 ),
+                colour: response.data.afterWash.recoveryTankDrain?.colourIds,
                 cleanlinesIds: response.data.afterWash.recoveryTankDrain?.cleanlinesIds.map(
                   x => x.id
                 ),
+                cleanlines:
+                  response.data.afterWash.recoveryTankDrain?.cleanlinesIds,
                 freeWaterIds: response.data.afterWash.recoveryTankDrain?.freeWaterIds.map(
                   x => x.id
                 ),
+                freeWater:
+                  response.data.afterWash.recoveryTankDrain?.freeWaterIds,
                 waterDetectorIds: response.data.afterWash.recoveryTankDrain?.waterDetectorIds.map(
                   x => x.id
-                )
+                ),
+                waterDetector:
+                  response.data.afterWash.recoveryTankDrain?.waterDetectorIds
               }
             };
             self.form.afterHeavyRain = {
@@ -367,30 +437,48 @@ export default {
                 colourIds: response.data.afterHeavyRain.productTankDrain?.colourIds.map(
                   x => x.id
                 ),
+                colour:
+                  response.data.afterHeavyRain.productTankDrain?.colourIds,
                 cleanlinesIds: response.data.afterHeavyRain.productTankDrain?.cleanlinesIds.map(
                   x => x.id
                 ),
+                cleanlines:
+                  response.data.afterHeavyRain.productTankDrain?.cleanlinesIds,
                 freeWaterIds: response.data.afterHeavyRain.productTankDrain?.freeWaterIds.map(
                   x => x.id
                 ),
+                freeWater:
+                  response.data.afterHeavyRain.productTankDrain?.freeWaterIds,
                 waterDetectorIds: response.data.afterHeavyRain.productTankDrain?.waterDetectorIds.map(
                   x => x.id
-                )
+                ),
+                waterDetector:
+                  response.data.afterHeavyRain.productTankDrain
+                    ?.waterDetectorIds
               },
               recoveryTankDrain: {
                 id: response.data.afterHeavyRain.recoveryTankDrain?.id,
                 colourIds: response.data.afterHeavyRain.recoveryTankDrain?.colourIds.map(
                   x => x.id
                 ),
+                colour:
+                  response.data.afterHeavyRain.recoveryTankDrain?.colourIds,
                 cleanlinesIds: response.data.afterHeavyRain.recoveryTankDrain?.cleanlinesIds.map(
                   x => x.id
                 ),
+                cleanlines:
+                  response.data.afterHeavyRain.recoveryTankDrain?.cleanlinesIds,
                 freeWaterIds: response.data.afterHeavyRain.recoveryTankDrain?.freeWaterIds.map(
                   x => x.id
                 ),
+                freeWater:
+                  response.data.afterHeavyRain.recoveryTankDrain?.freeWaterIds,
                 waterDetectorIds: response.data.afterHeavyRain.recoveryTankDrain?.waterDetectorIds.map(
                   x => x.id
-                )
+                ),
+                waterDetector:
+                  response.data.afterHeavyRain.recoveryTankDrain
+                    ?.waterDetectorIds
               }
             };
             self.form.afterTopingUp = response.data.afterTopingUp.map(x => ({

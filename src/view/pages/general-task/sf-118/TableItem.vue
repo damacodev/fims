@@ -90,7 +90,9 @@
               v-else
               v-for="(row, index) in row.everyDay.productTankDrain.colourIds"
             >
-              <span v-bind:key="index">{{ row.label }}<br /></span>
+              <span v-bind:key="index"
+                >{{ `${row.value} - ${row.label}` }}<br
+              /></span>
             </template>
           </td>
           <td class="text-left">
@@ -100,7 +102,9 @@
               v-for="(row, index) in row.everyDay.productTankDrain
                 .cleanlinesIds"
             >
-              <span v-bind:key="index">{{ row.label }}<br /></span>
+              <span v-bind:key="index"
+                >{{ `${row.value} - ${row.label}` }}<br
+              /></span>
             </template>
           </td>
           <td class="text-left">
@@ -109,7 +113,9 @@
               v-else
               v-for="(row, index) in row.everyDay.productTankDrain.freeWaterIds"
             >
-              <span v-bind:key="index">{{ row.label }}<br /></span>
+              <span v-bind:key="index"
+                >{{ `${row.value} - ${row.label}` }}<br
+              /></span>
             </template>
           </td>
           <td class="text-left">
@@ -119,7 +125,9 @@
               v-for="(row, index) in row.everyDay.productTankDrain
                 .waterDetectorIds"
             >
-              <span v-bind:key="index">{{ row.label }}<br /></span>
+              <span v-bind:key="index"
+                >{{ `${row.value} - ${row.label}` }}<br
+              /></span>
             </template>
           </td>
 
@@ -129,7 +137,9 @@
               v-else
               v-for="(row, index) in row.everyDay.beforeFilter.colourIds"
             >
-              <span v-bind:key="index">{{ row.label }}<br /></span>
+              <span v-bind:key="index"
+                >{{ `${row.value} - ${row.label}` }}<br
+              /></span>
             </template>
           </td>
           <td class="text-left">
@@ -138,7 +148,9 @@
               v-else
               v-for="(row, index) in row.everyDay.beforeFilter.cleanlinesIds"
             >
-              <span v-bind:key="index">{{ row.label }}<br /></span>
+              <span v-bind:key="index"
+                >{{ `${row.value} - ${row.label}` }}<br
+              /></span>
             </template>
           </td>
           <td class="text-left">
@@ -147,7 +159,9 @@
               v-else
               v-for="(row, index) in row.everyDay.beforeFilter.freeWaterIds"
             >
-              <span v-bind:key="index">{{ row.label }}<br /></span>
+              <span v-bind:key="index"
+                >{{ `${row.value} - ${row.label}` }}<br
+              /></span>
             </template>
           </td>
           <td class="text-left">
@@ -156,7 +170,9 @@
               v-else
               v-for="(row, index) in row.everyDay.beforeFilter.waterDetectorIds"
             >
-              <span v-bind:key="index">{{ row.label }}<br /></span>
+              <span v-bind:key="index"
+                >{{ `${row.value} - ${row.label}` }}<br
+              /></span>
             </template>
           </td>
 
@@ -166,7 +182,9 @@
               v-else
               v-for="(row, index) in row.everyDay.afterFilter.colourIds"
             >
-              <span v-bind:key="index">{{ row.label }}<br /></span>
+              <span v-bind:key="index"
+                >{{ `${row.value} - ${row.label}` }}<br
+              /></span>
             </template>
           </td>
           <td class="text-left">
@@ -175,7 +193,9 @@
               v-else
               v-for="(row, index) in row.everyDay.afterFilter.cleanlinesIds"
             >
-              <span v-bind:key="index">{{ row.label }}<br /></span>
+              <span v-bind:key="index"
+                >{{ `${row.value} - ${row.label}` }}<br
+              /></span>
             </template>
           </td>
           <td class="text-left">
@@ -184,7 +204,9 @@
               v-else
               v-for="(row, index) in row.everyDay.afterFilter.freeWaterIds"
             >
-              <span v-bind:key="index">{{ row.label }}<br /></span>
+              <span v-bind:key="index"
+                >{{ `${row.value} - ${row.label}` }}<br
+              /></span>
             </template>
           </td>
           <td class="text-left">
@@ -193,7 +215,9 @@
               v-else
               v-for="(row, index) in row.everyDay.afterFilter.waterDetectorIds"
             >
-              <span v-bind:key="index">{{ row.label }}<br /></span>
+              <span v-bind:key="index"
+                >{{ `${row.value} - ${row.label}` }}<br
+              /></span>
             </template>
           </td>
 
@@ -203,7 +227,9 @@
               v-else
               v-for="(row, index) in row.everyDay.recoveryTankDrain.colourIds"
             >
-              <span v-bind:key="index">{{ row.label }}<br /></span>
+              <span v-bind:key="index"
+                >{{ `${row.value} - ${row.label}` }}<br
+              /></span>
             </template>
           </td>
           <td class="text-left">
@@ -213,7 +239,9 @@
               v-for="(row, index) in row.everyDay.recoveryTankDrain
                 .cleanlinesIds"
             >
-              <span v-bind:key="index">{{ row.label }}<br /></span>
+              <span v-bind:key="index"
+                >{{ `${row.value} - ${row.label}` }}<br
+              /></span>
             </template>
           </td>
           <td class="text-left">
@@ -223,7 +251,9 @@
               v-for="(row, index) in row.everyDay.recoveryTankDrain
                 .freeWaterIds"
             >
-              <span v-bind:key="index">{{ row.label }}<br /></span>
+              <span v-bind:key="index"
+                >{{ `${row.value} - ${row.label}` }}<br
+              /></span>
             </template>
           </td>
           <td class="text-left">
@@ -233,7 +263,9 @@
               v-for="(row, index) in row.everyDay.recoveryTankDrain
                 .waterDetectorIds"
             >
-              <span v-bind:key="index">{{ row.label }}<br /></span>
+              <span v-bind:key="index"
+                >{{ `${row.value} - ${row.label}` }}<br
+              /></span>
             </template>
           </td>
           <!-- END EVERYDAY -->
@@ -245,7 +277,9 @@
               v-else
               v-for="(row, index) in row.afterWash.productTankDrain.colourIds"
             >
-              <span v-bind:key="index">{{ row.label }}<br /></span>
+              <span v-bind:key="index"
+                >{{ `${row.value} - ${row.label}` }}<br
+              /></span>
             </template>
           </td>
           <td class="text-left">
@@ -255,7 +289,9 @@
               v-for="(row, index) in row.afterWash.productTankDrain
                 .cleanlinesIds"
             >
-              <span v-bind:key="index">{{ row.label }}<br /></span>
+              <span v-bind:key="index"
+                >{{ `${row.value} - ${row.label}` }}<br
+              /></span>
             </template>
           </td>
           <td class="text-left">
@@ -265,7 +301,9 @@
               v-for="(row, index) in row.afterWash.productTankDrain
                 .freeWaterIds"
             >
-              <span v-bind:key="index">{{ row.label }}<br /></span>
+              <span v-bind:key="index"
+                >{{ `${row.value} - ${row.label}` }}<br
+              /></span>
             </template>
           </td>
           <td class="text-left">
@@ -275,7 +313,9 @@
               v-for="(row, index) in row.afterWash.productTankDrain
                 .waterDetectorIds"
             >
-              <span v-bind:key="index">{{ row.label }}<br /></span>
+              <span v-bind:key="index"
+                >{{ `${row.value} - ${row.label}` }}<br
+              /></span>
             </template>
           </td>
 
@@ -285,7 +325,9 @@
               v-else
               v-for="(row, index) in row.afterWash.recoveryTankDrain.colourIds"
             >
-              <span v-bind:key="index">{{ row.label }}<br /></span>
+              <span v-bind:key="index"
+                >{{ `${row.value} - ${row.label}` }}<br
+              /></span>
             </template>
           </td>
           <td class="text-left">
@@ -295,7 +337,9 @@
               v-for="(row, index) in row.afterWash.recoveryTankDrain
                 .cleanlinesIds"
             >
-              <span v-bind:key="index">{{ row.label }}<br /></span>
+              <span v-bind:key="index"
+                >{{ `${row.value} - ${row.label}` }}<br
+              /></span>
             </template>
           </td>
           <td class="text-left">
@@ -305,7 +349,9 @@
               v-for="(row, index) in row.afterWash.recoveryTankDrain
                 .freeWaterIds"
             >
-              <span v-bind:key="index">{{ row.label }}<br /></span>
+              <span v-bind:key="index"
+                >{{ `${row.value} - ${row.label}` }}<br
+              /></span>
             </template>
           </td>
           <td class="text-left">
@@ -315,7 +361,9 @@
               v-for="(row, index) in row.afterWash.recoveryTankDrain
                 .waterDetectorIds"
             >
-              <span v-bind:key="index">{{ row.label }}<br /></span>
+              <span v-bind:key="index"
+                >{{ `${row.value} - ${row.label}` }}<br
+              /></span>
             </template>
           </td>
           <!-- END AFTER WASH -->
@@ -328,7 +376,9 @@
               v-for="(row, index) in row.afterHeavyRain.productTankDrain
                 .colourIds"
             >
-              <span v-bind:key="index">{{ row.label }}<br /></span>
+              <span v-bind:key="index"
+                >{{ `${row.value} - ${row.label}` }}<br
+              /></span>
             </template>
           </td>
           <td class="text-left">
@@ -338,7 +388,9 @@
               v-for="(row, index) in row.afterHeavyRain.productTankDrain
                 .cleanlinesIds"
             >
-              <span v-bind:key="index">{{ row.label }}<br /></span>
+              <span v-bind:key="index"
+                >{{ `${row.value} - ${row.label}` }}<br
+              /></span>
             </template>
           </td>
           <td class="text-left">
@@ -348,7 +400,9 @@
               v-for="(row, index) in row.afterHeavyRain.productTankDrain
                 .freeWaterIds"
             >
-              <span v-bind:key="index">{{ row.label }}<br /></span>
+              <span v-bind:key="index"
+                >{{ `${row.value} - ${row.label}` }}<br
+              /></span>
             </template>
           </td>
           <td class="text-left">
@@ -358,7 +412,9 @@
               v-for="(row, index) in row.afterHeavyRain.productTankDrain
                 .waterDetectorIds"
             >
-              <span v-bind:key="index">{{ row.label }}<br /></span>
+              <span v-bind:key="index"
+                >{{ `${row.value} - ${row.label}` }}<br
+              /></span>
             </template>
           </td>
 
@@ -369,7 +425,9 @@
               v-for="(row, index) in row.afterHeavyRain.recoveryTankDrain
                 .colourIds"
             >
-              <span v-bind:key="index">{{ row.label }}<br /></span>
+              <span v-bind:key="index"
+                >{{ `${row.value} - ${row.label}` }}<br
+              /></span>
             </template>
           </td>
           <td class="text-left">
@@ -379,7 +437,9 @@
               v-for="(row, index) in row.afterHeavyRain.recoveryTankDrain
                 .cleanlinesIds"
             >
-              <span v-bind:key="index">{{ row.label }}<br /></span>
+              <span v-bind:key="index"
+                >{{ `${row.value} - ${row.label}` }}<br
+              /></span>
             </template>
           </td>
           <td class="text-left">
@@ -389,7 +449,9 @@
               v-for="(row, index) in row.afterHeavyRain.recoveryTankDrain
                 .freeWaterIds"
             >
-              <span v-bind:key="index">{{ row.label }}<br /></span>
+              <span v-bind:key="index"
+                >{{ `${row.value} - ${row.label}` }}<br
+              /></span>
             </template>
           </td>
           <td class="text-left">
@@ -399,7 +461,9 @@
               v-for="(row, index) in row.afterHeavyRain.recoveryTankDrain
                 .waterDetectorIds"
             >
-              <span v-bind:key="index">{{ row.label }}<br /></span>
+              <span v-bind:key="index"
+                >{{ `${row.value} - ${row.label}` }}<br
+              /></span>
             </template>
           </td>
           <!-- END AFTER HEAVY RAIN -->

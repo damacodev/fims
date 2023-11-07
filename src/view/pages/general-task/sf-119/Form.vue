@@ -1182,11 +1182,7 @@ export default {
         fireExtinguishers: {
           result: {
             id: { required }
-          },
-          seal: { required },
-          number: { required },
-          lastChecked: { required },
-          pressureIndicator: { required }
+          }
         },
         safetySigns: {
           result: {
@@ -1253,35 +1249,29 @@ export default {
           nitrogenPressureIndicator: {
             result: {
               id: { required }
-            },
-            value: { required }
+            }
           }
         },
         during: {
           inletPressureIndicator: {
             result: {
               id: { required }
-            },
-            value: { required }
+            }
           },
           pcvMonitorIndicator: {
             result: {
               id: { required }
-            },
-            value: { required }
+            }
           },
           pcvAirReferenceIndicator: {
             result: {
               id: { required }
-            },
-            value: { required }
+            }
           },
           pdgIndicator: {
             result: {
               id: { required }
-            },
-            value: { required },
-            flowRate: { required }
+            }
           }
         }
       },
@@ -1329,9 +1319,7 @@ export default {
         filterSumpsAndTankSumpsDrain: {
           result: {
             id: { required }
-          },
-          filterSumps: { required },
-          tankSumpsDrain: { required }
+          }
         }
       }
     }
@@ -1498,19 +1486,33 @@ export default {
               response.data.transactionDate,
               "YYYY-MM-DD"
             );
-            self.form.safetyEquipments.fireExtinguishers.lastChecked = self.dateFormat(
-              response.data.safetyEquipments.fireExtinguishers.lastChecked,
-              "YYYY-MM-DD"
-            );
-            self.form.refuelingEquipments.before.flowMeterCondition.calibrationExpiresDate = self.dateFormat(
+            self.form.safetyEquipments.fireExtinguishers.lastChecked =
+              response.data.safetyEquipments.fireExtinguishers.lastChecked ==
+              null
+                ? null
+                : self.dateFormat(
+                    response.data.safetyEquipments.fireExtinguishers
+                      .lastChecked,
+                    "YYYY-MM-DD"
+                  );
+            self.form.refuelingEquipments.before.flowMeterCondition.calibrationExpiresDate =
               response.data.refuelingEquipments.before.flowMeterCondition
-                .calibrationExpiresDate,
-              "YYYY-MM-DD"
-            );
-            self.form.refuelingEquipments.before.lastFilterChange.date = self.dateFormat(
-              response.data.refuelingEquipments.before.lastFilterChange.date,
-              "YYYY-MM-DD"
-            );
+                .calibrationExpiresDate == null
+                ? null
+                : self.dateFormat(
+                    response.data.refuelingEquipments.before.flowMeterCondition
+                      .calibrationExpiresDate,
+                    "YYYY-MM-DD"
+                  );
+            self.form.refuelingEquipments.before.lastFilterChange.date =
+              response.data.refuelingEquipments.before.lastFilterChange.date ==
+              null
+                ? null
+                : self.dateFormat(
+                    response.data.refuelingEquipments.before.lastFilterChange
+                      .date,
+                    "YYYY-MM-DD"
+                  );
 
             self.currentProgress = {
               locked: response.data.currentProgress.locked,

@@ -111,6 +111,7 @@ export function yearEnd() {
 }
 
 export function dateFormat(date, format) {
+  if (date == null) return "-";
   moment.locale("id-id");
   format = format || "DD/MM/YYYY";
   return moment(date).format(format);

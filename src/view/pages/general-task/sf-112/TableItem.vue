@@ -44,7 +44,9 @@
             <template v-else>
               <span v-if="row.resultBeforeIds.length == 0">-</span>
               <template v-else v-for="(row, index) in row.resultBeforeIds">
-                <span v-bind:key="index">{{ row.label }}<br /></span>
+                <span v-bind:key="index"
+                  >{{ `${row.value} - ${row.label}` }}<br
+                /></span>
               </template>
             </template>
           </td>
@@ -61,7 +63,9 @@
             <template v-else>
               <span v-if="row.resultAfterIds.length == 0">-</span>
               <template v-else v-for="(row, index) in row.resultAfterIds">
-                <span v-bind:key="index">{{ row.label }}<br /></span>
+                <span v-bind:key="index"
+                  >{{ `${row.value} - ${row.label}` }}<br
+                /></span>
               </template>
             </template>
           </td>

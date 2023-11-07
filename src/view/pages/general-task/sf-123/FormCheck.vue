@@ -54,38 +54,55 @@
         />
       </div>
       <div v-else class="card-body">
-        <PlainText
-          label="Colour"
-          :value="
-            form.colourIds == null || form.colourIds.length == 0
-              ? '-'
-              : form.colourIds.join('/')
-          "
-        />
-        <PlainText
-          label="Cleanlines"
-          :value="
-            form.cleanlinesIds == null || form.cleanlinesIds.length == 0
-              ? '-'
-              : form.cleanlinesIds.join('/')
-          "
-        />
-        <PlainText
-          label="Free Water"
-          :value="
-            form.freeWaterIds == null || form.freeWaterIds.length == 0
-              ? '-'
-              : form.freeWaterIds.join('/')
-          "
-        />
-        <PlainText
-          label="CWD"
-          :value="
-            form.waterDetectorIds == null || form.waterDetectorIds.length == 0
-              ? '-'
-              : form.waterDetectorIds.join('/')
-          "
-        />
+        <PlainText label="Colour">
+          <template #value>
+            <span v-if="form.colour == null || form.colour.length == 0">-</span>
+            <template v-else v-for="(row, index) in form.colour">
+              <span v-bind:key="index"
+                >{{ `${row.value} - ${row.label}` }}<br
+              /></span>
+            </template>
+          </template>
+        </PlainText>
+        <PlainText label="Cleanlines">
+          <template #value>
+            <span v-if="form.cleanlines == null || form.cleanlines.length == 0"
+              >-</span
+            >
+            <template v-else v-for="(row, index) in form.cleanlines">
+              <span v-bind:key="index"
+                >{{ `${row.value} - ${row.label}` }}<br
+              /></span>
+            </template>
+          </template>
+        </PlainText>
+        <PlainText label="Free Water">
+          <template #value>
+            <span v-if="form.freeWater == null || form.freeWater.length == 0"
+              >-</span
+            >
+            <template v-else v-for="(row, index) in form.freeWater">
+              <span v-bind:key="index"
+                >{{ `${row.value} - ${row.label}` }}<br
+              /></span>
+            </template>
+          </template>
+        </PlainText>
+        <PlainText label="CWD">
+          <template #value>
+            <span
+              v-if="
+                form.waterDetector == null || form.waterDetector.length == 0
+              "
+              >-</span
+            >
+            <template v-else v-for="(row, index) in form.waterDetector">
+              <span v-bind:key="index"
+                >{{ `${row.value} - ${row.label}` }}<br
+              /></span>
+            </template>
+          </template>
+        </PlainText>
       </div>
     </template>
   </CardForm>

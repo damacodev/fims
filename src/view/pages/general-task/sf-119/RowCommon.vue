@@ -51,7 +51,7 @@
           />
         </form-group>
         <template v-else>
-          <span v-if="form.remarks.length == 0">-</span>
+          <span v-if="form.remarks == null">-</span>
           <span v-else>{{ form.remarks }}</span>
         </template>
       </fragment>

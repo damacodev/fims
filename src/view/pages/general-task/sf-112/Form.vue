@@ -232,6 +232,7 @@ export default {
                   id: x.id,
                   receiverTank: x.receiverTank,
                   equipment: x.equipment,
+                  volume: x.volume,
                   resultAfterIds: x.resultAfterIds.map(y => y.id),
                   resultBeforeIds: x.resultBeforeIds.map(y => y.id)
                 }));

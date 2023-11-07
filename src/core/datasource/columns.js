@@ -61,17 +61,17 @@ export const checklist = [
 
 export const dailyStock = [
   {
-    label: "Transaction #",
-    key: "transactionId",
-    thClass: "align-middle"
-  },
-  {
     label: "DPPU",
     key: "dppu.label",
     thClass: "align-middle"
   },
   {
-    label: "Date",
+    label: "Transaction #",
+    key: "transactionId",
+    thClass: "align-middle"
+  },
+  {
+    label: "Transaction Date",
     key: "date",
     thClass: "align-middle"
   },
@@ -662,14 +662,14 @@ export const importEquipment = [
 
 export const workItem = [
   {
-    label: "Task ID",
-    key: "taskId",
+    label: "DPPU",
+    key: "dppu.label",
     thClass: "align-middle",
     tdClass: "align-middle"
   },
   {
-    label: "DPPU",
-    key: "dppu.label",
+    label: "Task ID",
+    key: "taskId",
     thClass: "align-middle",
     tdClass: "align-middle"
   },

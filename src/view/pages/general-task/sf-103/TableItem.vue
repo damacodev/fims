@@ -71,7 +71,9 @@
           </td>
           <td class="text-left">
             <template v-for="(row, index) in row.appearanceIds">
-              <span v-bind:key="index">{{ row.label }}<br /></span>
+              <span v-bind:key="index"
+                >{{ `${row.value} - ${row.label}` }}<br
+              /></span>
             </template>
           </td>
           <td class="text-right">

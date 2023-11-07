@@ -26,7 +26,9 @@
             <template v-else>
               <span v-if="row.resultIds.length == 0">-</span>
               <template v-else v-for="(row, index) in row.resultIds">
-                <span v-bind:key="index">{{ row.label }}<br /></span>
+                <span v-bind:key="index"
+                  >{{ `${row.value} - ${row.label}` }}<br
+                /></span>
               </template>
             </template>
           </td>
@@ -43,7 +45,9 @@
             <template v-else>
               <span v-if="row.afterHeavyRainIds.length == 0">-</span>
               <template v-else v-for="(row, index) in row.afterHeavyRainIds">
-                <span v-bind:key="index">{{ row.label }}<br /></span>
+                <span v-bind:key="index"
+                  >{{ `${row.value} - ${row.label}` }}<br
+                /></span>
               </template>
             </template>
           </td>
