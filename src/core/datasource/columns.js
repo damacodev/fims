@@ -112,6 +112,11 @@ export const approver = [
     label: "Position",
     key: "position",
     thClass: "align-middle"
+  },
+  {
+    label: "Partial Mode",
+    key: "partialMode",
+    thClass: "align-middle"
   }
 ];
 

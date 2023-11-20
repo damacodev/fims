@@ -60,6 +60,10 @@
     <template #cell(position)="data">
       {{ data.value || "-" }}
     </template>
+    <template #cell(partialMode)="data">
+      <span v-show="data.value" class="text-success">Yes</span>
+      <span v-show="!data.value" class="text-danger">No</span>
+    </template>
   </CardTable>
 </template>
 

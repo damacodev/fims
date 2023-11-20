@@ -45,6 +45,11 @@
             v-model="form.position"
             :v="$v.form.position"
           />
+          <RadioGroup
+            v-model="form.partialMode"
+            label="Partial Mode"
+            :options="options.yesNo"
+          />
         </div>
       </b-form>
     </template>
@@ -54,6 +59,7 @@
 <script>
 import { mapGetters } from "vuex";
 import { required, maxLength } from "vuelidate/lib/validators";
+import { yesNo } from "@/core/datasource/options";
 import { getDppu, normalizer } from "@/core/utils";
 
 export default {
@@ -67,12 +73,14 @@ export default {
       dppuId: null,
       standardFormId: null,
       approver: null,
-      position: null
+      position: null,
+      partialMode: false
     },
     options: {
       dppu: [],
       standardForm: [],
-      approver: []
+      approver: [],
+      yesNo
     }
   }),
   validations: {
@@ -80,7 +88,8 @@ export default {
       dppuId: { required },
       standardFormId: { required },
       approver: { required },
-      position: { maxLength: maxLength(100) }
+      position: { maxLength: maxLength(100) },
+      partialMode: { required }
     }
   },
   computed: {
@@ -193,7 +202,8 @@ export default {
               dppuId: response.data.dppu.id,
               standardFormId: response.data.standardForm.id,
               approver: response.data.approver.id,
-              position: response.data.position
+              position: response.data.position,
+              partialMode: response.data.partialMode
             };
           }
         })

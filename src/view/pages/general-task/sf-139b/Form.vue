@@ -155,7 +155,7 @@
                           :v="$v.form.volume"
                           :useHorizontal="false"
                           :usePrefix="false"
-                          append="KL"
+                          append="Liter"
                           @onInput="calculateKlaim"
                         />
                       </b-col>
