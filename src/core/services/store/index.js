@@ -21,7 +21,8 @@ export default new Vuex.Store({
         "auth.config",
         "personalize.dppu",
         "personalize.multipleDppu",
-        "personalize.signature"
+        "personalize.signature",
+        "personalize.sf139b"
       ]
     })
   ],

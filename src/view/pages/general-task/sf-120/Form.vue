@@ -141,15 +141,37 @@
           <fragment v-else>
             <VueCal
               :disableViews="['years', 'year', 'month', 'week']"
-              :timeFrom="7 * 60"
-              :timeTo="13 * 60"
+              :selectedDate="form.transactionDate"
+              :timeFrom="calendarTime.start"
+              :timeTo="calendarTime.end"
               :timeStep="20"
               :events="calendar.events"
-              :maxDate="dateFormat(getDate(), 'YYYY-MM-DD')"
+              :maxDate="dateFormat(form.transactionDate, 'YYYY-MM-DD')"
               :split-days="calendar.daySplits"
               sticky-split-labels
               :on-event-click="onEventClick"
-            />
+            >
+              <template #event="{ event }">
+                <div class="p-3">
+                  <i class="icon material-icons">flight</i>
+
+                  <div class="vuecal__event-title" v-html="event.title" />
+
+                  ETD :
+                  <span class="font-weight-bolder">
+                    {{ dateTimeFormat(event.etd, "HH:mm") }} </span
+                  ><br />
+                  Refueling Time :
+                  <span class="font-weight-bolder">
+                    {{ dateTimeFormat(event.refuelingTime, "HH:mm") }} </span
+                  ><br />
+                  CRO :
+                  <span class="font-weight-bolder">
+                    {{ event.cro == null ? "Unassigned" : event.cro.label }}
+                  </span>
+                </div>
+              </template>
+            </VueCal>
           </fragment>
         </div>
       </div>
@@ -171,128 +193,16 @@
       @ok="handleSaveRecord"
       @cancel="resetModalForm"
     >
-      <Select
-        label="Flight Schedule"
-        placeholder="Select flight schedule"
-        description="Leave it blank if you need to type manually (Source data from https://airlabs.co)"
-        v-model="modalForm.flightScheduleId"
-        :options="options.flightSchedule"
-        :useHorizontal="false"
-        :multiple="false"
-        @input="changeFlightSchedule"
-        :disabled="currentProgress.locked"
-      />
-      <b-row>
-        <b-col lg="6">
-          <InputText
-            label="Airline IATA"
-            v-model="modalForm.airlineIata"
-            :v="$v.modalForm.airlineIata"
-            :useHorizontal="false"
-            :disabled="
-              modalForm.flightScheduleId != null || currentProgress.locked
-            "
-          >
-            <template v-if="!isNullOrEmpty(modalForm.airlineIata)" #prepend>
-              <b-input-group-text class="pt-0 pb-0">
-                <b-img-lazy
-                  :src="
-                    `https://airlabs.co/img/airline/m/${modalForm.airlineIata.toUpperCase()}.png`
-                  "
-                  :alt="modalForm.airlineIata"
-                  height="30px"
-                ></b-img-lazy>
-              </b-input-group-text>
-            </template>
-          </InputText>
-        </b-col>
-        <b-col lg="6">
-          <InputText
-            label="Flight Number"
-            v-model="modalForm.flightNumber"
-            :v="$v.modalForm.flightNumber"
-            :useHorizontal="false"
-            :disabled="
-              modalForm.flightScheduleId != null || currentProgress.locked
-            "
-          >
-            <template #append>
-              <b-button @click="openFlightRadar24" variant="secondary">
-                View at flightradar24
-              </b-button>
-            </template>
-          </InputText>
-        </b-col>
-      </b-row>
-      <b-row>
-        <b-col lg="6">
-          <InputText
-            label="Estimate Time of Arrival"
-            type="time"
-            v-model="modalForm.eta"
-            :v="$v.modalForm.eta"
-            :useHorizontal="false"
-            :disabled="currentProgress.locked"
-          />
-        </b-col>
-        <b-col lg="6">
-          <InputText
-            label="Estimate Time of Departure"
-            type="time"
-            v-model="modalForm.etd"
-            :v="$v.modalForm.etd"
-            :useHorizontal="false"
-            :disabled="currentProgress.locked"
-          />
-        </b-col>
-      </b-row>
-      <Select
-        label="Refueler"
-        v-model="modalForm.refuelerId"
-        :options="options.refueler"
-        :useHorizontal="false"
-        :multiple="false"
-        :disabled="currentProgress.locked"
-      />
-      <Select
-        label="CRO"
-        v-model="modalForm.croId"
-        :options="options.cro"
-        :useHorizontal="false"
-        :multiple="false"
-        :disabled="currentProgress.locked"
-      />
-      <b-row>
-        <b-col lg="6">
-          <RadioGroup
-            v-model="modalForm.quickHandling"
-            label="Quick Handling"
-            :options="options.yesNo"
-            :useHorizontal="false"
-            :disabled="currentProgress.locked"
-          />
-        </b-col>
-        <b-col lg="6">
-          <RadioGroup
-            v-model="modalForm.exron"
-            label="Exron"
-            :options="options.yesNo"
-            :useHorizontal="false"
-            :disabled="currentProgress.locked"
-          />
-        </b-col>
-      </b-row>
-      <RadioGroup
-        v-model="modalForm.remarks"
-        label="Remarks"
-        :options="options.refuelingProgram"
-        :useHorizontal="false"
-        :disabled="currentProgress.locked"
+      <FormModal
+        :form="modalForm"
+        :options="options"
+        :currentProgress="currentProgress"
+        :validator="$v.modalForm"
       />
       <template #modal-footer>
-        <b-button @click="resetModalForm" variant="secondary">{{
-          !currentProgress.locked ? "Cancel" : "Close"
-        }}</b-button>
+        <b-button @click="resetModalForm" variant="secondary">
+          {{ !currentProgress.locked ? "Cancel" : "Close" }}
+        </b-button>
         <b-button
           v-if="modalForm.id != null && !currentProgress.locked"
           @click="handleDeleteRecord"
@@ -305,8 +215,9 @@
           v-if="!currentProgress.locked"
           @click="handleSaveRecord"
           variant="primary"
-          >{{ modalForm.id == null ? "Save" : "Update" }}</b-button
         >
+          {{ modalForm.id == null ? "Save" : "Update" }}
+        </b-button>
       </template>
     </b-modal>
   </fragment>
@@ -320,22 +231,26 @@
 <script>
 import { mapGetters } from "vuex";
 import FormHeader from "./FormHeader.vue";
+import FormModal from "./FormModal.vue";
 import TableItem from "./TableItem.vue";
 import { required, maxLength } from "vuelidate/lib/validators";
 import {
   getDppu,
+  getRefuelingProgram,
   numberFormat,
   getDate,
   dateFormat,
   dateTimeFormat,
+  dateAdd,
   isNullOrEmpty,
   capitalize
 } from "@/core/utils";
-import { yesNo, refuelingProgram } from "@/core/datasource/options";
+import { yesNo } from "@/core/datasource/options";
 
 export default {
   components: {
     FormHeader,
+    FormModal,
     TableItem
   },
   data: () => ({
@@ -379,29 +294,29 @@ export default {
       daySplits: [],
       events: []
     },
-    modeView: "calendar",
+    modeView: "tabular",
     options: {
       dppu: [],
       shift: [],
       flightSchedule: [],
-      refueler: [],
       cro: [],
-      yesNo,
-      refuelingProgram
+      refuelingProgram: [],
+      yesNo
     },
     modalForm: {
       dialog: false,
+      realization: true,
       id: null,
       flightScheduleId: null,
       airlineIata: null,
       flightNumber: null,
-      eta: null,
+      aircraftType: null,
       etd: null,
-      refuelerId: null,
+      refuelingTime: null,
       croId: null,
       quickHandling: false,
       exron: false,
-      remarks: null
+      remarksId: null
     }
   }),
   computed: {
@@ -416,6 +331,22 @@ export default {
     textButton() {
       const self = this;
       return self.$route.name != self.route.form ? "Update" : "Save";
+    },
+    calendarTime() {
+      const self = this;
+      if (self.form.shiftId == null) {
+        return null;
+      } else {
+        let _find = self.options.shift.find(x => x.id == self.form.shiftId);
+
+        let starts = _find.detail.workingTime.start.split(":");
+        let ends = _find.detail.workingTime.end.split(":");
+
+        return {
+          start: parseInt(starts[0]) * 60 + parseInt(starts[1]),
+          end: parseInt(ends[0]) * 60 + parseInt(ends[1])
+        };
+      }
     }
   },
   validations: {
@@ -426,7 +357,7 @@ export default {
     modalForm: {
       airlineIata: { required, maxLength: maxLength(2) },
       flightNumber: { required, maxLength: maxLength(4) },
-      eta: { required },
+      aircraftType: { required, maxLength: maxLength(100) },
       etd: { required }
     }
   },
@@ -448,12 +379,17 @@ export default {
       self.changeDppu();
     }
 
+    getRefuelingProgram().then(response => {
+      self.options.refuelingProgram = response;
+    });
+
     if (self.$route.name != self.route.form) {
       self.get();
     }
   },
   methods: {
     dateFormat,
+    dateTimeFormat,
     numberFormat,
     getDate,
     isNullOrEmpty,
@@ -477,31 +413,14 @@ export default {
               self.form.dppuIata = response.data.iata;
               self.options.shift = response.data.shifts.map(x => ({
                 id: x.id,
-                label: `${x.shiftCallSign} (${x.workingTime.start} - ${x.workingTime.end})`
+                label: `${x.shiftCallSign} (${x.workingTime.start} - ${x.workingTime.end})`,
+                detail: x
               }));
 
               self.getFlightSchedule();
-              self.getEquipmentByCategory();
               self.getCro();
             }
           });
-      }
-    },
-    changeFlightSchedule() {
-      const self = this;
-
-      self.modalForm.airlineIata = null;
-      self.modalForm.flightNumber = null;
-      self.modalForm.eta = null;
-
-      let _find = self.options.flightSchedule.find(
-        x => x.id == self.modalForm.flightScheduleId
-      );
-
-      if (_find) {
-        self.modalForm.airlineIata = _find.detail.airlineIata;
-        self.modalForm.flightNumber = _find.detail.flightNumber;
-        self.modalForm.eta = dateFormat(_find.detail.arrivalTime, "HH:mm");
       }
     },
     getFlightSchedule() {
@@ -512,7 +431,8 @@ export default {
           url: `/common/flight-schedule`,
           params: {
             pageNumber: 1,
-            arrivalIata: self.form.dppuIata
+            departureTime: self.form.transactionDate,
+            departureIata: self.form.dppuIata
           }
         })
         .then(response => {
@@ -526,33 +446,8 @@ export default {
               id: x.id,
               label: `${x.flightIata} (${capitalize(
                 x.status
-              )}, ETA : ${dateFormat(x.arrivalTime, "HH:mm")})`,
+              )}, ETD : ${dateFormat(x.departureTime, "HH:mm")})`,
               detail: x
-            }));
-          }
-        });
-    },
-    getEquipmentByCategory() {
-      const self = this;
-
-      self.$store
-        .dispatch("apis/get", {
-          url: `/equipment`,
-          params: {
-            dppu: self.form.dppuId,
-            category: 6
-          }
-        })
-        .then(response => {
-          if (response.error) {
-            self.$message.error({
-              zIndex: 10000,
-              message: response.message
-            });
-          } else {
-            self.options.refueler = response.data.data.map(x => ({
-              id: x.id,
-              label: x.code
             }));
           }
         });
@@ -629,38 +524,45 @@ export default {
 
             self.table.rows = response.data.details;
 
-            let refuelerLabel = response.data.details.map(x => ({
-              label: x.refueler?.label || "-"
+            let croLabel = response.data.details.map(x => ({
+              label: x.cro?.label || "Unassigned"
             }));
             self.calendar.daySplits = [
-              ...new Set(refuelerLabel.map(x => x.label))
+              ...new Set(croLabel.map(x => x.label))
             ].sort();
             self.calendar.daySplits = self.calendar.daySplits.map(x => ({
               label: x
             }));
 
             self.calendar.events = response.data.details.map(x => ({
-              start: dateFormat(x.eta, "YYYY-MM-DD HH:mm"),
-              end: dateFormat(x.etd, "YYYY-MM-DD HH:mm"),
+              start: dateFormat(
+                x.refuelingTime != null ? x.refuelingTime : x.etd,
+                "YYYY-MM-DD HH:mm"
+              ),
+              end: dateFormat(
+                dateAdd(
+                  x.refuelingTime != null ? x.refuelingTime : x.etd,
+                  65,
+                  "minutes",
+                  false
+                ),
+                "YYYY-MM-DD HH:mm"
+              ),
               title: `<span class="font-size-h5 font-weight-bolder">${x.airlineIata}${x.flightNumber}</span>`,
-              content: `
-                Refueler : <span class="font-weight-bolder">${x.refueler
-                  ?.label || "-"}</span><br/>
-                CRO : <span class="font-weight-bolder">${x.cro?.label ||
-                  "-"}</span><br/>
-                Quick Handling : <span class="font-weight-bolder">${
-                  x.quickHandling ? "Yes" : "No"
-                }</span><br/>
-                Exron : <span class="font-weight-bolder">${
-                  x.exron ? "Yes" : "No"
-                }</span><br/>
-                Remarks : <span class="font-weight-bolder">${x.remarks ??
-                  "-"}</span><br/>
-              `,
-              class: "bg-light-success",
+              cro: x.cro,
+              etd: x.etd,
+              refuelingTime: x.refuelingTime,
+              class:
+                x.refuelingTime != null && x.remarks == null
+                  ? "bg-light-success"
+                  : x.refuelingTime == null &&
+                    x.remarks != null &&
+                    x.remarks.value == "D"
+                  ? "bg-light-danger"
+                  : "bg-light-secondary",
               split:
                 self.calendar.daySplits.findIndex(
-                  d => d.label == (x.refueler == null ? "-" : x.refueler.label)
+                  d => d.label == (x.cro == null ? "Unassigned" : x.cro.label)
                 ) + 1,
               detail: x
             }));
@@ -681,17 +583,18 @@ export default {
       self.modalForm.flightScheduleId = null;
       self.modalForm.airlineIata = null;
       self.modalForm.flightNumber = null;
-      self.modalForm.eta = null;
+      self.modalForm.aircraftType = null;
       self.modalForm.etd = null;
-      self.modalForm.refuelerId = null;
+      self.modalForm.refuelingTime = null;
       self.modalForm.croId = null;
       self.modalForm.quickHandling = false;
       self.modalForm.exron = false;
-      self.modalForm.remarks = null;
+      self.modalForm.remarksId = null;
     },
     handleOpenForm() {
       const self = this;
 
+      self.resetModalForm();
       self.modalForm.dialog = true;
     },
     onRowSelected(item) {
@@ -714,13 +617,14 @@ export default {
       self.modalForm.id = item.id;
       self.modalForm.airlineIata = item.airlineIata;
       self.modalForm.flightNumber = item.flightNumber;
-      self.modalForm.eta = dateFormat(item.eta, "HH:mm");
+      self.modalForm.aircraftType = item.aircraftType;
       self.modalForm.etd = dateFormat(item.etd, "HH:mm");
-      self.modalForm.refuelerId = item.refueler?.id;
+      self.modalForm.refuelingTime = dateFormat(item.refuelingTime, "HH:mm");
       self.modalForm.croId = item.cro?.id;
       self.modalForm.quickHandling = item.quickHandling;
       self.modalForm.exron = item.exron;
-      self.modalForm.remarks = item.remarks;
+      self.modalForm.remarksId = item.remarks?.id;
+      self.modalForm.realization = item.remarks == null;
     },
     handleSubmit() {
       const self = this;
@@ -946,22 +850,25 @@ export default {
               url: _url,
               params: {
                 standardForm120Id: self.$route.params.id,
-                eta: dateTimeFormat(
-                  `${self.form.transactionDate} ${self.modalForm.eta}`,
-                  "YYYY-MM-DD HH:mm:ss"
-                ),
                 etd: dateTimeFormat(
                   `${self.form.transactionDate} ${self.modalForm.etd}`,
                   "YYYY-MM-DD HH:mm:ss"
                 ),
                 airlineIata: self.modalForm.airlineIata,
                 flightNumber: self.modalForm.flightNumber,
+                aircraftType: self.modalForm.aircraftType,
                 flightScheduleId: self.modalForm.flightScheduleId,
-                refuelerId: self.modalForm.refuelerId,
+                refuelingTime:
+                  self.modalForm.refuelingTime == null
+                    ? null
+                    : dateTimeFormat(
+                        `${self.form.transactionDate} ${self.modalForm.refuelingTime}`,
+                        "YYYY-MM-DD HH:mm:ss"
+                      ),
                 croId: self.modalForm.croId,
                 quickHandling: self.modalForm.quickHandling,
                 exron: self.modalForm.exron,
-                remarks: self.modalForm.remarks
+                remarksId: self.modalForm.remarksId
               }
             })
             .then(response => {
@@ -1014,12 +921,6 @@ export default {
             .finally(() => dialog.close());
         });
     },
-    openFlightRadar24() {
-      const self = this;
-      window.open(
-        `https://www.flightradar24.com/data/flights/${self.modalForm.airlineIata}${self.modalForm.flightNumber}`
-      );
-    },
     onEventClick(event, e) {
       const self = this;
 
@@ -1040,13 +941,16 @@ export default {
       self.modalForm.id = event.detail.id;
       self.modalForm.airlineIata = event.detail.airlineIata;
       self.modalForm.flightNumber = event.detail.flightNumber;
-      self.modalForm.eta = dateFormat(event.detail.eta, "HH:mm");
+      self.modalForm.aircraftType = event.detail.aircraftType;
       self.modalForm.etd = dateFormat(event.detail.etd, "HH:mm");
-      self.modalForm.refuelerId = event.detail.refueler?.id;
+      self.modalForm.refuelingTime = dateFormat(
+        event.detail.refuelingTime,
+        "HH:mm"
+      );
       self.modalForm.croId = event.detail.cro?.id;
       self.modalForm.quickHandling = event.detail.quickHandling;
       self.modalForm.exron = event.detail.exron;
-      self.modalForm.remarks = event.detail.remarks;
+      self.modalForm.remarksId = event.detail.remarks?.id;
 
       e.stopPropagation();
     }

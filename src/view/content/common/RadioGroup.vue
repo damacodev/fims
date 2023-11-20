@@ -21,7 +21,10 @@
       :options="options"
       :stacked="stacked"
       :size="size"
-      style="z-index: 0;"
+      :textField="textField"
+      :valueField="valueField"
+      style="z-index: 0"
+      @input="handleInput"
     />
   </form-group>
 </template>
@@ -59,6 +62,14 @@ export default {
     cssClass: {
       type: String,
       default: "text-left"
+    },
+    textField: {
+      type: String,
+      default: "text"
+    },
+    valueField: {
+      type: String,
+      default: "value"
     }
   },
   computed: {
@@ -69,6 +80,11 @@ export default {
       set(value) {
         this.$emit("input", value);
       }
+    }
+  },
+  methods: {
+    handleInput() {
+      this.$emit("onInput");
     }
   }
 };

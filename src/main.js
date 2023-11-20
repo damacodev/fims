@@ -37,6 +37,7 @@ import "@/core/plugins/vue-html-to-paper";
 import "@/core/plugins/vue-phone-number-input";
 import "@/core/plugins/vue-password-strength-meter";
 import "@/core/plugins/vue2-google-maps";
+import "@/core/plugins/v-money";
 import "@/core/plugins/v-viewer";
 import "@/core/plugins/treeselect";
 import "@mdi/font/css/materialdesignicons.css";

@@ -10,6 +10,7 @@
     },
     "dependencies": {
         "@babel/polyfill": "^7.4.4",
+        "@coders-tm/vue-number-format": "^2.20.0",
         "@fortawesome/fontawesome-free": "^5.13.0",
         "@mdi/font": "^3.6.95",
         "@popperjs/core": "^2.4.0",

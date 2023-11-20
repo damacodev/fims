@@ -231,7 +231,9 @@ export default {
 
       self.$store.dispatch("personalize/updateDppu", {
         id: result.id,
-        label: result.name
+        label: result.name,
+        address: result.address,
+        supplyPoint: result.supplyPoint
       });
 
       self.statistic.loadData = true;

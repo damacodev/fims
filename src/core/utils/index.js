@@ -1,6 +1,7 @@
 /* jshint esversion:6 */
 
 import moment from "moment";
+import message from "vue-m-message";
 import accounting from "accounting";
 import store from "@/core/services/store";
 import { camelCase } from "lodash";
@@ -165,8 +166,8 @@ export function isLastDateOfMonth(date) {
   );
 }
 
-export function dateAdd(date, length, period) {
-  moment.locale("id-id");
+export function dateAdd(date, length, period, useLocale = true) {
+  if (useLocale) moment.locale("id-id");
 
   return moment(date)
     .add(length, period)
@@ -249,6 +250,46 @@ export function arraySelected(arr, value) {
   let regex = RegExp(r'^(8|9)\d{7}$');
   return regex.hasMatch(str);
 } */
+
+export async function changeDppu(dppuId) {
+  let result = {
+    id: null,
+    label: null,
+    address: null,
+    supplyPoint: null
+  };
+
+  if (dppuId != null) {
+    await store
+      .dispatch("apis/get", {
+        url: `/dppu/${dppuId}`
+      })
+      .then(response => {
+        if (response.error) {
+          message.error({
+            zIndex: 10000,
+            message: response.message
+          });
+        } else {
+          store.dispatch("personalize/updateDppu", {
+            id: response.data.id,
+            label: response.data.name,
+            address: response.data.address,
+            supplyPoint: response.data.supplyPoint
+          });
+
+          result = {
+            id: response.data.id,
+            label: response.data.name,
+            address: response.data.address,
+            supplyPoint: response.data.supplyPoint
+          };
+        }
+      });
+  }
+
+  return result;
+}
 
 export async function getRegion() {
   let result = [];
@@ -407,6 +448,20 @@ export async function getGeneralCondition() {
   return result;
 }
 
+export async function getRefuelingProgram() {
+  let result = [];
+
+  await store
+    .dispatch("apis/get", {
+      url: "/common/refueling-program"
+    })
+    .then(response => {
+      result = response.data;
+    });
+
+  return result;
+}
+
 // export function groupBy(list, keyGetter) {
 //   const map = new Map();
 //   list.forEach((item) => {
@@ -457,12 +512,20 @@ export function normalizer(node) {
   };
 }
 
+export function setPersentase(params, precision = 2) {
+  return `${numberFormat(params, precision)}%`;
+}
+
+export function setRupiah(params, precision = 0) {
+  return `Rp${numberFormat(params, precision)}`;
+}
+
 export function setVolume(params, uom = "L") {
   return `${numberFormat(params)} ${uom}`;
 }
 
-export function setDensity(params) {
-  return `${numberFormat(params)} Kg/L`;
+export function setDensity(params, uom = "Kg/L") {
+  return `${numberFormat(params, 4)} ${uom}`;
 }
 
 export function setTemperature(params) {
@@ -479,4 +542,12 @@ export function setPsi(params) {
 
 export function setFlowRate(params) {
   return `${numberFormat(params)} Ltr/Mnt`;
+}
+
+export function setMm(params) {
+  return `${numberFormat(params)} mm`;
+}
+
+export function setLiter(params, precision = 0) {
+  return `${numberFormat(params, precision)} LTR`;
 }

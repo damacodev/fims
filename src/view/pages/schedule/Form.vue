@@ -33,8 +33,8 @@
             placeholder="Search activity"
             v-model="form.activity"
             :v="$v.form.activity"
-            :multiple="false"
             :async="true"
+            :multiple="false"
             :loadOptions="getActivity"
             @input="getActivityById"
           />
@@ -348,6 +348,8 @@ export default {
       self.changeDppu();
     }
 
+    self.getDefaultActivity();
+
     if (self.$route.name != self.route.form) {
       self.get();
     }
@@ -382,6 +384,35 @@ export default {
             self.getEquipmentByCategory();
           });
       }
+    },
+    getDefaultActivity() {
+      const self = this;
+
+      self.$store
+        .dispatch("apis/get", {
+          url: `/preventivemaintenance/activity`,
+          params: {
+            pageNumber: 1,
+            pageSize: 20,
+            actived: true
+          }
+        })
+        .then(response => {
+          if (response.error) {
+            self.$message.error({
+              zIndex: 10000,
+              message: response.message
+            });
+          } else {
+            self.$refs.Activity.$refs.Activity.defaultOptions = response.data.data.map(
+              x => ({
+                id: x.id,
+                label: x.title
+              })
+            );
+            self.$refs.Activity.$refs.Activity.initialize();
+          }
+        });
     },
     getActivity({ action, searchQuery, callback }) {
       const self = this;

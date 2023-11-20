@@ -1202,6 +1202,68 @@ export const sf128 = [
   }
 ];
 
+export const sf139b = [
+  {
+    label: "DPPU",
+    key: "dppu.label",
+    thClass: "align-middle"
+  },
+  {
+    label: "Transaction #",
+    key: "transactionId",
+    thClass: "align-middle"
+  },
+  {
+    label: "Transaction Date",
+    key: "transactionDate",
+    thClass: "align-middle"
+  },
+  {
+    label: "Supply Point",
+    key: "supplyPoint",
+    thClass: "align-middle"
+  },
+  {
+    label: "Nomor Polisi",
+    key: "nomorPolisi",
+    thClass: "align-middle"
+  },
+  {
+    label: "Nama Pengemudi",
+    key: "namaPengemudi",
+    thClass: "align-middle"
+  },
+  {
+    label: "Volume",
+    key: "volume",
+    thClass: "align-middle text-right",
+    tdClass: "text-right"
+  },
+  {
+    label: "Harga",
+    key: "harga",
+    thClass: "align-middle text-right",
+    tdClass: "text-right"
+  },
+  {
+    label: "Volume Klaim Losses",
+    key: "klaim.volumeKlaim",
+    thClass: "align-middle text-right",
+    tdClass: "text-right"
+  },
+  {
+    label: "Nilai Klaim Losses",
+    key: "klaim.nilaiKlaim",
+    thClass: "align-middle text-right",
+    tdClass: "text-right"
+  },
+  {
+    label: "Status",
+    key: "currentProgress.status",
+    thClass: "align-middle"
+  }
+];
+
 export const sfCommon = [
   {
     label: "DPPU",

@@ -6,11 +6,16 @@ const personalize = {
     dppu: null,
     multipleDppu: true,
     signature: [],
+    sf139b: {
+      harga: null,
+      persentaseLosses: null,
+    }
   },
   getters: {
     dppu: (state) => state.dppu,
     multipleDppu: (state) => state.multipleDppu,
     signature: (state) => state.signature,
+    sf139b: (state) => state.sf139b,
   },
   mutations: {
     UPDATE_DPPU: (state, payload) => {
@@ -22,6 +27,9 @@ const personalize = {
     UPDATE_SIGNATURE: (state, payload) => {
       state.signature = payload;
     },
+    UPDATE_SF139B: (state, payload) => {
+      state.sf139b = payload;
+    },
   },
   actions: {
     updateDppu({ commit }, payload) {
@@ -32,6 +40,9 @@ const personalize = {
     },
     updateSignature({ commit }, payload) {
       commit("UPDATE_SIGNATURE", payload);
+    },
+    updateSf139b({ commit }, payload) {
+      commit("UPDATE_SF139B", payload);
     },
   },
 };

@@ -352,6 +352,30 @@ export default new Router({
                     import("@/view/pages/general-task/sf-128/Form")
                 }
               ]
+            },
+            {
+              path: "sf-139b",
+              component: () => import("@/view/pages/general-task/sf-139b"),
+              children: [
+                {
+                  path: "/",
+                  name: "sf139b",
+                  component: () =>
+                    import("@/view/pages/general-task/sf-139b/Table.vue")
+                },
+                {
+                  path: "form",
+                  name: "sf139bCreate",
+                  component: () =>
+                    import("@/view/pages/general-task/sf-139b/Form")
+                },
+                {
+                  path: "form/:id",
+                  name: "sf139bUpdate",
+                  component: () =>
+                    import("@/view/pages/general-task/sf-139b/Form")
+                }
+              ]
             }
           ]
         },

@@ -8,7 +8,13 @@
     :use-horizontal="useHorizontal"
   >
     <b-input-group :append="append">
-      <money v-model="model" v-bind="money" :class="contentClass"></money>
+      <VueNumber
+        v-model="model"
+        v-bind="money"
+        :class="contentClass"
+        @blur="handleBlur"
+        @input="handleInput"
+      />
     </b-input-group>
   </form-group>
 </template>
@@ -19,12 +25,7 @@
 </style>
 
 <script>
-import { Money } from "v-money";
-
 export default {
-  components: {
-    Money
-  },
   props: {
     label: String,
     description: String,
@@ -66,17 +67,24 @@ export default {
       if (self.usePrefix) {
         return {
           decimal: ",",
-          thousands: ".",
-          prefix: "Rp ",
+          separator: ".",
+          prefix: "Rp",
+          suffix: "",
           precision: self.precision,
-          masked: false /* doesn't work with directive */
+          nullValue: "",
+          masked: false,
+          reverseFill: false
         };
       } else {
         return {
           decimal: ",",
-          thousands: ".",
-          precision: self.precision,
-          masked: false /* doesn't work with directive */
+          separator: ".",
+          prefix: "",
+          suffix: "",
+          precision: 2,
+          nullValue: "",
+          masked: false,
+          reverseFill: false
         };
       }
     },
@@ -87,6 +95,14 @@ export default {
       set(value) {
         this.$emit("input", value);
       }
+    }
+  },
+  methods: {
+    handleBlur() {
+      this.$emit("onBlur");
+    },
+    handleInput() {
+      this.$emit("onInput");
     }
   }
 };

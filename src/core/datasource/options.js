@@ -62,6 +62,7 @@ export const available = [
 ];
 
 export const refuelingProgram = [
+  { text: "Realization", value: null },
   { text: "Not Refueling", value: "Not Refueling" },
   { text: "Cancel", value: "Cancel" },
   { text: "Delay", value: "Delay" }
@@ -233,4 +234,16 @@ export const dateInMonth = Array.from(Array(28), (_, i) => ({
 export const workItemType = [
   { value: "Preventive Maintenance", text: "Preventive Maintenance" },
   { value: "Standard Form", text: "Standard Form" }
+];
+
+export const kompartemen = [
+  { value: 1, text: "1 Kompartemen" },
+  { value: 2, text: "2 Kompartemen" },
+  { value: 3, text: "3 Kompartemen" },
+  { value: 4, text: "4 Kompartemen" }
+];
+
+export const dryCheck = [
+  { value: "Kering", text: "Kering" },
+  { value: "Belum Kering", text: "Belum Kering" }
 ];
