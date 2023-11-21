@@ -84,7 +84,7 @@ export default {
         s101C: null,
         s101D: null
       },
-      microFiber: {
+      microFilter: {
         s102A: null,
         s102B: null
       },
@@ -115,7 +115,7 @@ export default {
       standardForm125Id: { required },
       time: { required },
       equipmentId: { required },
-      microFiber: {
+      microFilter: {
         s102A: { required, integer },
         s102B: { required, integer }
       },
@@ -213,7 +213,7 @@ export default {
             self.form.equipment = response.data.equipment;
             self.form.equipmentId = response.data.equipment.id;
             self.form.strainer = response.data.strainer;
-            self.form.microFiber = response.data.microFiber;
+            self.form.microFilter = response.data.microFilter;
             self.form.filterSeparator = response.data.filterSeparator;
             self.form.densityObserved = response.data.densityObserved;
             self.form.temperatureObserved = response.data.temperatureObserved;

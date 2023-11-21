@@ -6,7 +6,7 @@
         :currentProgress="currentProgress"
         :showRemarks="false"
       />
-      <hr />
+      <hr class="card-separator" />
       <b-row v-if="!currentProgress.locked">
         <b-col lg="12">
           <b-row>
@@ -79,7 +79,7 @@
             <b-col lg="6">
               <b-row>
                 <b-col lg="12">
-                  <h5 class="font-weight-bolder mb-6">PDG Micro Fiber</h5>
+                  <h5 class="font-weight-bolder mb-6">PDG Micro Filter</h5>
                 </b-col>
               </b-row>
               <b-row>
@@ -87,22 +87,22 @@
                   <InputMoney
                     label="S 102-A"
                     type="number"
-                    v-model="form.microFiber.s102A"
-                    :v="validations.form.microFiber.s102A"
+                    v-model="form.microFilter.s102A"
+                    :v="validations.form.microFilter.s102A"
                     :useHorizontal="false"
                     :usePrefix="false"
-                    append="pS/m"
+                    append="Psi"
                   />
                 </b-col>
                 <b-col lg="6">
                   <InputMoney
                     label="S 102-B"
                     type="number"
-                    v-model="form.microFiber.s102B"
-                    :v="validations.form.microFiber.s102B"
+                    v-model="form.microFilter.s102B"
+                    :v="validations.form.microFilter.s102B"
                     :useHorizontal="false"
                     :usePrefix="false"
-                    append="pS/m"
+                    append="Psi"
                   />
                 </b-col>
               </b-row>
@@ -122,7 +122,7 @@
                     :v="validations.form.filterSeparator.s103A"
                     :useHorizontal="false"
                     :usePrefix="false"
-                    append="pS/m"
+                    append="Psi"
                   />
                 </b-col>
                 <b-col lg="6">
@@ -133,7 +133,7 @@
                     :v="validations.form.filterSeparator.s103B"
                     :useHorizontal="false"
                     :usePrefix="false"
-                    append="pS/m"
+                    append="Psi"
                   />
                 </b-col>
               </b-row>

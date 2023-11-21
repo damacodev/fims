@@ -81,7 +81,7 @@ export default {
           separator: ".",
           prefix: "",
           suffix: "",
-          precision: 2,
+          precision: self.precision,
           nullValue: "",
           masked: false,
           reverseFill: false

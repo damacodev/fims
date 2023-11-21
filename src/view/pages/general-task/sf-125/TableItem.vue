@@ -44,10 +44,10 @@
           <td>{{ row.strainer.s101C == null ? "-" : row.strainer.s101C }}</td>
           <td>{{ row.strainer.s101D == null ? "-" : row.strainer.s101D }}</td>
           <td class="text-right">
-            {{ row.microFiber == null ? "-" : setPsi(row.microFiber.s102A) }}
+            {{ row.microFilter == null ? "-" : setPsi(row.microFilter.s102A) }}
           </td>
           <td class="text-right">
-            {{ row.microFiber == null ? "-" : setPsi(row.microFiber.s102B) }}
+            {{ row.microFilter == null ? "-" : setPsi(row.microFilter.s102B) }}
           </td>
           <td class="text-right">
             {{

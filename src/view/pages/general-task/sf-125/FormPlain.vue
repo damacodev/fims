@@ -36,8 +36,8 @@
             <h5 class="font-weight-bolder mb-6">Micro Fiber</h5>
           </b-col>
         </b-row>
-        <PlainText label="S 102-A" :value="setPsi(form.microFiber.s102A)" />
-        <PlainText label="S 102-B" :value="setPsi(form.microFiber.s102B)" />
+        <PlainText label="S 102-A" :value="setPsi(form.microFilter.s102A)" />
+        <PlainText label="S 102-B" :value="setPsi(form.microFilter.s102B)" />
 
         <b-row class="mt-6">
           <b-col lg="12">
