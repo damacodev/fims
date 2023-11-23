@@ -6,7 +6,7 @@
           label="Region"
           :value="requestInfo.request.region.label"
           :oldValue="
-            $route.params.type == 1
+            $route.params.action == 'update'
               ? requestInfo.request.oldData.region.label || '-'
               : null
           "
@@ -15,7 +15,7 @@
           label="DPPU"
           :value="requestInfo.request.dppu.label"
           :oldValue="
-            $route.params.type == 1
+            $route.params.action == 'update'
               ? requestInfo.request.oldData.dppu.label || '-'
               : null
           "
@@ -24,7 +24,7 @@
           label="Category"
           :value="requestInfo.request.category.label"
           :oldValue="
-            $route.params.type == 1
+            $route.params.action == 'update'
               ? requestInfo.request.oldData.category.label || '-'
               : null
           "
@@ -33,7 +33,7 @@
           label="Code"
           :value="requestInfo.request.code"
           :oldValue="
-            $route.params.type == 1
+            $route.params.action == 'update'
               ? requestInfo.request.oldData.code || '-'
               : null
           "
@@ -42,7 +42,7 @@
           label="Equipment Modul PM"
           :value="requestInfo.request.detail.modulPm"
           :oldValue="
-            $route.params.type == 1
+            $route.params.action == 'update'
               ? requestInfo.request.oldData.detail.modulPm || '-'
               : null
           "
@@ -52,7 +52,7 @@
           label="Type of Equipment"
           :value="requestInfo.request.detail.type"
           :oldValue="
-            $route.params.type == 1
+            $route.params.action == 'update'
               ? requestInfo.request.oldData.detail.type || '-'
               : null
           "
@@ -63,7 +63,7 @@
           label="Brand"
           :value="requestInfo.request.detail.trucktiveBrand"
           :oldValue="
-            $route.params.type == 1
+            $route.params.action == 'update'
               ? requestInfo.request.oldData.detail.trucktiveBrand || '-'
               : null
           "
@@ -72,7 +72,7 @@
           label="Type"
           :value="requestInfo.request.detail.trucktiveType"
           :oldValue="
-            $route.params.type == 1
+            $route.params.action == 'update'
               ? requestInfo.request.oldData.detail.trucktiveType || '-'
               : null
           "
@@ -83,7 +83,7 @@
           label="Manufacturer"
           :value="requestInfo.request.detail.refuellingModulManufacturer"
           :oldValue="
-            $route.params.type == 1
+            $route.params.action == 'update'
               ? requestInfo.request.oldData.detail
                   .refuellingModulManufacturer || '-'
               : null
@@ -93,7 +93,7 @@
           label="Tank Capacity"
           :value="`${requestInfo.request.detail.capacity} KL`"
           :oldValue="
-            $route.params.type == 1
+            $route.params.action == 'update'
               ? `${requestInfo.request.oldData.detail.capacity} KL` || '-'
               : null
           "
@@ -102,7 +102,7 @@
           label="Flowrate"
           :value="`${requestInfo.request.detail.flowrate} LPM`"
           :oldValue="
-            $route.params.type == 1
+            $route.params.action == 'update'
               ? `${requestInfo.request.oldData.detail.flowrate} LPM` || '-'
               : null
           "
@@ -111,7 +111,7 @@
           label="Year of Manufacture"
           :value="requestInfo.request.detail.yearOfManufacture"
           :oldValue="
-            $route.params.type == 1
+            $route.params.action == 'update'
               ? requestInfo.request.oldData.detail.yearOfManufacture || '-'
               : null
           "
@@ -126,7 +126,7 @@
             ).text
           "
           :oldValue="
-            $route.params.type == 1
+            $route.params.action == 'update'
               ? yesNo.find(
                   x =>
                     x.value ==
@@ -144,7 +144,7 @@
             ).text
           "
           :oldValue="
-            $route.params.type == 1
+            $route.params.action == 'update'
               ? yesNo.find(
                   x =>
                     x.value ==
@@ -157,7 +157,7 @@
           label="Meter Register"
           :value="requestInfo.request.detail.meterRegister"
           :oldValue="
-            $route.params.type == 1
+            $route.params.action == 'update'
               ? requestInfo.request.oldData.detail.meterRegister || '-'
               : null
           "
@@ -166,7 +166,7 @@
           label="Filter Vessel Brand"
           :value="requestInfo.request.detail.filterVesselBrand"
           :oldValue="
-            $route.params.type == 1
+            $route.params.action == 'update'
               ? requestInfo.request.oldData.detail.filterVesselBrand || '-'
               : null
           "
@@ -175,7 +175,7 @@
           label="Original Element Filter"
           :value="requestInfo.request.detail.originalElementFilter"
           :oldValue="
-            $route.params.type == 1
+            $route.params.action == 'update'
               ? requestInfo.request.oldData.detail.originalElementFilter || '-'
               : null
           "
@@ -184,7 +184,7 @@
           label="Number of Original Element Filter"
           :value="requestInfo.request.detail.numberOfOriginalElementFilter"
           :oldValue="
-            $route.params.type == 1
+            $route.params.action == 'update'
               ? requestInfo.request.oldData.detail
                   .numberOfOriginalElementFilter || '-'
               : null
@@ -195,7 +195,7 @@
           label="Certificate of Operating"
           :value="requestInfo.request.detail.certificateOfOperating"
           :oldValue="
-            $route.params.type == 1
+            $route.params.action == 'update'
               ? requestInfo.request.oldData.detail.certificateOfOperating || '-'
               : null
           "
@@ -204,7 +204,7 @@
           label="Asset Number"
           :value="requestInfo.request.detail.assetNumber"
           :oldValue="
-            $route.params.type == 1
+            $route.params.action == 'update'
               ? requestInfo.request.oldData.detail.assetNumber || '-'
               : null
           "
@@ -213,7 +213,7 @@
           label="Condition"
           :value="requestInfo.request.detail.condition"
           :oldValue="
-            $route.params.type == 1
+            $route.params.action == 'update'
               ? requestInfo.request.oldData.detail.condition || '-'
               : null
           "
@@ -222,7 +222,7 @@
           label="Remarks"
           :value="requestInfo.request.detail.remarks"
           :oldValue="
-            $route.params.type == 1
+            $route.params.action == 'update'
               ? requestInfo.request.oldData.detail.remarks || '-'
               : null
           "
@@ -231,7 +231,7 @@
           label="Status"
           :value="status.find(x => x.value == requestInfo.request.actived).text"
           :oldValue="
-            $route.params.type == 1
+            $route.params.action == 'update'
               ? status.find(x => x.value == requestInfo.request.oldData.actived)
                   .text || '-'
               : null

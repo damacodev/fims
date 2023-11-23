@@ -139,7 +139,7 @@
               </b-row>
             </b-col>
           </b-row>
-          <hr />
+          <hr class="card-separator" />
           <b-row>
             <b-col lg="3">
               <InputMoney

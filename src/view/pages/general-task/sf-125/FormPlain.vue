@@ -5,12 +5,8 @@
       :currentProgress="currentProgress"
       :showRemarks="false"
     />
-    <hr />
+    <hr class="card-separator" />
     <b-row>
-      <!-- <b-col lg="12">
-        <pre>{{ currentProgress }}</pre>
-        <pre>{{ form }}</pre>
-      </b-col> -->
       <b-col lg="4">
         <b-row>
           <b-col lg="12">
@@ -33,7 +29,7 @@
       <b-col lg="4">
         <b-row>
           <b-col lg="12">
-            <h5 class="font-weight-bolder mb-6">Micro Fiber</h5>
+            <h5 class="font-weight-bolder mb-6">Micro Filter</h5>
           </b-col>
         </b-row>
         <PlainText label="S 102-A" :value="setPsi(form.microFilter.s102A)" />

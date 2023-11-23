@@ -42,7 +42,33 @@
           id="kt_quick_search_inline"
         >
           <!--begin::Form-->
-
+          <!-- <form method="get" class="quick-search-form">
+            <div class="input-group rounded bg-light">
+              <div class="input-group-prepend">
+                <span class="input-group-text">
+                  <span class="svg-icon svg-icon-lg">
+                    <inline-svg
+                      :src="
+                        require('@/assets//media/svg/icons/General/Search.svg')
+                      "
+                    />
+                  </span>
+                </span>
+              </div>
+              <input
+                type="text"
+                class="form-control h-45px"
+                placeholder="Search..."
+              />
+              <div class="input-group-append">
+                <span class="input-group-text">
+                  <i
+                    class="quick-search-close ki ki-close icon-sm text-muted"
+                  ></i>
+                </span>
+              </div>
+            </div>
+          </form> -->
           <!--end::Form-->
           <!--begin::Search Toggle-->
           <div

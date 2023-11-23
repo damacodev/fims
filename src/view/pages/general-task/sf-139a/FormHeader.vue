@@ -11,44 +11,6 @@
           label="Transaction Date"
           :value="dateFormat(form.transactionDate)"
         />
-      </b-col>
-    </b-row>
-    <hr class="card-separator-24" />
-    <b-row>
-      <b-col lg="6">
-        <PlainText label="Supply Point" :value="form.supplyPoint" />
-        <PlainText label="Nomor Polisi" :value="form.nomorPolisi" />
-        <PlainText label="Nama Pengemudi" :value="form.namaPengemudi" />
-        <PlainText
-          label="Jumlah Kompartemen"
-          :value="`${form.jumlahKompartemen} Kompartemen`"
-        />
-        <PlainText
-          label="Masa Berlaku TERA Tangki"
-          :value="dateFormat(form.masaBerlakuTeraTangki)"
-        />
-      </b-col>
-      <b-col lg="6">
-        <PlainText label="Volume" :value="setVolume(form.volume)" />
-        <PlainText
-          label="Harga Avtur (Include tax)"
-          :value="setRupiah(form.harga, 2)"
-        />
-        <PlainText
-          label="Bottom Loader Cover"
-          :value="form.bottomLoaderCover"
-        />
-        <PlainText
-          label="Kondisi Kompartemen"
-          :value="form.kondisiKompartemen"
-        />
-        <PlainText label="Jam Masuk" :value="form.jamMasuk" />
-        <PlainText label="Jam Keluar" :value="form.jamKeluar" />
-      </b-col>
-    </b-row>
-    <hr class="card-separator-24" />
-    <b-row>
-      <b-col lg="12">
         <PlainText label="Status">
           <template #value>
             <b-badge
@@ -75,24 +37,38 @@
             </p>
           </b-alert>
         </div>
+        <hr class="card-separator-24" />
+        <vue-document-editor :content.sync="content" :editable="false" />
       </b-col>
     </b-row>
   </fragment>
 </template>
 
 <script>
-import { dateFormat, dateTimeFormat, setVolume, setRupiah } from "@/core/utils";
+import VueDocumentEditor from "vue-document-editor";
+import {
+  dateFormat,
+  dateTimeFormat,
+  setVolume,
+  setKompartemen,
+  setMm,
+  setTemperature
+} from "@/core/utils";
 
 export default {
+  components: { VueDocumentEditor },
   props: {
     form: Object,
-    currentProgress: Object
+    currentProgress: Object,
+    content: Array
   },
   methods: {
     dateFormat,
     dateTimeFormat,
     setVolume,
-    setRupiah
+    setKompartemen,
+    setMm,
+    setTemperature
   }
 };
 </script>

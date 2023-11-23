@@ -625,6 +625,57 @@ export const storageTank = [
   }
 ];
 
+export const bridger = [
+  {
+    label: "DPPU",
+    key: "dppu.label",
+    thClass: "align-middle"
+  },
+  {
+    label: "Nomor Polisi",
+    key: "code",
+    thClass: "align-middle"
+  },
+  {
+    label: "Jumlah Kompartemen",
+    key: "detail.jumlahKompartemen",
+    thClass: "align-middle"
+  },
+  {
+    label: "Volume",
+    key: "detail.volume",
+    thClass: "align-middle"
+  },
+  {
+    label: "Masa Berlaku Tera Tangki",
+    key: "detail.masaBerlakuTeraTangki",
+    thClass: "align-middle"
+  },
+  {
+    label: "Status",
+    key: "actived",
+    thClass: "align-middle"
+  }
+];
+
+export const deadleg = [
+  {
+    label: "DPPU",
+    key: "dppu.label",
+    thClass: "align-middle"
+  },
+  {
+    label: "Deadleg Drain Identity",
+    key: "code",
+    thClass: "align-middle"
+  },
+  {
+    label: "Status",
+    key: "actived",
+    thClass: "align-middle"
+  }
+];
+
 export const equipment = [
   automationAndFieldInstrument,
   electricalInstrumentAndPanel,
@@ -632,7 +683,9 @@ export const equipment = [
   hydrantOrPipelineSystem,
   pump,
   refuelerOrHydrantDispenser,
-  storageTank
+  storageTank,
+  bridger,
+  deadleg
 ];
 
 export const importEquipment = [
@@ -1198,6 +1251,60 @@ export const sf128 = [
   {
     label: "Ex. Certificate of Quality No.",
     key: "exCertificate.no",
+    thClass: "align-middle"
+  },
+  {
+    label: "Status",
+    key: "currentProgress.status",
+    thClass: "align-middle"
+  }
+];
+
+export const sf139a = [
+  {
+    label: "DPPU",
+    key: "dppu.label",
+    thClass: "align-middle"
+  },
+  {
+    label: "Transaction #",
+    key: "transactionId",
+    thClass: "align-middle"
+  },
+  {
+    label: "Transaction Date",
+    key: "transactionDate",
+    thClass: "align-middle"
+  },
+  {
+    label: "Nomor Polisi",
+    key: "nomorPolisi",
+    thClass: "align-middle"
+  },
+  {
+    label: "Jumlah Kompartemen",
+    key: "jumlahKompartemen",
+    thClass: "align-middle"
+  },
+  {
+    label: "Volume",
+    key: "volume",
+    thClass: "align-middle text-right",
+    tdClass: "text-right"
+  },
+  {
+    label: "Masa Berlaku Tera Tangki",
+    key: "masaBerlakuTeraTangki",
+    thClass: "align-middle"
+  },
+  {
+    label: "Checked By (RSD)",
+    key: "updatedBy.label",
+    thClass: "align-middle"
+  },
+  {
+    label: "Checked By (Security)",
+    key: "namaSecurity",
     thClass: "align-middle"
   },
   {

@@ -48,6 +48,16 @@ export const category = [
     value: 7,
     text: "Storage Tank",
     icon: "tank.png"
+  },
+  {
+    value: 8,
+    text: "Bridger",
+    icon: "tank.png"
+  },
+  {
+    value: 9,
+    text: "Deadleg Drain",
+    icon: "tank.png"
   }
 ];
 

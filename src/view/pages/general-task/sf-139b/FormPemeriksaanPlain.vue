@@ -33,7 +33,7 @@
           <PlainText label="Ullage" :value="setMm(form.atSupplyPoint.ullage)" />
           <PlainText
             label="Density Observed"
-            :value="setDensity(form.atSupplyPoint.densityObserved, 'Kg/m3')"
+            :value="setDensity(form.atSupplyPoint.densityObserved, 'Kg/m³')"
           />
           <PlainText
             label="Temperature"
@@ -45,7 +45,7 @@
           <PlainText label="Ullage" :value="setMm(form.atDppu.ullage)" />
           <PlainText
             label="Density Observed"
-            :value="setDensity(form.atDppu.densityObserved, 'Kg/m3')"
+            :value="setDensity(form.atDppu.densityObserved, 'Kg/m³')"
           />
           <PlainText
             label="Temperature"

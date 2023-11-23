@@ -6,7 +6,7 @@
           label="Region"
           :value="requestInfo.request.region.label"
           :oldValue="
-            $route.params.type == 1
+            $route.params.action == 'update'
               ? requestInfo.request.oldData.region.label || '-'
               : null
           "
@@ -15,7 +15,7 @@
           label="DPPU"
           :value="requestInfo.request.dppu.label"
           :oldValue="
-            $route.params.type == 1
+            $route.params.action == 'update'
               ? requestInfo.request.oldData.dppu.label || '-'
               : null
           "
@@ -24,7 +24,7 @@
           label="Category"
           :value="requestInfo.request.category.label"
           :oldValue="
-            $route.params.type == 1
+            $route.params.action == 'update'
               ? requestInfo.request.oldData.category.label || '-'
               : null
           "
@@ -33,7 +33,7 @@
           label="Code"
           :value="requestInfo.request.code"
           :oldValue="
-            $route.params.type == 1
+            $route.params.action == 'update'
               ? requestInfo.request.oldData.code || '-'
               : null
           "
@@ -42,7 +42,7 @@
           label="Equipment Modul PM"
           :value="requestInfo.request.detail.modulPm"
           :oldValue="
-            $route.params.type == 1
+            $route.params.action == 'update'
               ? requestInfo.request.oldData.detail.modulPm || '-'
               : null
           "
@@ -54,7 +54,7 @@
             yesNo.find(x => x.value == requestInfo.request.detail.pipeline).text
           "
           :oldValue="
-            $route.params.type == 1
+            $route.params.action == 'update'
               ? yesNo.find(
                   x => x.value == requestInfo.request.oldData.detail.pipeline
                 ).text || '-'
@@ -68,7 +68,7 @@
               .text
           "
           :oldValue="
-            $route.params.type == 1
+            $route.params.action == 'update'
               ? yesNo.find(
                   x =>
                     x.value == requestInfo.request.oldData.detail.hydrantSystem
@@ -84,7 +84,7 @@
             ).text
           "
           :oldValue="
-            $route.params.type == 1
+            $route.params.action == 'update'
               ? yesNo.find(
                   x =>
                     x.value ==
@@ -101,7 +101,7 @@
             ).text
           "
           :oldValue="
-            $route.params.type == 1
+            $route.params.action == 'update'
               ? yesNo.find(
                   x =>
                     x.value ==
@@ -118,7 +118,7 @@
             ).text
           "
           :oldValue="
-            $route.params.type == 1
+            $route.params.action == 'update'
               ? yesNo.find(
                   x =>
                     x.value ==
@@ -135,7 +135,7 @@
             ).text
           "
           :oldValue="
-            $route.params.type == 1
+            $route.params.action == 'update'
               ? yesNo.find(
                   x =>
                     x.value ==
@@ -152,7 +152,7 @@
             ).text
           "
           :oldValue="
-            $route.params.type == 1
+            $route.params.action == 'update'
               ? yesNo.find(
                   x =>
                     x.value ==
@@ -170,7 +170,7 @@
             ).text
           "
           :oldValue="
-            $route.params.type == 1
+            $route.params.action == 'update'
               ? yesNo.find(
                   x =>
                     x.value ==
@@ -186,7 +186,7 @@
               .text
           "
           :oldValue="
-            $route.params.type == 1
+            $route.params.action == 'update'
               ? yesNo.find(
                   x => x.value == requestInfo.request.oldData.detail.staticTest
                 ).text || '-'
@@ -198,7 +198,7 @@
           label="Condition"
           :value="requestInfo.request.detail.condition"
           :oldValue="
-            $route.params.type == 1
+            $route.params.action == 'update'
               ? requestInfo.request.oldData.detail.condition || '-'
               : null
           "
@@ -207,7 +207,7 @@
           label="Remarks"
           :value="requestInfo.request.detail.remarks"
           :oldValue="
-            $route.params.type == 1
+            $route.params.action == 'update'
               ? requestInfo.request.oldData.detail.remarks || '-'
               : null
           "
@@ -216,7 +216,7 @@
           label="Status"
           :value="status.find(x => x.value == requestInfo.request.actived).text"
           :oldValue="
-            $route.params.type == 1
+            $route.params.action == 'update'
               ? status.find(x => x.value == requestInfo.request.oldData.actived)
                   .text || '-'
               : null

@@ -6,7 +6,7 @@
         :currentProgress="currentProgress"
         :showRemarks="false"
       />
-      <hr />
+      <hr class="card-separator" />
       <b-row v-if="!currentProgress.locked">
         <b-col lg="12">
           <b-row>

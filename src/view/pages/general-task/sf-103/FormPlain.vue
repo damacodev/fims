@@ -5,7 +5,7 @@
       :currentProgress="currentProgress"
       :showRemarks="false"
     />
-    <hr />
+    <hr class="card-separator" />
     <b-row>
       <b-col lg="4">
         <b-row>

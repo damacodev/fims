@@ -551,3 +551,7 @@ export function setMm(params) {
 export function setLiter(params, precision = 0) {
   return `${numberFormat(params, precision)} LTR`;
 }
+
+export function setKompartemen(params) {
+  return `${params} Kompartemen`;
+}

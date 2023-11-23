@@ -6,7 +6,7 @@
           label="Region"
           :value="requestInfo.request.region.label"
           :oldValue="
-            $route.params.type == 1
+            $route.params.action == 'update'
               ? requestInfo.request.oldData.region.label || '-'
               : null
           "
@@ -15,7 +15,7 @@
           label="DPPU"
           :value="requestInfo.request.dppu.label"
           :oldValue="
-            $route.params.type == 1
+            $route.params.action == 'update'
               ? requestInfo.request.oldData.dppu.label || '-'
               : null
           "
@@ -24,7 +24,7 @@
           label="Category"
           :value="requestInfo.request.category.label"
           :oldValue="
-            $route.params.type == 1
+            $route.params.action == 'update'
               ? requestInfo.request.oldData.category.label || '-'
               : null
           "
@@ -33,7 +33,7 @@
           label="Code"
           :value="requestInfo.request.code"
           :oldValue="
-            $route.params.type == 1
+            $route.params.action == 'update'
               ? requestInfo.request.oldData.code || '-'
               : null
           "
@@ -42,7 +42,7 @@
           label="Equipment Modul PM"
           :value="requestInfo.request.detail.modulPm"
           :oldValue="
-            $route.params.type == 1
+            $route.params.action == 'update'
               ? requestInfo.request.oldData.detail.modulPm || '-'
               : null
           "
@@ -52,7 +52,7 @@
           label="Type"
           :value="requestInfo.request.detail.type"
           :oldValue="
-            $route.params.type == 1
+            $route.params.action == 'update'
               ? requestInfo.request.oldData.detail.type || '-'
               : null
           "
@@ -61,7 +61,7 @@
           label="Size, Dimensions"
           :value="requestInfo.request.detail.dimensions"
           :oldValue="
-            $route.params.type == 1
+            $route.params.action == 'update'
               ? requestInfo.request.oldData.detail.dimensions || '-'
               : null
           "
@@ -70,7 +70,7 @@
           label="Location"
           :value="requestInfo.request.detail.location"
           :oldValue="
-            $route.params.type == 1
+            $route.params.action == 'update'
               ? requestInfo.request.oldData.detail.location || '-'
               : null
           "
@@ -79,7 +79,7 @@
           label="Manufacturer"
           :value="requestInfo.request.detail.manufacturer"
           :oldValue="
-            $route.params.type == 1
+            $route.params.action == 'update'
               ? requestInfo.request.oldData.detail.manufacturer || '-'
               : null
           "
@@ -88,7 +88,7 @@
           label="Type of ATG"
           :value="requestInfo.request.detail.typeOfAtg"
           :oldValue="
-            $route.params.type == 1
+            $route.params.action == 'update'
               ? requestInfo.request.oldData.detail.typeOfAtg || '-'
               : null
           "
@@ -97,7 +97,7 @@
           label="Serial Number"
           :value="requestInfo.request.detail.serialNumber"
           :oldValue="
-            $route.params.type == 1
+            $route.params.action == 'update'
               ? requestInfo.request.oldData.detail.serialNumber || '-'
               : null
           "
@@ -106,7 +106,7 @@
           label="Model"
           :value="requestInfo.request.detail.model"
           :oldValue="
-            $route.params.type == 1
+            $route.params.action == 'update'
               ? requestInfo.request.oldData.detail.model || '-'
               : null
           "
@@ -119,7 +119,7 @@
             ).text
           "
           :oldValue="
-            $route.params.type == 1
+            $route.params.action == 'update'
               ? yesNo.find(
                   x =>
                     x.value ==
@@ -132,7 +132,7 @@
           label="Year of Manufacture"
           :value="requestInfo.request.detail.yearOfManufacture"
           :oldValue="
-            $route.params.type == 1
+            $route.params.action == 'update'
               ? requestInfo.request.oldData.detail.yearOfManufacture || '-'
               : null
           "
@@ -142,7 +142,7 @@
           label="Condition"
           :value="requestInfo.request.detail.condition"
           :oldValue="
-            $route.params.type == 1
+            $route.params.action == 'update'
               ? requestInfo.request.oldData.detail.condition || '-'
               : null
           "
@@ -151,7 +151,7 @@
           label="Remarks"
           :value="requestInfo.request.detail.remarks"
           :oldValue="
-            $route.params.type == 1
+            $route.params.action == 'update'
               ? requestInfo.request.oldData.detail.remarks || '-'
               : null
           "
@@ -160,7 +160,7 @@
           label="Status"
           :value="status.find(x => x.value == requestInfo.request.actived).text"
           :oldValue="
-            $route.params.type == 1
+            $route.params.action == 'update'
               ? status.find(x => x.value == requestInfo.request.oldData.actived)
                   .text || '-'
               : null

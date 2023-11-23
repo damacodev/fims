@@ -35,7 +35,7 @@
           </p>
         </b-alert>
       </div>
-      <hr />
+      <hr class="card-separator-24" />
       <vue-document-editor :content.sync="content" :editable="false" />
     </b-col>
   </b-row>

@@ -99,19 +99,12 @@
                   </b-col>
                 </b-row>
                 <b-row>
-                  <b-col lg="6">
-                    <InputText
-                      label="Supply Point"
-                      type="text"
-                      v-model="form.supplyPoint"
-                      :useHorizontal="false"
-                    />
-                  </b-col>
                   <b-col lg="3">
                     <Select
                       label="Nomor Polisi"
                       placeholder="Select Bridger"
                       v-model="form.bridgerId"
+                      :v="$v.form.bridgerId"
                       :options="options.equipment"
                       :useHorizontal="false"
                       :multiple="false"
@@ -120,33 +113,12 @@
                   </b-col>
                   <b-col lg="3">
                     <InputText
-                      label="Nama Pengemudi"
-                      type="text"
-                      v-model="form.namaPengemudi"
-                      :useHorizontal="false"
-                    />
-                  </b-col>
-                  <!-- <b-col lg="12">
-                    <RadioGroup
-                      label="Jumlah Kompartemen"
-                      v-model="form.jumlahKompartemen"
-                      :options="options.kompartemen"
-                      :useHorizontal="false"
-                      disabled
-                      @onInput="calculateKlaim"
-                    />
-                  </b-col> -->
-                </b-row>
-                <b-row>
-                  <b-col lg="3">
-                    <InputText
                       label="Jumlah Kompartemen"
                       type="number"
                       v-model="form.jumlahKompartemen"
                       :v="$v.form.jumlahKompartemen"
                       :useHorizontal="false"
                       disabled
-                      @onInput="calculateKlaim"
                     />
                   </b-col>
                   <b-col lg="3">
@@ -170,45 +142,126 @@
                       disabled
                     />
                   </b-col>
-                  <b-col lg="3">
-                    <InputMoney
-                      label="Harga Avtur (Include tax)"
-                      v-model="form.harga"
-                      :v="$v.form.harga"
-                      :useHorizontal="false"
-                      :precision="2"
-                      append="/Liter"
-                      @onBlur="handleUpdateCache"
+                </b-row>
+                <hr class="card-separator-50" />
+                <b-row>
+                  <b-col lg="12">
+                    <h5 class="text-center font-weight-bolder mt-6 mb-6">
+                      Pemeriksaan dan Pencatatan Minimal 10 Menit Setelah
+                      Settling Time
+                    </h5>
+                  </b-col>
+                  <b-col lg="6">
+                    <h5 class="font-weight-bolder mb-6">
+                      Jarak t1 Pada Dokumen Kalibrasi
+                    </h5>
+                    <fragment
+                      v-for="(detail, index) in form.jumlahKompartemen"
+                      v-bind:key="index"
+                    >
+                      <h6 class="font-weight-bolder">
+                        {{ setKompartemen(index + 1) }}
+                      </h6>
+                      <b-row>
+                        <b-col cols="6">
+                          <InputMoney
+                            label="Ullage"
+                            :use-horizontal="false"
+                            :usePrefix="false"
+                            append="mm"
+                            v-model="
+                              form.details[index].atDokumenKalibrasi.ullage
+                            "
+                          />
+                        </b-col>
+                        <b-col cols="6">
+                          <InputMoney
+                            label="Temperature"
+                            :use-horizontal="false"
+                            :usePrefix="false"
+                            append="°C"
+                            v-model="
+                              form.details[index].atDokumenKalibrasi.temperature
+                            "
+                          />
+                        </b-col>
+                      </b-row>
+                    </fragment>
+                    <TextArea
+                      label="Remarks"
+                      :use-horizontal="false"
+                      v-model="form.remarks.dokumenKalibrasi"
+                    />
+                  </b-col>
+                  <b-col lg="6">
+                    <h5 class="font-weight-bolder mb-6">
+                      Jarak Cairan Terhadap t1 (Ullage) @Supply Point
+                    </h5>
+                    <fragment
+                      v-for="(detail, index) in form.jumlahKompartemen"
+                      v-bind:key="index"
+                    >
+                      <h5 class="font-weight-bolder">
+                        {{ setKompartemen(index + 1) }}
+                      </h5>
+                      <b-row>
+                        <b-col cols="4">
+                          <InputMoney
+                            label="Ullage"
+                            :use-horizontal="false"
+                            :usePrefix="false"
+                            append="mm"
+                            v-model="form.details[index].atSupplyPoint.ullage"
+                          />
+                        </b-col>
+                        <b-col cols="4">
+                          <InputMoney
+                            label="Density Observed"
+                            :use-horizontal="false"
+                            :usePrefix="false"
+                            append="mm"
+                            v-model="
+                              form.details[index].atSupplyPoint.densityObserved
+                            "
+                          />
+                        </b-col>
+                        <b-col cols="4">
+                          <InputMoney
+                            label="Temperature"
+                            :use-horizontal="false"
+                            :usePrefix="false"
+                            append="°C"
+                            v-model="
+                              form.details[index].atSupplyPoint.temperature
+                            "
+                          />
+                        </b-col>
+                      </b-row>
+                    </fragment>
+                    <TextArea
+                      label="Remarks"
+                      :use-horizontal="false"
+                      v-model="form.remarks.supplyPoint"
                     />
                   </b-col>
                 </b-row>
+                <hr class="card-separator-50" />
                 <b-row>
-                  <b-col lg="3">
-                    <InputText
-                      label="Bottom Loader Cover"
-                      description="Nomor / Kode Segel"
-                      type="text"
-                      v-model="form.bottomLoaderCover"
-                      :useHorizontal="false"
-                    />
+                  <b-col lg="12">
+                    <h5 class="text-center font-weight-bolder mt-6 mb-6">
+                      Pemeriksaan Oleh Security Sebelum Keluar Lokasi
+                    </h5>
                   </b-col>
-                  <b-col lg="3">
-                    <RadioGroup
-                      label="Kondisi Kompartemen"
-                      description="Setelah Discharge"
-                      v-model="form.kondisiKompartemen"
-                      :options="options.dryCheck"
-                      :useHorizontal="false"
-                    />
-                  </b-col>
+                </b-row>
+                <b-row>
                   <b-col lg="6">
                     <b-row>
                       <b-col lg="6">
                         <InputText
-                          label="Jam Masuk"
-                          type="time"
-                          v-model="form.jamMasuk"
-                          :v="$v.form.jamMasuk"
+                          label="Bottom Loader Cover"
+                          description="Nomor / Kode Segel"
+                          type="text"
+                          v-model="form.bottomLoaderCover"
                           :useHorizontal="false"
                         />
                       </b-col>
@@ -223,83 +276,91 @@
                       </b-col>
                     </b-row>
                   </b-col>
+                  <b-col lg="6">
+                    <InputText
+                      label="Nama Security"
+                      type="text"
+                      v-model="form.namaSecurity"
+                      :v="$v.form.namaSecurity"
+                      :useHorizontal="false"
+                    />
+                  </b-col>
+                </b-row>
+                <b-row>
+                  <fragment
+                    v-for="(detail, index) in form.jumlahKompartemen"
+                    v-bind:key="index"
+                  >
+                    <b-col lg="6">
+                      <h6 class="font-weight-bolder">
+                        {{ setKompartemen(index + 1) }}
+                      </h6>
+                      <b-row>
+                        <b-col cols="6">
+                          <InputText
+                            label="Mainhole"
+                            description="Nomor / Kode Segel"
+                            type="text"
+                            :use-horizontal="false"
+                            v-model="form.details[index].mainhole"
+                          />
+                        </b-col>
+                        <b-col cols="6">
+                          <InputText
+                            label="Bottom Loader Valve"
+                            description="Nomor / Kode Segel"
+                            type="text"
+                            :use-horizontal="false"
+                            v-model="form.details[index].bottomLoaderValve"
+                          />
+                        </b-col>
+                      </b-row>
+                    </b-col>
+                  </fragment>
                 </b-row>
               </template>
               <FormHeader
                 v-else
                 :form="form"
                 :currentProgress="currentProgress"
+                :content="content"
               />
             </div>
           </b-row>
         </div>
       </b-col>
     </b-row>
-    <b-row>
-      <b-col
-        v-for="(detail, index) in form.jumlahKompartemen"
-        v-bind:key="index"
-        :lg="!currentProgress.locked ? 12 : 6"
-        class="mb-6"
-      >
-        <FormPemeriksaan
-          v-if="!currentProgress.locked"
-          :title="`Kompartemen ${index + 1}`"
-          :form="form.details[index]"
-          :options="options"
-          @onCalculateKlaim="calculateKlaim"
-        />
-        <FormPemeriksaanPlain
-          v-else
-          :title="`Kompartemen ${index + 1}`"
-          :form="form.details[index]"
-        />
-      </b-col>
-      <b-col :lg="!currentProgress.locked ? 12 : 6">
-        <FormKlaim
-          v-if="!currentProgress.locked"
-          :form="form"
-          @onUpdateCache="handleUpdateCache"
-        />
-        <FormKlaimPlain v-else :form="form" />
-      </b-col>
-    </b-row>
   </fragment>
 </template>
 
 <script>
+import TemplateDocument from "./TemplateDocument.vue";
 import FormHeader from "./FormHeader.vue";
-import FormPemeriksaan from "./FormPemeriksaan.vue";
-import FormPemeriksaanPlain from "./FormPemeriksaanPlain.vue";
-import FormKlaim from "./FormKlaim.vue";
-import FormKlaimPlain from "./FormKlaimPlain.vue";
 
 import { mapGetters } from "vuex";
 import { required, maxLength, minValue } from "vuelidate/lib/validators";
-import { kompartemen, dryCheck } from "@/core/datasource/options";
 import {
   getDppu,
   changeDppu,
   numberFormat,
   getDate,
   dateFormat,
-  dateTimeFormat
+  dateTimeFormat,
+  setKompartemen
 } from "@/core/utils";
 
 export default {
   components: {
-    FormHeader,
-    FormPemeriksaan,
-    FormPemeriksaanPlain,
-    FormKlaim,
-    FormKlaimPlain
+    FormHeader
   },
   data: () => ({
+    content: [],
+
     title:
-      "139B SF - Formulir Pemeriksaan Bridger Masuk Keluar Lokasi Penerima",
+      "139A SF - Formulir Pemeriksaan Bridger Masuk Keluar Lokasi Supply Point",
     route: {
-      form: "sf139bCreate",
-      table: "sf139b"
+      form: "sf139aCreate",
+      table: "sf139a"
     },
     form: {
       dppu: {
@@ -309,121 +370,71 @@ export default {
       dppuId: null,
       transactionId: "Auto Generated",
       transactionDate: getDate(),
-      supplyPoint: null,
       bridgerId: null,
       nomorPolisi: null,
       jumlahKompartemen: 1,
       masaBerlakuTeraTangki: null,
       volume: 0,
-      harga: 0,
-      bottomLoaderCover: null,
-      kondisiKompartemen: "Kering",
-      jamMasuk: null,
-      jamKeluar: null,
       details: [
         {
-          mainhole: null,
-          bottomLoaderValve: null,
-          teraMetrologi: 0,
-          rMmLiter: 0,
+          atDokumenKalibrasi: {
+            ullage: 0,
+            temperature: 0
+          },
           atSupplyPoint: {
             ullage: 0,
             densityObserved: 0,
             temperature: 0
           },
-          atDppu: {
-            ullage: 0,
-            densityObserved: 0,
-            temperature: 0
-          },
-          selisih: {
-            mm: 0,
-            liter: 0
-          },
-          densityAt15Celcius: 0,
-          correctionFactor: 0,
-          literAt15Celcius: 0,
-          dryCheck: "Kering"
+          mainhole: null,
+          bottomLoaderValve: null
         },
         {
-          mainhole: null,
-          bottomLoaderValve: null,
-          teraMetrologi: 0,
-          rMmLiter: 0,
+          atDokumenKalibrasi: {
+            ullage: 0,
+            temperature: 0
+          },
           atSupplyPoint: {
             ullage: 0,
             densityObserved: 0,
             temperature: 0
           },
-          atDppu: {
-            ullage: 0,
-            densityObserved: 0,
-            temperature: 0
-          },
-          selisih: {
-            mm: 0,
-            liter: 0
-          },
-          densityAt15Celcius: 0,
-          correctionFactor: 0,
-          literAt15Celcius: 0,
-          dryCheck: "Kering"
+          mainhole: null,
+          bottomLoaderValve: null
         },
         {
-          mainhole: null,
-          bottomLoaderValve: null,
-          teraMetrologi: 0,
-          rMmLiter: 0,
+          atDokumenKalibrasi: {
+            ullage: 0,
+            temperature: 0
+          },
           atSupplyPoint: {
             ullage: 0,
             densityObserved: 0,
             temperature: 0
           },
-          atDppu: {
-            ullage: 0,
-            densityObserved: 0,
-            temperature: 0
-          },
-          selisih: {
-            mm: 0,
-            liter: 0
-          },
-          densityAt15Celcius: 0,
-          correctionFactor: 0,
-          literAt15Celcius: 0,
-          dryCheck: "Kering"
+          mainhole: null,
+          bottomLoaderValve: null
         },
         {
-          mainhole: null,
-          bottomLoaderValve: null,
-          teraMetrologi: 0,
-          rMmLiter: 0,
+          atDokumenKalibrasi: {
+            ullage: 0,
+            temperature: 0
+          },
           atSupplyPoint: {
             ullage: 0,
             densityObserved: 0,
             temperature: 0
           },
-          atDppu: {
-            ullage: 0,
-            densityObserved: 0,
-            temperature: 0
-          },
-          selisih: {
-            mm: 0,
-            liter: 0
-          },
-          densityAt15Celcius: 0,
-          correctionFactor: 0,
-          literAt15Celcius: 0,
-          dryCheck: "Kering"
+          mainhole: null,
+          bottomLoaderValve: null
         }
       ],
-      persentaseLosses: 0,
-      klaim: {
-        totalSelisih: null,
-        toleransiLosses: null,
-        volume: null,
-        nilai: null
+      bottomLoaderCover: null,
+      jamKeluar: null,
+      namaSecurity: null,
+      remarks: {
+        dokumenKalibrasi: null,
+        supplyPoint: null
       },
       sendApproval: false,
       updatedBy: null,
@@ -440,13 +451,11 @@ export default {
     },
     options: {
       dppu: [],
-      equipment: [],
-      kompartemen,
-      dryCheck
+      equipment: []
     }
   }),
   computed: {
-    ...mapGetters("personalize", ["multipleDppu", "dppu", "sf139b"]),
+    ...mapGetters("personalize", ["multipleDppu", "dppu", "sf139a"]),
     ...mapGetters("auth", ["user"]),
     subTitle() {
       const self = this;
@@ -464,15 +473,13 @@ export default {
       dppuId: { required },
       transactionId: { required, maxLength: maxLength(50) },
       transactionDate: { required },
+      bridgerId: { required },
       nomorPolisi: { required, maxLength: maxLength(9) },
       jumlahKompartemen: { required },
       masaBerlakuTeraTangki: { required },
       volume: { required, minValue: minValue(1) },
-      harga: { required, minValue: minValue(1000) },
-      kondisiKompartemen: { required },
-      jamMasuk: { required },
-      jamKeluar: { required },
-      persentaseLosses: { required }
+      namaSecurity: { required },
+      jamKeluar: { required }
     }
   },
   created() {
@@ -490,15 +497,9 @@ export default {
     }
     if (self.dppu) {
       self.form.dppuId = self.dppu.id;
-      self.form.supplyPoint = self.dppu.supplyPoint;
     }
 
     self.getEquipmentByCategory();
-
-    if (self.sf139b != null) {
-      self.form.harga = parseFloat(self.sf139b.harga);
-      self.form.persentaseLosses = parseFloat(self.sf139b.persentaseLosses);
-    }
 
     if (self.$route.name != self.route.form) {
       self.get();
@@ -508,12 +509,13 @@ export default {
     dateFormat,
     numberFormat,
     getDate,
+    setKompartemen,
     changeDppu,
     changeEquipment() {
       const self = this;
 
       self.form.nomorPolisi = null;
-      self.form.jumlahKompartemen = null;
+      self.form.jumlahKompartemen = 1;
       self.form.masaBerlakuTeraTangki = null;
       self.form.volume = null;
 
@@ -525,11 +527,6 @@ export default {
       self.form.masaBerlakuTeraTangki =
         bridger.detail.detail.masaBerlakuTeraTangki;
       self.form.volume = bridger.detail.detail.volume;
-
-      for (let index = 0; index < self.form.jumlahKompartemen; index++) {
-        self.form.details[index].teraMetrologi =
-          bridger.detail.detail.kompartemen[index].ullage;
-      }
     },
     getEquipmentByCategory() {
       const self = this;
@@ -563,7 +560,7 @@ export default {
       let loader = self.$loading.show();
       self.$store
         .dispatch("apis/get", {
-          url: `/board/standard-form/139b/${self.$route.params.id}`
+          url: `/board/standard-form/139a/${self.$route.params.id}`
         })
         .then(response => {
           if (response.error) {
@@ -578,27 +575,15 @@ export default {
               self.form.details[index].mainhole = item.mainhole;
               self.form.details[index].bottomLoaderValve =
                 item.bottomLoaderValve;
-              self.form.details[index].teraMetrologi = item.teraMetrologi;
-              self.form.details[index].rMmLiter = item.rMmLiter;
+              self.form.details[index].atDokumenKalibrasi = {
+                ullage: item.atDokumenKalibrasi.ullage,
+                temperature: item.atDokumenKalibrasi.temperature
+              };
               self.form.details[index].atSupplyPoint = {
                 ullage: item.atSupplyPoint.ullage,
                 densityObserved: item.atSupplyPoint.densityObserved,
                 temperature: item.atSupplyPoint.temperature
               };
-              self.form.details[index].atDppu = {
-                ullage: item.atDppu.ullage,
-                densityObserved: item.atDppu.densityObserved,
-                temperature: item.atDppu.temperature
-              };
-              self.form.details[index].selisih = {
-                mm: item.selisih.mm,
-                liter: item.selisih.liter
-              };
-              self.form.details[index].densityAt15Celcius =
-                item.densityAt15Celcius;
-              self.form.details[index].correctionFactor = item.correctionFactor;
-              self.form.details[index].literAt15Celcius = item.literAt15Celcius;
-              self.form.details[index].dryCheck = item.dryCheck;
             });
 
             self.form.id = response.data.id;
@@ -609,23 +594,18 @@ export default {
               response.data.transactionDate,
               "YYYY-MM-DD"
             );
-            self.form.supplyPoint = response.data.supplyPoint;
             self.form.bridgerId = response.data.bridgerId;
             self.form.nomorPolisi = response.data.nomorPolisi;
-            self.form.namaPengemudi = response.data.namaPengemudi;
             self.form.jumlahKompartemen = response.data.jumlahKompartemen;
             self.form.masaBerlakuTeraTangki = dateFormat(
               response.data.masaBerlakuTeraTangki,
               "YYYY-MM-DD"
             );
             self.form.volume = response.data.volume;
-            self.form.harga = response.data.harga;
+            self.form.remarks = response.data.remarks;
             self.form.bottomLoaderCover = response.data.bottomLoaderCover;
-            self.form.kondisiKompartemen = response.data.kondisiKompartemen;
-            self.form.jamMasuk = dateFormat(response.data.jamMasuk, "HH:mm");
             self.form.jamKeluar = dateFormat(response.data.jamKeluar, "HH:mm");
-            self.form.persentaseLosses = response.data.persentaseLosses;
-            self.form.klaim = response.data.klaim;
+            self.form.namaSecurity = response.data.namaSecurity;
             self.form.updatedBy = response.data.updatedBy;
             self.form.updatedAt = response.data.updatedAt;
 
@@ -638,26 +618,18 @@ export default {
                 label: response.data.currentProgress.nextAction?.label
               }
             };
+
+            self.content = [
+              {
+                template: TemplateDocument,
+                props: {
+                  form: self.form
+                }
+              }
+            ];
           }
         })
         .finally(() => loader.hide());
-    },
-    calculateKlaim() {
-      const self = this;
-
-      let selisih = 0;
-      for (let index = 0; index < self.form.jumlahKompartemen; index++) {
-        selisih += self.form.details[index].literAt15Celcius;
-      }
-
-      self.form.klaim.totalSelisih = selisih;
-      self.form.klaim.toleransiLosses =
-        (self.form.persentaseLosses * self.form.volume) / 100;
-      self.form.klaim.volume =
-        self.form.klaim.totalSelisih + self.form.klaim.toleransiLosses < 0
-          ? self.form.klaim.totalSelisih + self.form.klaim.toleransiLosses
-          : 0;
-      self.form.klaim.nilai = self.form.klaim.volume * self.form.harga;
     },
     handleSubmit() {
       const self = this;
@@ -674,13 +646,13 @@ export default {
         _confirmText = "You are about to save this transaction. Are you sure ?";
         _okText = "Yes, Save";
         _action = "apis/post";
-        _url = "/board/standard-form/139b";
+        _url = "/board/standard-form/139a";
       } else {
         _confirmText =
           "You are about to update this transaction. Are you sure ?";
         _okText = "Yes, Update";
         _action = "apis/put";
-        _url = `/board/standard-form/139b/${self.$route.params.id}`;
+        _url = `/board/standard-form/139a/${self.$route.params.id}`;
       }
 
       let details = [];
@@ -690,18 +662,14 @@ export default {
         details.push({
           mainhole: detail.mainhole,
           bottomLoaderValve: detail.bottomLoaderValve,
-          teraMetrologi: detail.teraMetrologi,
-          rMmLiter: detail.rMmLiter,
-          dryCheck: detail.dryCheck,
+          atDokumenKalibrasi: {
+            ullage: detail.atDokumenKalibrasi.ullage,
+            temperature: detail.atDokumenKalibrasi.temperature
+          },
           atSupplyPoint: {
             ullage: detail.atSupplyPoint.ullage,
             densityObserved: detail.atSupplyPoint.densityObserved,
             temperature: detail.atSupplyPoint.temperature
-          },
-          atDppu: {
-            ullage: detail.atDppu.ullage,
-            densityObserved: detail.atDppu.densityObserved,
-            temperature: detail.atDppu.temperature
           }
         });
       }
@@ -709,22 +677,15 @@ export default {
       let _form = {
         dppuId: self.form.dppuId,
         transactionDate: self.form.transactionDate,
-        supplyPoint: self.form.supplyPoint,
         bridgerId: self.form.bridgerId,
-        namaPengemudi: self.form.namaPengemudi,
-        harga: self.form.harga,
         bottomLoaderCover: self.form.bottomLoaderCover,
-        kondisiKompartemen: self.form.kondisiKompartemen,
-        jamMasuk: dateTimeFormat(
-          `${self.form.transactionDate} ${self.form.jamMasuk}`,
-          "YYYY-MM-DD HH:mm:ss"
-        ),
         jamKeluar: dateTimeFormat(
           `${self.form.transactionDate} ${self.form.jamKeluar}`,
           "YYYY-MM-DD HH:mm:ss"
         ),
-        persentaseLosses: self.form.persentaseLosses,
+        namaSecurity: self.form.namaSecurity,
         details: details,
+        remarks: self.form.remarks,
         sendApproval: false
       };
 
@@ -770,7 +731,7 @@ export default {
         .then(dialog => {
           self.$store
             .dispatch("apis/remove", {
-              url: `/board/standard-form/139b/${self.$route.params.id}`
+              url: `/board/standard-form/139a/${self.$route.params.id}`
             })
             .then(response => {
               if (response.error) {
@@ -813,18 +774,14 @@ export default {
             details.push({
               mainhole: detail.mainhole,
               bottomLoaderValve: detail.bottomLoaderValve,
-              teraMetrologi: detail.teraMetrologi,
-              rMmLiter: detail.rMmLiter,
-              dryCheck: detail.dryCheck,
+              atDokumenKalibrasi: {
+                ullage: detail.atDokumenKalibrasi.ullage,
+                temperature: detail.atDokumenKalibrasi.temperature
+              },
               atSupplyPoint: {
                 ullage: detail.atSupplyPoint.ullage,
                 densityObserved: detail.atSupplyPoint.densityObserved,
                 temperature: detail.atSupplyPoint.temperature
-              },
-              atDppu: {
-                ullage: detail.atDppu.ullage,
-                densityObserved: detail.atDppu.densityObserved,
-                temperature: detail.atDppu.temperature
               }
             });
           }
@@ -832,28 +789,21 @@ export default {
           let _form = {
             dppuId: self.form.dppuId,
             transactionDate: self.form.transactionDate,
-            supplyPoint: self.form.supplyPoint,
             bridgerId: self.form.bridgerId,
-            namaPengemudi: self.form.namaPengemudi,
-            harga: self.form.harga,
             bottomLoaderCover: self.form.bottomLoaderCover,
-            kondisiKompartemen: self.form.kondisiKompartemen,
-            jamMasuk: dateTimeFormat(
-              `${self.form.transactionDate} ${self.form.jamMasuk}`,
-              "YYYY-MM-DD HH:mm:ss"
-            ),
             jamKeluar: dateTimeFormat(
               `${self.form.transactionDate} ${self.form.jamKeluar}`,
               "YYYY-MM-DD HH:mm:ss"
             ),
-            persentaseLosses: self.form.persentaseLosses,
+            namaSecurity: self.form.namaSecurity,
             details: details,
+            remarks: self.form.remarks,
             sendApproval: true
           };
 
           self.$store
             .dispatch("apis/put", {
-              url: `/board/standard-form/139b/${self.$route.params.id}`,
+              url: `/board/standard-form/139a/${self.$route.params.id}`,
               params: _form
             })
             .then(response => {
@@ -879,7 +829,7 @@ export default {
 
       self.$store
         .dispatch("apis/download", {
-          url: `/board/standard-form/139b/export/${self.$route.params.id}`
+          url: `/board/standard-form/139a/export/${self.$route.params.id}`
         })
         .then(response => {
           if (response.error) {
@@ -892,22 +842,12 @@ export default {
               fileLink = document.createElement("a");
 
             fileLink.href = fileURL;
-            fileLink.setAttribute("download", "139B SF.xlsx");
+            fileLink.setAttribute("download", "139A SF.xlsx");
             document.body.appendChild(fileLink);
 
             fileLink.click();
           }
         });
-    },
-    handleUpdateCache() {
-      const self = this;
-
-      self.$store.dispatch("personalize/updateSf139b", {
-        harga: parseFloat(self.form.harga),
-        persentaseLosses: parseFloat(self.form.persentaseLosses)
-      });
-
-      self.calculateKlaim();
     }
   }
 };

@@ -39,6 +39,7 @@
                 :useHorizontal="false"
                 :usePrefix="false"
                 append="mm"
+                disabled
               />
             </b-col>
             <b-col lg="6">
@@ -75,7 +76,7 @@
             :useHorizontal="false"
             :usePrefix="false"
             :precision="4"
-            append="Kg/m3"
+            append="Kg/m³"
           />
           <InputMoney
             label="Temperature"
@@ -103,7 +104,7 @@
             :useHorizontal="false"
             :usePrefix="false"
             :precision="4"
-            append="Kg/m3"
+            append="Kg/m³"
             @onInput="calculateCorrectionFactor"
           />
           <InputMoney

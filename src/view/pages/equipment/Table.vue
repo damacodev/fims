@@ -75,6 +75,15 @@
       <span v-show="data.item.detail.valveVisualInspection">Yes</span>
       <span v-show="!data.item.detail.valveVisualInspection">No</span>
     </template>
+    <template #cell(detail.jumlahKompartemen)="data">
+      <span>{{ `${data.value} Kompartemen` }}</span>
+    </template>
+    <template #cell(detail.volume)="data">
+      <span>{{ setVolume(data.value) }}</span>
+    </template>
+    <template #cell(detail.masaBerlakuTeraTangki)="data">
+      <span>{{ dateFormat(data.value) }}</span>
+    </template>
     <template #cell(actived)="data">
       <span v-show="data.item.actived" class="text-success">Active</span>
       <span v-show="!data.item.actived" class="text-danger">Inactive</span>
@@ -86,7 +95,7 @@
 import { mapGetters } from "vuex";
 import { category, status } from "@/core/datasource/options";
 import { equipment as columns } from "@/core/datasource/columns";
-import { getDppu } from "@/core/utils";
+import { getDppu, setVolume, dateFormat } from "@/core/utils";
 
 export default {
   data: () => ({
@@ -150,6 +159,8 @@ export default {
     $route: "getAll"
   },
   methods: {
+    setVolume,
+    dateFormat,
     updateParams(newProps) {
       this.serverParams = Object.assign({}, this.serverParams, newProps);
     },
@@ -185,6 +196,9 @@ export default {
       const self = this;
 
       self.table.isLoading = true;
+      self.table.rows = [];
+      self.table.totalPage = 0;
+      self.table.totalRecords = 0;
       self.serverParams.category = self.$route.params.category;
       self.$store
         .dispatch("apis/get", {

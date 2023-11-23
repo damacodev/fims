@@ -6,7 +6,7 @@
           label="Region"
           :value="requestInfo.request.region.label"
           :oldValue="
-            $route.params.type == 1
+            $route.params.action == 'update'
               ? requestInfo.request.oldData.region.label || '-'
               : null
           "
@@ -15,7 +15,7 @@
           label="DPPU"
           :value="requestInfo.request.dppu.label"
           :oldValue="
-            $route.params.type == 1
+            $route.params.action == 'update'
               ? requestInfo.request.oldData.dppu.label || '-'
               : null
           "
@@ -24,7 +24,7 @@
           label="Category"
           :value="requestInfo.request.category.label"
           :oldValue="
-            $route.params.type == 1
+            $route.params.action == 'update'
               ? requestInfo.request.oldData.category.label || '-'
               : null
           "
@@ -33,7 +33,7 @@
           label="Code"
           :value="requestInfo.request.code"
           :oldValue="
-            $route.params.type == 1
+            $route.params.action == 'update'
               ? requestInfo.request.oldData.code || '-'
               : null
           "
@@ -42,7 +42,7 @@
           label="Equipment Modul PM"
           :value="requestInfo.request.detail.modulPm"
           :oldValue="
-            $route.params.type == 1
+            $route.params.action == 'update'
               ? requestInfo.request.oldData.detail.modulPm || '-'
               : null
           "
@@ -52,7 +52,7 @@
           label="Product"
           :value="requestInfo.request.detail.product"
           :oldValue="
-            $route.params.type == 1
+            $route.params.action == 'update'
               ? requestInfo.request.oldData.detail.product || '-'
               : null
           "
@@ -63,7 +63,7 @@
           label="Diameter"
           :value="`${requestInfo.request.detail.diameter} m`"
           :oldValue="
-            $route.params.type == 1
+            $route.params.action == 'update'
               ? `${requestInfo.request.oldData.detail.diameter} m` || '-'
               : null
           "
@@ -72,7 +72,7 @@
           label="Height"
           :value="`${requestInfo.request.detail.height} m`"
           :oldValue="
-            $route.params.type == 1
+            $route.params.action == 'update'
               ? `${requestInfo.request.oldData.detail.height} m` || '-'
               : null
           "
@@ -82,7 +82,7 @@
           label="Roof Construction"
           :value="requestInfo.request.detail.roofConstruction"
           :oldValue="
-            $route.params.type == 1
+            $route.params.action == 'update'
               ? requestInfo.request.oldData.detail.roofConstruction || '-'
               : null
           "
@@ -91,7 +91,7 @@
           label="Type of Tank"
           :value="requestInfo.request.detail.typeOfTank"
           :oldValue="
-            $route.params.type == 1
+            $route.params.action == 'update'
               ? requestInfo.request.oldData.detail.typeOfTank || '-'
               : null
           "
@@ -102,7 +102,7 @@
           label="Inlet"
           :value="`${requestInfo.request.detail.inlet} inch`"
           :oldValue="
-            $route.params.type == 1
+            $route.params.action == 'update'
               ? `${requestInfo.request.oldData.detail.inlet} inch` || '-'
               : null
           "
@@ -111,7 +111,7 @@
           label="Outlet"
           :value="`${requestInfo.request.detail.outlet} inch`"
           :oldValue="
-            $route.params.type == 1
+            $route.params.action == 'update'
               ? `${requestInfo.request.oldData.detail.outlet} inch` || '-'
               : null
           "
@@ -121,7 +121,7 @@
           label="Breather Valve Type"
           :value="requestInfo.request.detail.breatherValveType"
           :oldValue="
-            $route.params.type == 1
+            $route.params.action == 'update'
               ? requestInfo.request.oldData.detail.breatherValveType || '-'
               : null
           "
@@ -136,7 +136,7 @@
             ).text
           "
           :oldValue="
-            $route.params.type == 1
+            $route.params.action == 'update'
               ? yesNo.find(
                   x =>
                     x.value ==
@@ -150,7 +150,7 @@
           label="Year of Manufacture"
           :value="requestInfo.request.detail.yearOfManufacture"
           :oldValue="
-            $route.params.type == 1
+            $route.params.action == 'update'
               ? requestInfo.request.oldData.detail.yearOfManufacture || '-'
               : null
           "
@@ -161,7 +161,7 @@
           label="Maximum Capacity"
           :value="`${requestInfo.request.detail.maximumCapacity} KL`"
           :oldValue="
-            $route.params.type == 1
+            $route.params.action == 'update'
               ? `${requestInfo.request.oldData.detail.maximumCapacity} KL` ||
                 '-'
               : null
@@ -171,7 +171,7 @@
           label="Safe Capacity"
           :value="`${requestInfo.request.detail.safeCapacity} KL`"
           :oldValue="
-            $route.params.type == 1
+            $route.params.action == 'update'
               ? `${requestInfo.request.oldData.detail.safeCapacity} KL` || '-'
               : null
           "
@@ -180,7 +180,7 @@
           label="Dead Stock"
           :value="`${requestInfo.request.detail.deadStock} KL`"
           :oldValue="
-            $route.params.type == 1
+            $route.params.action == 'update'
               ? `${requestInfo.request.oldData.detail.deadStock} KL` || '-'
               : null
           "
@@ -189,7 +189,7 @@
           label="Pumpable Stock"
           :value="`${requestInfo.request.detail.pumpableStock} KL`"
           :oldValue="
-            $route.params.type == 1
+            $route.params.action == 'update'
               ? `${requestInfo.request.oldData.detail.pumpableStock} KL` || '-'
               : null
           "
@@ -200,7 +200,7 @@
           label="Last Epicoat"
           :value="requestInfo.request.detail.lastEpicoat"
           :oldValue="
-            $route.params.type == 1
+            $route.params.action == 'update'
               ? requestInfo.request.oldData.detail.lastEpicoat || '-'
               : null
           "
@@ -209,7 +209,7 @@
           label="Last Calibration"
           :value="requestInfo.request.detail.lastCalibration"
           :oldValue="
-            $route.params.type == 1
+            $route.params.action == 'update'
               ? requestInfo.request.oldData.detail.lastCalibration || '-'
               : null
           "
@@ -218,7 +218,7 @@
           label="Last Inspection"
           :value="requestInfo.request.detail.lastInspection"
           :oldValue="
-            $route.params.type == 1
+            $route.params.action == 'update'
               ? requestInfo.request.oldData.detail.lastInspection || '-'
               : null
           "
@@ -227,7 +227,7 @@
           label="Last Cleaning"
           :value="requestInfo.request.detail.lastCleaning"
           :oldValue="
-            $route.params.type == 1
+            $route.params.action == 'update'
               ? requestInfo.request.oldData.detail.lastCleaning || '-'
               : null
           "
@@ -242,7 +242,7 @@
             ).text
           "
           :oldValue="
-            $route.params.type == 1
+            $route.params.action == 'update'
               ? available.find(
                   x =>
                     x.value == requestInfo.request.oldData.detail.waterPipeline
@@ -258,7 +258,7 @@
             ).text
           "
           :oldValue="
-            $route.params.type == 1
+            $route.params.action == 'update'
               ? available.find(
                   x =>
                     x.value == requestInfo.request.oldData.detail.waterSprinkle
@@ -274,7 +274,7 @@
             ).text
           "
           :oldValue="
-            $route.params.type == 1
+            $route.params.action == 'update'
               ? available.find(
                   x =>
                     x.value == requestInfo.request.oldData.detail.foamPipeline
@@ -290,7 +290,7 @@
             ).text
           "
           :oldValue="
-            $route.params.type == 1
+            $route.params.action == 'update'
               ? available.find(
                   x =>
                     x.value ==
@@ -304,7 +304,7 @@
           label="Condition"
           :value="requestInfo.request.detail.condition"
           :oldValue="
-            $route.params.type == 1
+            $route.params.action == 'update'
               ? requestInfo.request.oldData.detail.condition || '-'
               : null
           "
@@ -313,7 +313,7 @@
           label="Remarks"
           :value="requestInfo.request.detail.remarks"
           :oldValue="
-            $route.params.type == 1
+            $route.params.action == 'update'
               ? requestInfo.request.oldData.detail.remarks || '-'
               : null
           "
@@ -322,7 +322,7 @@
           label="Status"
           :value="status.find(x => x.value == requestInfo.request.actived).text"
           :oldValue="
-            $route.params.type == 1
+            $route.params.action == 'update'
               ? status.find(x => x.value == requestInfo.request.oldData.actived)
                   .text || '-'
               : null
