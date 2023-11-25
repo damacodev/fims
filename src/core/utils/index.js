@@ -558,6 +558,5 @@ export function setKompartemen(params) {
 
 export function setOption(params) {
   if (params == null || typeof params == "string") return "-";
-  else
-  return `<strong>${params.value}</strong> - ${params.label}`;
+  else return `<strong>${params.value}</strong> - ${params.label}`;
 }

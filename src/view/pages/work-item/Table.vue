@@ -66,11 +66,15 @@
       />
     </template>
     <template #cell(title)="data">
-      <span v-b-tooltip.hover :title="data.value">{{ truncate(data.value, 50) }}</span>
+      <span v-b-tooltip.hover :title="data.value">{{
+        truncate(data.value, 50)
+      }}</span>
       <br /><small class="font-italic">{{ data.item.type.label }}</small>
     </template>
     <template #cell(description)="data">
-      <span v-b-tooltip.hover :title="data.value">{{ truncate(data.value, 50) }}</span>
+      <span v-b-tooltip.hover :title="data.value">{{
+        truncate(data.value, 50)
+      }}</span>
     </template>
     <template #cell(assignedTo)="data">
       {{

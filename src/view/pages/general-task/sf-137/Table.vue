@@ -108,7 +108,7 @@ import "vue2-daterange-picker/dist/vue2-daterange-picker.css";
 
 export default {
   components: {
-    DateRangePicker,
+    DateRangePicker
   },
   data: () => ({
     title: "137 SF",
@@ -122,31 +122,31 @@ export default {
       status: null,
       dateRange: {
         startDate: startDate(),
-        endDate: getDate(),
-      },
+        endDate: getDate()
+      }
     },
     table: {
       isLoading: false,
       columns,
       rows: [],
       totalPage: 0,
-      totalRecords: 0,
+      totalRecords: 0
     },
     options: {
       dppu: [],
-      standardFormStatus,
-    },
+      standardFormStatus
+    }
   }),
   computed: {
-    ...mapGetters("personalize", ["multipleDppu", "dppu"]),
+    ...mapGetters("personalize", ["multipleDppu", "dppu"])
   },
   created() {
     const self = this;
     if (self.multipleDppu) {
-      getDppu().then((response) => {
-        self.options.dppu = response.data.map((x) => ({
+      getDppu().then(response => {
+        self.options.dppu = response.data.map(x => ({
           id: x.id,
-          label: x.name,
+          label: x.name
         }));
       });
     } else {
@@ -170,8 +170,8 @@ export default {
       self.$router.push({
         name: "sf137Update",
         params: {
-          id: items[0].id,
-        },
+          id: items[0].id
+        }
       });
     },
     onPageChange(params) {
@@ -185,7 +185,7 @@ export default {
     onSearch(params) {
       const self = this;
       self.updateParams({
-        keyword: params,
+        keyword: params
       });
       self.getAll();
     },
@@ -203,19 +203,19 @@ export default {
         dppuId: self.serverParams.dppuId,
         status: self.serverParams.status,
         startDate: self.serverParams.dateRange.startDate,
-        endDate: self.serverParams.dateRange.endDate,
+        endDate: self.serverParams.dateRange.endDate
       };
       self.table.isLoading = true;
       self.$store
         .dispatch("apis/get", {
           url: "/board/standard-form/137",
-          params: _serverParams,
+          params: _serverParams
         })
-        .then((response) => {
+        .then(response => {
           if (response.error) {
             self.$message.error({
               zIndex: 10000,
-              message: response.message,
+              message: response.message
             });
           } else {
             self.table.rows = response.data.data;
@@ -224,7 +224,7 @@ export default {
           }
           self.table.isLoading = false;
         });
-    },
-  },
+    }
+  }
 };
 </script>

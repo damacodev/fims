@@ -16,11 +16,17 @@
           >
         </template>
       </PlainText>
-      <PlainText label="Deadleg Drain Identity" :value="form.deadlegDrain.label" />
+      <PlainText
+        label="Deadleg Drain Identity"
+        :value="form.deadlegDrain.label"
+      />
       <PlainText label="Colour" :value="setOption(form.colour)" />
       <PlainText label="Cleanlines" :value="setOption(form.cleanlines)" />
       <PlainText label="Free Water" :value="setOption(form.freeWater)" />
-      <PlainText label="Water Detector" :value="setOption(form.waterDetector)" />
+      <PlainText
+        label="Water Detector"
+        :value="setOption(form.waterDetector)"
+      />
       <PlainText label="Remarks" :value="form.remarks" />
       <PlainText label="Requester" :value="form.updatedBy.label" />
       <PlainText label="Updated At" :value="dateTimeFormat(form.updatedAt)" />
@@ -55,7 +61,9 @@ export default {
     showRemarks: Boolean
   },
   methods: {
-    dateFormat, dateTimeFormat, setOption
+    dateFormat,
+    dateTimeFormat,
+    setOption
   }
 };
 </script>
