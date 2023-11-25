@@ -1260,6 +1260,59 @@ export const sf128 = [
   }
 ];
 
+export const sf137 = [
+  {
+    label: "DPPU",
+    key: "dppu.label",
+    thClass: "align-middle"
+  },
+  {
+    label: "Transaction #",
+    key: "transactionId",
+    thClass: "align-middle"
+  },
+  {
+    label: "Transaction Date",
+    key: "transactionDate",
+    thClass: "align-middle"
+  },
+  {
+    label: "Deadleg Drain Identity",
+    key: "deadlegDrain.label",
+    thClass: "align-middle"
+  },
+  {
+    label: "Colour",
+    key: "colour",
+    thClass: "align-middle"
+  },
+  {
+    label: "Cleanlines",
+    key: "cleanlines",
+    thClass: "align-middle"
+  },
+  {
+    label: "Free Water",
+    key: "freeWater",
+    thClass: "align-middle"
+  },
+  {
+    label: "Water Detector",
+    key: "waterDetector",
+    thClass: "align-middle"
+  },
+  {
+    label: "Remarks",
+    key: "remarks",
+    thClass: "align-middle"
+  },
+  {
+    label: "Status",
+    key: "currentProgress.status",
+    thClass: "align-middle"
+  }
+];
+
 export const sf139a = [
   {
     label: "DPPU",

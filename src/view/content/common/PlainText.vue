@@ -8,6 +8,8 @@
       <br />
       <span class="text-primary">{{ value }}</span>
     </span>
+    <span v-else-if="!hasValue" class="text-right" v-html="(value != null ? value : '-')">
+    </span>
     <span v-else class="text-right">
       {{ !hasValue ? (value != null ? value : "-") : "" }}
       <slot name="value" />

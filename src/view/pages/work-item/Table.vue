@@ -66,8 +66,11 @@
       />
     </template>
     <template #cell(title)="data">
-      {{ data.value }}
+      <span v-b-tooltip.hover :title="data.value">{{ truncate(data.value, 50) }}</span>
       <br /><small class="font-italic">{{ data.item.type.label }}</small>
+    </template>
+    <template #cell(description)="data">
+      <span v-b-tooltip.hover :title="data.value">{{ truncate(data.value, 50) }}</span>
     </template>
     <template #cell(assignedTo)="data">
       {{
@@ -106,7 +109,7 @@
 import { mapGetters } from "vuex";
 import { workItem as columns } from "@/core/datasource/columns";
 import { requestType, requestStatus } from "@/core/datasource/options";
-import { getDppu, dateTimeFormat } from "@/core/utils";
+import { getDppu, dateTimeFormat, truncate } from "@/core/utils";
 
 export default {
   data: () => ({
@@ -165,6 +168,7 @@ export default {
   },
   methods: {
     dateTimeFormat,
+    truncate,
     updateParams(newProps) {
       this.serverParams = Object.assign({}, this.serverParams, newProps);
     },

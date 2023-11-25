@@ -555,3 +555,9 @@ export function setLiter(params, precision = 0) {
 export function setKompartemen(params) {
   return `${params} Kompartemen`;
 }
+
+export function setOption(params) {
+  if (params == null || typeof params == "string") return "-";
+  else
+  return `<strong>${params.value}</strong> - ${params.label}`;
+}
