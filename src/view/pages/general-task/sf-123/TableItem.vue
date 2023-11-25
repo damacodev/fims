@@ -62,9 +62,10 @@
               v-else
               v-for="(row, index) in row.everyDay.recoveryTank.colourIds"
             >
-              <span v-bind:key="index"
-                >{{ `${row.value} - ${row.label}` }}<br
-              /></span>
+              <fragment v-bind:key="index">
+                <span v-html="setOption(row)"></span>
+                <br />
+              </fragment>
             </template>
           </td>
           <td class="text-left">
@@ -73,9 +74,10 @@
               v-else
               v-for="(row, index) in row.everyDay.recoveryTank.cleanlinesIds"
             >
-              <span v-bind:key="index"
-                >{{ `${row.value} - ${row.label}` }}<br
-              /></span>
+              <fragment v-bind:key="index">
+                <span v-html="setOption(row)"></span>
+                <br />
+              </fragment>
             </template>
           </td>
           <td class="text-left">
@@ -84,9 +86,10 @@
               v-else
               v-for="(row, index) in row.everyDay.recoveryTank.freeWaterIds"
             >
-              <span v-bind:key="index"
-                >{{ `${row.value} - ${row.label}` }}<br
-              /></span>
+              <fragment v-bind:key="index">
+                <span v-html="setOption(row)"></span>
+                <br />
+              </fragment>
             </template>
           </td>
           <td class="text-left">
@@ -95,9 +98,10 @@
               v-else
               v-for="(row, index) in row.everyDay.recoveryTank.waterDetectorIds"
             >
-              <span v-bind:key="index"
-                >{{ `${row.value} - ${row.label}` }}<br
-              /></span>
+              <fragment v-bind:key="index">
+                <span v-html="setOption(row)"></span>
+                <br />
+              </fragment>
             </template>
           </td>
 
@@ -107,9 +111,10 @@
               v-else
               v-for="(row, index) in row.everyDay.pipeSystem.colourIds"
             >
-              <span v-bind:key="index"
-                >{{ `${row.value} - ${row.label}` }}<br
-              /></span>
+              <fragment v-bind:key="index">
+                <span v-html="setOption(row)"></span>
+                <br />
+              </fragment>
             </template>
           </td>
           <td class="text-left">
@@ -118,9 +123,10 @@
               v-else
               v-for="(row, index) in row.everyDay.pipeSystem.cleanlinesIds"
             >
-              <span v-bind:key="index"
-                >{{ `${row.value} - ${row.label}` }}<br
-              /></span>
+              <fragment v-bind:key="index">
+                <span v-html="setOption(row)"></span>
+                <br />
+              </fragment>
             </template>
           </td>
           <td class="text-left">
@@ -129,9 +135,10 @@
               v-else
               v-for="(row, index) in row.everyDay.pipeSystem.freeWaterIds"
             >
-              <span v-bind:key="index"
-                >{{ `${row.value} - ${row.label}` }}<br
-              /></span>
+              <fragment v-bind:key="index">
+                <span v-html="setOption(row)"></span>
+                <br />
+              </fragment>
             </template>
           </td>
           <td class="text-left">
@@ -140,9 +147,10 @@
               v-else
               v-for="(row, index) in row.everyDay.pipeSystem.waterDetectorIds"
             >
-              <span v-bind:key="index"
-                >{{ `${row.value} - ${row.label}` }}<br
-              /></span>
+              <fragment v-bind:key="index">
+                <span v-html="setOption(row)"></span>
+                <br />
+              </fragment>
             </template>
           </td>
 
@@ -152,9 +160,10 @@
               v-else
               v-for="(row, index) in row.everyDay.beforeFilter.colourIds"
             >
-              <span v-bind:key="index"
-                >{{ `${row.value} - ${row.label}` }}<br
-              /></span>
+              <fragment v-bind:key="index">
+                <span v-html="setOption(row)"></span>
+                <br />
+              </fragment>
             </template>
           </td>
           <td class="text-left">
@@ -163,9 +172,10 @@
               v-else
               v-for="(row, index) in row.everyDay.beforeFilter.cleanlinesIds"
             >
-              <span v-bind:key="index"
-                >{{ `${row.value} - ${row.label}` }}<br
-              /></span>
+              <fragment v-bind:key="index">
+                <span v-html="setOption(row)"></span>
+                <br />
+              </fragment>
             </template>
           </td>
           <td class="text-left">
@@ -174,9 +184,10 @@
               v-else
               v-for="(row, index) in row.everyDay.beforeFilter.freeWaterIds"
             >
-              <span v-bind:key="index"
-                >{{ `${row.value} - ${row.label}` }}<br
-              /></span>
+              <fragment v-bind:key="index">
+                <span v-html="setOption(row)"></span>
+                <br />
+              </fragment>
             </template>
           </td>
           <td class="text-left">
@@ -185,9 +196,10 @@
               v-else
               v-for="(row, index) in row.everyDay.beforeFilter.waterDetectorIds"
             >
-              <span v-bind:key="index"
-                >{{ `${row.value} - ${row.label}` }}<br
-              /></span>
+              <fragment v-bind:key="index">
+                <span v-html="setOption(row)"></span>
+                <br />
+              </fragment>
             </template>
           </td>
 
@@ -197,9 +209,10 @@
               v-else
               v-for="(row, index) in row.everyDay.afterFilter.colourIds"
             >
-              <span v-bind:key="index"
-                >{{ `${row.value} - ${row.label}` }}<br
-              /></span>
+              <fragment v-bind:key="index">
+                <span v-html="setOption(row)"></span>
+                <br />
+              </fragment>
             </template>
           </td>
           <td class="text-left">
@@ -208,9 +221,10 @@
               v-else
               v-for="(row, index) in row.everyDay.afterFilter.cleanlinesIds"
             >
-              <span v-bind:key="index"
-                >{{ `${row.value} - ${row.label}` }}<br
-              /></span>
+              <fragment v-bind:key="index">
+                <span v-html="setOption(row)"></span>
+                <br />
+              </fragment>
             </template>
           </td>
           <td class="text-left">
@@ -219,9 +233,10 @@
               v-else
               v-for="(row, index) in row.everyDay.afterFilter.freeWaterIds"
             >
-              <span v-bind:key="index"
-                >{{ `${row.value} - ${row.label}` }}<br
-              /></span>
+              <fragment v-bind:key="index">
+                <span v-html="setOption(row)"></span>
+                <br />
+              </fragment>
             </template>
           </td>
           <td class="text-left">
@@ -230,9 +245,10 @@
               v-else
               v-for="(row, index) in row.everyDay.afterFilter.waterDetectorIds"
             >
-              <span v-bind:key="index"
-                >{{ `${row.value} - ${row.label}` }}<br
-              /></span>
+              <fragment v-bind:key="index">
+                <span v-html="setOption(row)"></span>
+                <br />
+              </fragment>
             </template>
           </td>
           <!-- END EVERYDAY -->
@@ -244,9 +260,10 @@
               v-else
               v-for="(row, index) in row.afterWash.recoveryTank.colourIds"
             >
-              <span v-bind:key="index"
-                >{{ `${row.value} - ${row.label}` }}<br
-              /></span>
+              <fragment v-bind:key="index">
+                <span v-html="setOption(row)"></span>
+                <br />
+              </fragment>
             </template>
           </td>
           <td class="text-left">
@@ -255,9 +272,10 @@
               v-else
               v-for="(row, index) in row.afterWash.recoveryTank.cleanlinesIds"
             >
-              <span v-bind:key="index"
-                >{{ `${row.value} - ${row.label}` }}<br
-              /></span>
+              <fragment v-bind:key="index">
+                <span v-html="setOption(row)"></span>
+                <br />
+              </fragment>
             </template>
           </td>
           <td class="text-left">
@@ -266,9 +284,10 @@
               v-else
               v-for="(row, index) in row.afterWash.recoveryTank.freeWaterIds"
             >
-              <span v-bind:key="index"
-                >{{ `${row.value} - ${row.label}` }}<br
-              /></span>
+              <fragment v-bind:key="index">
+                <span v-html="setOption(row)"></span>
+                <br />
+              </fragment>
             </template>
           </td>
           <td class="text-left">
@@ -278,9 +297,10 @@
               v-for="(row, index) in row.afterWash.recoveryTank
                 .waterDetectorIds"
             >
-              <span v-bind:key="index"
-                >{{ `${row.value} - ${row.label}` }}<br
-              /></span>
+              <fragment v-bind:key="index">
+                <span v-html="setOption(row)"></span>
+                <br />
+              </fragment>
             </template>
           </td>
           <!-- END AFTER WASH -->
@@ -292,9 +312,10 @@
               v-else
               v-for="(row, index) in row.afterHeavyRain.recoveryTank.colourIds"
             >
-              <span v-bind:key="index"
-                >{{ `${row.value} - ${row.label}` }}<br
-              /></span>
+              <fragment v-bind:key="index">
+                <span v-html="setOption(row)"></span>
+                <br />
+              </fragment>
             </template>
           </td>
           <td class="text-left">
@@ -304,9 +325,10 @@
               v-for="(row, index) in row.afterHeavyRain.recoveryTank
                 .cleanlinesIds"
             >
-              <span v-bind:key="index"
-                >{{ `${row.value} - ${row.label}` }}<br
-              /></span>
+              <fragment v-bind:key="index">
+                <span v-html="setOption(row)"></span>
+                <br />
+              </fragment>
             </template>
           </td>
           <td class="text-left">
@@ -316,9 +338,10 @@
               v-for="(row, index) in row.afterHeavyRain.recoveryTank
                 .freeWaterIds"
             >
-              <span v-bind:key="index"
-                >{{ `${row.value} - ${row.label}` }}<br
-              /></span>
+              <fragment v-bind:key="index">
+                <span v-html="setOption(row)"></span>
+                <br />
+              </fragment>
             </template>
           </td>
           <td class="text-left">
@@ -328,9 +351,10 @@
               v-for="(row, index) in row.afterHeavyRain.recoveryTank
                 .waterDetectorIds"
             >
-              <span v-bind:key="index"
-                >{{ `${row.value} - ${row.label}` }}<br
-              /></span>
+              <fragment v-bind:key="index">
+                <span v-html="setOption(row)"></span>
+                <br />
+              </fragment>
             </template>
           </td>
           <!-- END AFTER HEAVY RAIN -->
@@ -341,6 +365,7 @@
 </template>
 
 <script>
+import { setOption } from "@/core/utils";
 export default {
   props: {
     transactionDate: String,
@@ -348,6 +373,7 @@ export default {
     buttonVisibility: Boolean
   },
   methods: {
+    setOption,
     onRowSelected(params) {
       this.$emit("onRowSelected", params);
     },

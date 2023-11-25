@@ -44,9 +44,10 @@
             <template v-else>
               <span v-if="row.resultBeforeIds.length == 0">-</span>
               <template v-else v-for="(row, index) in row.resultBeforeIds">
-                <span v-bind:key="index"
-                  >{{ `${row.value} - ${row.label}` }}<br
-                /></span>
+                <fragment v-bind:key="index">
+                  <span v-html="setOption(row)"></span>
+                  <br />
+                </fragment>
               </template>
             </template>
           </td>
@@ -63,9 +64,10 @@
             <template v-else>
               <span v-if="row.resultAfterIds.length == 0">-</span>
               <template v-else v-for="(row, index) in row.resultAfterIds">
-                <span v-bind:key="index"
-                  >{{ `${row.value} - ${row.label}` }}<br
-                /></span>
+                <fragment v-bind:key="index">
+                  <span v-html="setOption(row)"></span>
+                  <br />
+                </fragment>
               </template>
             </template>
           </td>
@@ -90,7 +92,7 @@
 <script>
 import { Money } from "v-money";
 import { getAppearance } from "@/core/utils";
-import { setVolume } from "@/core/utils";
+import { setVolume, setOption } from "@/core/utils";
 
 export default {
   components: {
@@ -121,6 +123,7 @@ export default {
   },
   methods: {
     setVolume,
+    setOption,
     handleSubmit(row) {
       const self = this;
 

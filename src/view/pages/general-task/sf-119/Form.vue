@@ -141,7 +141,7 @@ export default {
       form: "sf119Create",
       table: "sf119"
     },
-    form: {
+    /* form: {
       dppu: {
         id: null,
         label: null
@@ -568,8 +568,8 @@ export default {
       sendApproval: false,
       updatedBy: null,
       updatedAt: null
-    },
-    /* form: {
+    }, */
+    form: {
       dppu: {
         id: null,
         label: null
@@ -992,7 +992,7 @@ export default {
       sendApproval: false,
       updatedBy: null,
       updatedAt: null
-    }, */
+    },
     currentProgress: {
       locked: null,
       status: null,

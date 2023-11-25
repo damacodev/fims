@@ -72,9 +72,10 @@
           <td class="text-right">{{ setVolume(row.jumlahTransfer, "KL") }}</td>
           <td class="text-left">
             <template v-for="(row, index) in row.visualCheckIds">
-              <span v-bind:key="index"
-                >{{ `${row.value} - ${row.label}` }}<br
-              /></span>
+              <fragment v-bind:key="index">
+                <span v-html="setOption(row)"></span>
+                <br />
+              </fragment>
             </template>
           </td>
           <td>{{ row.remarks }}</td>
@@ -93,7 +94,8 @@ import {
   setTemperature,
   setConductivity,
   setPsi,
-  setFlowRate
+  setFlowRate,
+  setOption
 } from "@/core/utils";
 
 export default {
@@ -109,6 +111,7 @@ export default {
     setConductivity,
     setPsi,
     setFlowRate,
+    setOption,
     onRowSelected(params) {
       this.$emit("onRowSelected", params);
     }
