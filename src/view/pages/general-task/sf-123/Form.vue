@@ -14,6 +14,13 @@
       </div>
       <div class="card-toolbar">
         <b-button
+          v-show="currentProgress.locked"
+          variant="outline-primary"
+          @click="handleExport"
+        >
+          Export to Excel
+        </b-button>
+        <b-button
           v-show="$route.name != route.form && !currentProgress.locked"
           variant="outline-primary"
           size="lg"
@@ -91,7 +98,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-import FormHeader from "../common/FormHeader.vue";
+import FormHeader from "./FormHeader.vue";
 import TableItem from "./TableItem.vue";
 import { required, maxLength } from "vuelidate/lib/validators";
 import {
@@ -323,6 +330,40 @@ export default {
                 });
 
                 self.$router.go(-1);
+              }
+            })
+            .finally(() => dialog.close());
+        });
+    },
+    handleExport() {
+      const self = this;
+
+      self.$dialog
+        .confirm("You are about to export this transaction. Are you sure ?", {
+          okText: "Yes, Export",
+          cancelText: "Cancel",
+          loader: true
+        })
+        .then(dialog => {
+          self.$store
+            .dispatch("apis/download", {
+              url: `/board/export/standard-form/123/${self.$route.params.id}`
+            })
+            .then(response => {
+              if (response.error) {
+                self.$message.error({
+                  zIndex: 10000,
+                  message: response.message
+                });
+              } else {
+                let fileURL = window.URL.createObjectURL(new Blob([response])),
+                  fileLink = document.createElement("a");
+
+                fileLink.href = fileURL;
+                fileLink.setAttribute("download", "123.xlsx");
+                document.body.appendChild(fileLink);
+
+                fileLink.click();
               }
             })
             .finally(() => dialog.close());

@@ -1,78 +1,107 @@
 <template>
-  <CardTable
-    :backButton="true"
-    :title="title"
-    :subTitle="subTitle"
-    :searchText="searchText"
-    :columns="table.columns"
-    :rows="table.rows"
-    :isLoading="table.isLoading"
-    :pageSize="serverParams.pageSize"
-    :pageNumber="serverParams.pageNumber"
-    :totalPage="table.totalPage"
-    :totalRecords="table.totalRecords"
-    @onRowSelected="onRowSelected"
-    @onPerPageChange="onPerPageChange"
-    @onPageChange="onPageChange"
-    @onSearch="onSearch"
-  >
-    <template #search>
-      <div class="ml-2 mr-2 mb-2">
-        <date-range-picker
-          v-model="serverParams.dateRange"
-          style="width: 100%; cursor: pointer"
-          opens="center"
-          :locale-data="{ format: 'dd/mm/yyyy', separator: ' to ' }"
-          control-container-class="form-control"
-          @update="onFilter"
-        />
-      </div>
-    </template>
-    <template #filter>
-      <b-row class="p-3">
-        <b-col xl="4">
-          <treeselect
-            class="mb-2"
-            placeholder="Select DPPU"
-            v-model="serverParams.dppuId"
-            :options="options.dppu"
-            @input="onFilter"
-          ></treeselect>
-        </b-col>
-        <b-col xl="4">
-          <b-form-input
-            placeholder="Transaction #"
-            autocomplete="off"
-            v-model="serverParams.keyword"
-            @change="onFilter"
-          ></b-form-input>
-        </b-col>
-        <b-col xl="4">
-          <treeselect
-            class="mb-2"
-            placeholder="Select request status"
-            v-model="serverParams.status"
-            :options="options.standardFormStatus"
-            :normalizer="normalizer"
-            :multiple="true"
-            @input="onFilter"
+  <fragment>
+    <CardTable
+      :backButton="true"
+      :title="title"
+      :subTitle="subTitle"
+      :searchText="searchText"
+      :columns="table.columns"
+      :rows="table.rows"
+      :isLoading="table.isLoading"
+      :pageSize="serverParams.pageSize"
+      :pageNumber="serverParams.pageNumber"
+      :totalPage="table.totalPage"
+      :totalRecords="table.totalRecords"
+      @onRowSelected="onRowSelected"
+      @onPerPageChange="onPerPageChange"
+      @onPageChange="onPageChange"
+      @onSearch="onSearch"
+    >
+      <template #toolbar>
+        <b-button
+          variant="outline-primary"
+          class="mr-2"
+          @click="openModalExport"
+        >
+          Export to Excel
+        </b-button>
+        <b-button variant="primary" :to="{ name: 'sf112Create' }">
+          Create New Transaction
+        </b-button>
+      </template>
+      <template #search>
+        <div class="ml-2 mr-2 mb-2">
+          <date-range-picker
+            v-model="serverParams.dateRange"
+            style="width: 100%; cursor: pointer"
+            opens="center"
+            :locale-data="{ format: 'dd/mm/yyyy', separator: ' to ' }"
+            control-container-class="form-control"
+            @update="onFilter"
           />
-        </b-col>
-      </b-row>
-    </template>
-    <template #empty>
-      <EmptyTable
-        :title="`${subTitle} are managed from here`"
-        :description="`All ${subTitle} will be displayed on this page`"
+        </div>
+      </template>
+      <template #filter>
+        <b-row class="p-3">
+          <b-col xl="4">
+            <treeselect
+              class="mb-2"
+              placeholder="Select DPPU"
+              v-model="serverParams.dppuId"
+              :options="options.dppu"
+              @input="onFilter"
+            ></treeselect>
+          </b-col>
+          <b-col xl="4">
+            <b-form-input
+              placeholder="Transaction #"
+              autocomplete="off"
+              v-model="serverParams.keyword"
+              @change="onFilter"
+            ></b-form-input>
+          </b-col>
+          <b-col xl="4">
+            <treeselect
+              class="mb-2"
+              placeholder="Select request status"
+              v-model="serverParams.status"
+              :options="options.standardFormStatus"
+              :normalizer="normalizer"
+              :multiple="true"
+              @input="onFilter"
+            />
+          </b-col>
+        </b-row>
+      </template>
+      <template #empty>
+        <EmptyTable
+          :title="`${subTitle} are managed from here`"
+          :description="`All ${subTitle} will be displayed on this page`"
+        />
+      </template>
+      <template #cell(transactionDate)="data">
+        {{ dateFormat(data.value) }}</template
+      >
+      <template #cell(transactionRecords)="data">
+        {{ data.item.details.length }} Records</template
+      >
+    </CardTable>
+    <b-modal
+      v-model="modalForm.export"
+      title="Export to Excel"
+      ok-title="Export"
+      :no-close-on-backdrop="true"
+      :no-close-on-esc="true"
+      @ok="handleExport"
+    >
+      <InputText
+        label="Period"
+        type="month"
+        v-model="modalForm.period"
+        :useHorizontal="false"
       />
-    </template>
-    <template #cell(transactionDate)="data">
-      {{ dateFormat(data.value) }}</template
-    >
-    <template #cell(transactionRecords)="data">
-      {{ data.item.details.length }} Records</template
-    >
-  </CardTable>
+    </b-modal>
+  </fragment>
 </template>
 
 <script>
@@ -119,6 +148,10 @@ export default {
     options: {
       dppu: [],
       standardFormStatus
+    },
+    modalForm: {
+      export: false,
+      period: null
     }
   }),
   computed: {
@@ -205,6 +238,58 @@ export default {
             self.table.totalRecords = response.data.totalData;
           }
           self.table.isLoading = false;
+        });
+    },
+    openModalExport() {
+      const self = this;
+      self.modalForm.export = true;
+      self.modalForm.period = dateFormat(
+        self.serverParams.dateRange.startDate,
+        "yyyy-MM"
+      );
+    },
+    handleExport(event) {
+      event.preventDefault();
+      const self = this;
+
+      self.$dialog
+        .confirm("You are about to export this transaction. Are you sure ?", {
+          okText: "Yes, Export",
+          cancelText: "Cancel",
+          loader: true
+        })
+        .then(dialog => {
+          self.$store
+            .dispatch("apis/download", {
+              url: `/board/export/standard-form/112?dppuId=${
+                self.serverParams.dppuId
+              }&year=${self.modalForm.period.substr(
+                0,
+                4
+              )}&month=${self.modalForm.period.substr(5, 2)}`
+            })
+            .then(response => {
+              if (response.error) {
+                self.$message.error({
+                  zIndex: 10000,
+                  message: response.message
+                });
+              } else {
+                let fileURL = window.URL.createObjectURL(new Blob([response])),
+                  fileLink = document.createElement("a");
+
+                fileLink.href = fileURL;
+                fileLink.setAttribute("download", "112.xlsx");
+                document.body.appendChild(fileLink);
+
+                fileLink.click();
+              }
+            })
+            .finally(() => {
+              self.modalForm.export = false;
+              self.modalForm.period = null;
+              dialog.close();
+            });
         });
     }
   }
