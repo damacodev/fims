@@ -15,11 +15,13 @@
         </div>
         <div class="card-toolbar">
           <b-button
-            v-show="currentProgress.locked"
+            v-show="
+              currentProgress.locked && currentProgress.status == 'Approved'
+            "
             variant="outline-primary"
-            @click="handleDownload"
+            @click="handleExport"
           >
-            Download
+            Export to Excel
           </b-button>
           <b-button
             v-show="$route.name != route.form && !currentProgress.locked"
@@ -471,7 +473,9 @@ export default {
           } else {
             self.options.cro = response.data.data.map(x => ({
               id: x.id,
-              label: x.fullName
+              label: isNullOrEmpty(x.internalCode)
+                ? x.fullName
+                : `${x.internalCode} - ${x.fullName}`
             }));
           }
         });
@@ -789,29 +793,38 @@ export default {
             .finally(() => dialog.close());
         });
     },
-    handleDownload() {
+    handleExport() {
       const self = this;
 
-      self.$store
-        .dispatch("apis/download", {
-          url: `/board/standard-form/120/export/${self.$route.params.id}`
+      self.$dialog
+        .confirm("You are about to export this transaction. Are you sure ?", {
+          okText: "Yes, Export",
+          cancelText: "Cancel",
+          loader: true
         })
-        .then(response => {
-          if (response.error) {
-            self.$message.error({
-              zIndex: 10000,
-              message: response.message
-            });
-          } else {
-            let fileURL = window.URL.createObjectURL(new Blob([response])),
-              fileLink = document.createElement("a");
+        .then(dialog => {
+          self.$store
+            .dispatch("apis/download", {
+              url: `/board/export/standard-form/120/${self.$route.params.id}`
+            })
+            .then(response => {
+              if (response.error) {
+                self.$message.error({
+                  zIndex: 10000,
+                  message: response.message
+                });
+              } else {
+                let fileURL = window.URL.createObjectURL(new Blob([response])),
+                  fileLink = document.createElement("a");
 
-            fileLink.href = fileURL;
-            fileLink.setAttribute("download", "120 SF.xlsx");
-            document.body.appendChild(fileLink);
+                fileLink.href = fileURL;
+                fileLink.setAttribute("download", "120.xlsx");
+                document.body.appendChild(fileLink);
 
-            fileLink.click();
-          }
+                fileLink.click();
+              }
+            })
+            .finally(() => dialog.close());
         });
     },
     handleSaveRecord(event) {

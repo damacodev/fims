@@ -49,6 +49,11 @@
             :options="role"
             :multiple="false"
           />
+          <InputText
+            label="Internal Code"
+            description="Can be used for CRO Code"
+            v-model="form.internalCode"
+          />
           <RadioGroup
             v-if="$route.name != route.form"
             v-model="form.actived"
@@ -80,6 +85,7 @@ export default {
       email: "",
       phone: "",
       role: null,
+      internalCode: null,
       actived: true,
       plant: []
     },
@@ -172,6 +178,7 @@ export default {
               email: response.data.email,
               phone: response.data.phone,
               role: response.data.role.id,
+              internalCode: response.data.internalCode,
               actived: response.data.actived,
               plant: response.data.dppu.map(x => x.id)
             };
@@ -201,6 +208,7 @@ export default {
               }
             : "",
         role: self.form.role,
+        internalCode: self.form.internalCode,
         actived: self.form.actived,
         dppu: self.form.plant
       };

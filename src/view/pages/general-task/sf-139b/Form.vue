@@ -23,9 +23,9 @@
               <b-button
                 v-show="currentProgress.locked"
                 variant="outline-primary"
-                @click="handleDownload"
+                @click="handleExport"
               >
-                Download
+                Export to Excel
               </b-button>
               <b-button
                 v-show="$route.name != route.form && !currentProgress.locked"
@@ -167,7 +167,6 @@
                       :useHorizontal="false"
                       :usePrefix="false"
                       append="Liter"
-                      disabled
                     />
                   </b-col>
                   <b-col lg="3">
@@ -515,7 +514,6 @@ export default {
       self.form.nomorPolisi = null;
       self.form.jumlahKompartemen = null;
       self.form.masaBerlakuTeraTangki = null;
-      self.form.volume = null;
 
       let bridger = self.options.equipment.find(
         x => x.id == self.form.bridgerId
@@ -524,7 +522,6 @@ export default {
       self.form.jumlahKompartemen = bridger.detail.detail.jumlahKompartemen;
       self.form.masaBerlakuTeraTangki =
         bridger.detail.detail.masaBerlakuTeraTangki;
-      self.form.volume = bridger.detail.detail.volume;
 
       for (let index = 0; index < self.form.jumlahKompartemen; index++) {
         self.form.details[index].teraMetrologi =
@@ -712,6 +709,7 @@ export default {
         supplyPoint: self.form.supplyPoint,
         bridgerId: self.form.bridgerId,
         namaPengemudi: self.form.namaPengemudi,
+        volume: self.form.volume,
         harga: self.form.harga,
         bottomLoaderCover: self.form.bottomLoaderCover,
         kondisiKompartemen: self.form.kondisiKompartemen,
@@ -835,6 +833,7 @@ export default {
             supplyPoint: self.form.supplyPoint,
             bridgerId: self.form.bridgerId,
             namaPengemudi: self.form.namaPengemudi,
+            volume: self.form.volume,
             harga: self.form.harga,
             bottomLoaderCover: self.form.bottomLoaderCover,
             kondisiKompartemen: self.form.kondisiKompartemen,
@@ -874,31 +873,6 @@ export default {
             .finally(() => dialog.close());
         });
     },
-    handleDownload() {
-      const self = this;
-
-      self.$store
-        .dispatch("apis/download", {
-          url: `/board/standard-form/139b/export/${self.$route.params.id}`
-        })
-        .then(response => {
-          if (response.error) {
-            self.$message.error({
-              zIndex: 10000,
-              message: response.message
-            });
-          } else {
-            let fileURL = window.URL.createObjectURL(new Blob([response])),
-              fileLink = document.createElement("a");
-
-            fileLink.href = fileURL;
-            fileLink.setAttribute("download", "139B SF.xlsx");
-            document.body.appendChild(fileLink);
-
-            fileLink.click();
-          }
-        });
-    },
     handleUpdateCache() {
       const self = this;
 
@@ -908,6 +882,40 @@ export default {
       });
 
       self.calculateKlaim();
+    },
+    handleExport() {
+      const self = this;
+
+      self.$dialog
+        .confirm("You are about to export this transaction. Are you sure ?", {
+          okText: "Yes, Export",
+          cancelText: "Cancel",
+          loader: true
+        })
+        .then(dialog => {
+          self.$store
+            .dispatch("apis/download", {
+              url: `/board/export/standard-form/139b/${self.$route.params.id}`
+            })
+            .then(response => {
+              if (response.error) {
+                self.$message.error({
+                  zIndex: 10000,
+                  message: response.message
+                });
+              } else {
+                let fileURL = window.URL.createObjectURL(new Blob([response])),
+                  fileLink = document.createElement("a");
+
+                fileLink.href = fileURL;
+                fileLink.setAttribute("download", "139B.xlsx");
+                document.body.appendChild(fileLink);
+
+                fileLink.click();
+              }
+            })
+            .finally(() => dialog.close());
+        });
     }
   }
 };

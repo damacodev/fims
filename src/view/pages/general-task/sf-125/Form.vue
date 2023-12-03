@@ -14,7 +14,9 @@
       </div>
       <div class="card-toolbar">
         <b-button
-          v-show="currentProgress.locked"
+          v-show="
+            currentProgress.locked && currentProgress.status == 'Approved'
+          "
           variant="outline-primary"
           @click="handleExport"
         >
