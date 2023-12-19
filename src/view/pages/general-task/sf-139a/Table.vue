@@ -17,7 +17,7 @@
     @onSearch="onSearch"
   >
     <template #toolbar>
-      <b-button variant="primary" :to="{ name: 'sf139aCreate' }" class="mr-2">
+      <b-button variant="primary" :to="{ name: 'sf139aCreate' }">
         Create New Transaction
       </b-button>
     </template>
@@ -119,7 +119,7 @@ export default {
     DateRangePicker
   },
   data: () => ({
-    title: "139B SF",
+    title: "139A SF",
     subTitle: "Formulir Pemeriksaan Bridger Masuk Keluar Lokasi Supply Point",
     searchText: "Search by transaction #",
     serverParams: {

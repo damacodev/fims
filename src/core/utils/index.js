@@ -462,6 +462,20 @@ export async function getRefuelingProgram() {
   return result;
 }
 
+export async function getInspection() {
+  let result = [];
+
+  await store
+    .dispatch("apis/get", {
+      url: "/common/inspection"
+    })
+    .then(response => {
+      result = response.data;
+    });
+
+  return result;
+}
+
 // export function groupBy(list, keyGetter) {
 //   const map = new Map();
 //   list.forEach((item) => {

@@ -1429,6 +1429,64 @@ export const sf139b = [
   }
 ];
 
+export const sf205 = [
+  {
+    label: "DPPU",
+    key: "dppu.label",
+    thClass: "align-middle"
+  },
+  {
+    label: "Transaction #",
+    key: "transactionId",
+    thClass: "align-middle"
+  },
+  {
+    label: "Date of Inspection",
+    key: "transactionDate",
+    thClass: "align-middle"
+  },
+  {
+    label: "Equipment Code",
+    key: "equipment.label",
+    thClass: "align-middle"
+  },
+  {
+    label: "Reel Front",
+    key: "reel.front",
+    thClass: "align-middle"
+  },
+  {
+    label: "Reel Rear",
+    key: "reel.rear",
+    thClass: "align-middle"
+  },
+  {
+    label: "Deck Left",
+    key: "deck.left",
+    thClass: "align-middle"
+  },
+  {
+    label: "Deck Right",
+    key: "deck.right",
+    thClass: "align-middle"
+  },
+  {
+    label: "Overwing Nozzle",
+    key: "overwingNozzle",
+    thClass: "align-middle"
+  },
+  {
+    label: "Remarks",
+    key: "remarks",
+    thClass: "align-middle"
+  },
+  {
+    label: "Status",
+    key: "currentProgress.status",
+    thClass: "align-middle"
+  }
+];
+
 export const sfCommon = [
   {
     label: "DPPU",

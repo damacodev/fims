@@ -17,7 +17,7 @@
     @onSearch="onSearch"
   >
     <template #toolbar>
-      <b-button variant="primary" :to="{ name: 'sf127Create' }" class="mr-2">
+      <b-button variant="primary" :to="{ name: 'sf127Create' }">
         Create New Transaction
       </b-button>
     </template>
