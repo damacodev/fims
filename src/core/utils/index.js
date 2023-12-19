@@ -476,6 +476,20 @@ export async function getInspection() {
   return result;
 }
 
+export async function getPdgEwsTest() {
+  let result = [];
+
+  await store
+    .dispatch("apis/get", {
+      url: "/common/pdg-ews-test"
+    })
+    .then(response => {
+      result = response.data;
+    });
+
+  return result;
+}
+
 // export function groupBy(list, keyGetter) {
 //   const map = new Map();
 //   list.forEach((item) => {

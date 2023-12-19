@@ -1487,6 +1487,74 @@ export const sf205 = [
   }
 ];
 
+export const sf207 = [
+  {
+    label: "DPPU",
+    key: "dppu.label",
+    thClass: "align-middle"
+  },
+  {
+    label: "Transaction #",
+    key: "transactionId",
+    thClass: "align-middle"
+  },
+  {
+    label: "Test Date",
+    key: "transactionDate",
+    thClass: "align-middle"
+  },
+  {
+    label: "Equipment Code",
+    key: "equipment.label",
+    thClass: "align-middle"
+  },
+  {
+    label: "Zero Condition (Visually)",
+    key: "pdgPistonMovement.zeroCondition",
+    thClass: "align-middle"
+  },
+  {
+    label: "Free Movement of Piston",
+    key: "pdgPistonMovement.freeMovementOfPiston",
+    thClass: "align-middle"
+  },
+  {
+    label: "Warning",
+    key: "dpSwitchActivation.warning",
+    thClass: "align-middle"
+  },
+  {
+    label: "Fuel Stop @ 15 psi",
+    key: "dpSwitchActivation.fuelStop",
+    thClass: "align-middle"
+  },
+  {
+    label: "F1",
+    key: "ewsLoop.f1",
+    thClass: "align-middle"
+  },
+  {
+    label: "F2",
+    key: "ewsLoop.f2",
+    thClass: "align-middle"
+  },
+  {
+    label: "F3",
+    key: "ewsLoop.f3",
+    thClass: "align-middle"
+  },
+  {
+    label: "Remarks",
+    key: "remarks",
+    thClass: "align-middle"
+  },
+  {
+    label: "Status",
+    key: "currentProgress.status",
+    thClass: "align-middle"
+  }
+];
+
 export const sfCommon = [
   {
     label: "DPPU",

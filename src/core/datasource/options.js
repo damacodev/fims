@@ -257,3 +257,8 @@ export const dryCheck = [
   { value: "Kering", text: "Kering" },
   { value: "Belum Kering", text: "Belum Kering" }
 ];
+
+export const buzzerLight = [
+  { value: "Buzzer", text: "Buzzer" },
+  { value: "Light", text: "Light" }
+];
