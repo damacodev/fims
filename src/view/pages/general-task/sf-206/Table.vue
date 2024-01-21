@@ -18,14 +18,7 @@
       @onSearch="onSearch"
     >
       <template #toolbar>
-        <b-button
-          variant="outline-primary"
-          @click="openModalExport"
-          class="mr-2"
-        >
-          Export to Excel
-        </b-button>
-        <b-button variant="primary" :to="{ name: 'sf207Create' }">
+        <b-button variant="primary" :to="{ name: 'sf206Create' }">
           Create New Transaction
         </b-button>
       </template>
@@ -41,18 +34,9 @@
           />
         </div>
       </template>
-      <template #thead-top="data">
-        <b-tr>
-          <b-th colspan="4"></b-th>
-          <b-th colspan="2" class="text-center">PDG Piston Movement</b-th>
-          <b-th colspan="2" class="text-center">dP Switch Activation</b-th>
-          <b-th colspan="3" class="text-center">EWS Loop / Function Test</b-th>
-          <b-th colspan="2"></b-th>
-        </b-tr>
-      </template>
       <template #filter>
         <b-row class="p-3">
-          <b-col xl="3">
+          <b-col xl="4">
             <treeselect
               class="mb-2"
               placeholder="Select DPPU"
@@ -61,7 +45,7 @@
               @input="onFilter"
             ></treeselect>
           </b-col>
-          <b-col xl="3">
+          <b-col xl="4">
             <b-form-input
               placeholder="Transaction #"
               autocomplete="off"
@@ -69,17 +53,7 @@
               @change="onFilter"
             ></b-form-input>
           </b-col>
-          <b-col xl="3">
-            <treeselect
-              class="mb-2"
-              placeholder="Equipment"
-              v-model="serverParams.equipmentId"
-              :async="true"
-              :loadOptions="getEquipmentByCategory"
-              @input="onFilter"
-            ></treeselect>
-          </b-col>
-          <b-col xl="3">
+          <b-col xl="4">
             <treeselect
               class="mb-2"
               placeholder="Select request status"
@@ -99,29 +73,11 @@
         />
       </template>
       <template #cell(transactionDate)="data">
-        {{ dateFormat(data.value) }}
-      </template>
-      <template #cell(pdgPistonMovement.zeroCondition)="data">
-        <span v-html="setOption(data.value)"></span>
-      </template>
-      <template #cell(pdgPistonMovement.freeMovementOfPiston)="data">
-        <span v-html="setOption(data.value)"></span>
-      </template>
-      <template #cell(dpSwitchActivation.warning)="data">
-        {{ data.value || "-" }}
-      </template>
-      <template #cell(dpSwitchActivation.fuelStop)="data">
-        {{ setPsi(data.value) }}
-      </template>
-      <template #cell(ewsLoop.f1)="data">
-        <span v-html="setOption(data.value)"></span>
-      </template>
-      <template #cell(ewsLoop.f2)="data">
-        <span v-html="setOption(data.value)"></span>
-      </template>
-      <template #cell(ewsLoop.f3)="data">
-        <span v-html="setOption(data.value)"></span>
-      </template>
+        {{ dateFormat(data.value) }}</template
+      >
+      <template #cell(transactionRecords)="data">
+        {{ data.item.details.length }} Records</template
+      >
     </CardTable>
     <b-modal
       v-model="modalForm.export"
@@ -133,38 +89,24 @@
     >
       <InputText
         label="Period"
-        type="number"
+        type="month"
         v-model="modalForm.period"
         :useHorizontal="false"
-      />
-      <Select
-        ref="Equipment"
-        label="Equipment"
-        placeholder="Select Equipment"
-        v-model="modalForm.equipmentId"
-        :useHorizontal="false"
-        :async="true"
-        :multiple="false"
-        :loadOptions="getEquipmentByCategory"
       />
     </b-modal>
   </fragment>
 </template>
 
 <script>
-import { ASYNC_SEARCH } from "@riophae/vue-treeselect";
 import { mapGetters } from "vuex";
-import { sf207 as columns } from "@/core/datasource/columns";
+import { sfCommon as columns } from "@/core/datasource/columns";
 import { standardFormStatus } from "@/core/datasource/options";
 import {
   startDate,
   getDate,
   getDppu,
   dateFormat,
-  normalizer,
-  isNullOrEmpty,
-  setOption,
-  setPsi
+  normalizer
 } from "@/core/utils";
 
 import DateRangePicker from "vue2-daterange-picker";
@@ -175,14 +117,13 @@ export default {
     DateRangePicker
   },
   data: () => ({
-    title: "207 SF",
-    subTitle: "Pressure Differential Gauge & EWS Test",
+    title: "206 SF",
+    subTitle: "Pressure Gauge Acuracy Test Record",
     searchText: "Search by transaction #",
     serverParams: {
       pageNumber: 1,
       pageSize: 20,
       keyword: null,
-      equipmentId: null,
       dppuId: null,
       status: null,
       dateRange: {
@@ -203,8 +144,7 @@ export default {
     },
     modalForm: {
       export: false,
-      period: null,
-      equipmentId: null
+      period: null
     }
   }),
   computed: {
@@ -230,16 +170,13 @@ export default {
   methods: {
     normalizer,
     dateFormat,
-    isNullOrEmpty,
-    setOption,
-    setPsi,
     updateParams(newProps) {
       this.serverParams = Object.assign({}, this.serverParams, newProps);
     },
     onRowSelected(items) {
       const self = this;
       self.$router.push({
-        name: "sf207Update",
+        name: "sf206Update",
         params: {
           id: items[0].id
         }
@@ -279,7 +216,7 @@ export default {
       self.table.isLoading = true;
       self.$store
         .dispatch("apis/get", {
-          url: "/board/standard-form/207",
+          url: "/board/standard-form/206",
           params: _serverParams
         })
         .then(response => {
@@ -301,9 +238,8 @@ export default {
       self.modalForm.export = true;
       self.modalForm.period = dateFormat(
         self.serverParams.dateRange.startDate,
-        "yyyy"
+        "yyyy-MM"
       );
-      self.modalForm.equipmentId = self.serverParams.equipmentId;
     },
     handleExport(event) {
       event.preventDefault();
@@ -318,11 +254,12 @@ export default {
         .then(dialog => {
           self.$store
             .dispatch("apis/download", {
-              url: `/board/export/standard-form/207?dppuId=${
+              url: `/board/export/standard-form/206?dppuId=${
                 self.serverParams.dppuId
-              }&year=${self.modalForm.period.substr(0, 4)}&equipmentId=${
-                self.modalForm.equipmentId
-              }`
+              }&year=${self.modalForm.period.substr(
+                0,
+                4
+              )}&month=${self.modalForm.period.substr(5, 2)}`
             })
             .then(response => {
               if (response.error) {
@@ -335,7 +272,7 @@ export default {
                   fileLink = document.createElement("a");
 
                 fileLink.href = fileURL;
-                fileLink.setAttribute("download", "207.xlsx");
+                fileLink.setAttribute("download", "206.xlsx");
                 document.body.appendChild(fileLink);
 
                 fileLink.click();
@@ -344,44 +281,9 @@ export default {
             .finally(() => {
               self.modalForm.export = false;
               self.modalForm.period = null;
-              self.modalForm.equipmentId = null;
               dialog.close();
             });
         });
-    },
-    getEquipmentByCategory({ action, searchQuery, callback }) {
-      const self = this;
-
-      if (action === ASYNC_SEARCH) {
-        self.$store
-          .dispatch("apis/get", {
-            url: `/equipment`,
-            params: {
-              dppu: self.serverParams.dppuId,
-              pageNumber: 1,
-              pageSize: 20,
-              category: 6,
-              keyword: searchQuery,
-              actived: true
-            }
-          })
-          .then(response => {
-            if (response.error) {
-              self.$message.error({
-                zIndex: 10000,
-                message: response.message
-              });
-            } else {
-              callback(
-                null,
-                response.data.data.map(x => ({
-                  id: x.id,
-                  label: x.code
-                }))
-              );
-            }
-          });
-      }
     }
   }
 };
