@@ -25,7 +25,7 @@
         >
           Export to Excel
         </b-button>
-        <b-button variant="primary" :to="{ name: 'sf207Create' }">
+        <b-button variant="primary" :to="{ name: 'sf210Create' }">
           Create New Transaction
         </b-button>
       </template>
@@ -44,9 +44,10 @@
       <template #thead-top="data">
         <b-tr>
           <b-th colspan="4"></b-th>
-          <b-th colspan="2" class="text-center">PDG Piston Movement</b-th>
-          <b-th colspan="2" class="text-center">dP Switch Activation</b-th>
-          <b-th colspan="3" class="text-center">EWS Loop / Function Test</b-th>
+          <b-th colspan="4" class="text-center">Front Bonding Reel</b-th>
+          <b-th colspan="4" class="text-center">Rear Bonding Reel</b-th>
+          <b-th colspan="4" class="text-center">Lanyard</b-th>
+          <b-th colspan="2" class="text-center">Flame Trap</b-th>
           <b-th colspan="2"></b-th>
         </b-tr>
       </template>
@@ -101,25 +102,46 @@
       <template #cell(transactionDate)="data">
         {{ dateFormat(data.value) }}
       </template>
-      <template #cell(pdgPistonMovement.zeroCondition)="data">
+      <template #cell(frontBondingReel.clip)="data">
         <span v-html="setOption(data.value)"></span>
       </template>
-      <template #cell(pdgPistonMovement.freeMovementOfPiston)="data">
+      <template #cell(frontBondingReel.wireAndInsulation)="data">
         <span v-html="setOption(data.value)"></span>
       </template>
-      <template #cell(dpSwitchActivation.warning)="data">
-        {{ data.value || "-" }}
-      </template>
-      <template #cell(dpSwitchActivation.fuelStop)="data">
-        {{ setPsi(data.value) }}
-      </template>
-      <template #cell(ewsLoop.f1)="data">
+      <template #cell(frontBondingReel.connectionAndReel)="data">
         <span v-html="setOption(data.value)"></span>
       </template>
-      <template #cell(ewsLoop.f2)="data">
+      <template #cell(frontBondingReel.resistance)="data">
+        {{ setOhm(data.value) }}
+      </template>
+      <template #cell(rearBondingReel.clip)="data">
         <span v-html="setOption(data.value)"></span>
       </template>
-      <template #cell(ewsLoop.f3)="data">
+      <template #cell(rearBondingReel.wireAndInsulation)="data">
+        <span v-html="setOption(data.value)"></span>
+      </template>
+      <template #cell(rearBondingReel.connectionAndReel)="data">
+        <span v-html="setOption(data.value)"></span>
+      </template>
+      <template #cell(rearBondingReel.resistance)="data">
+        {{ setOhm(data.value) }}
+      </template>
+      <template #cell(lanyard.carabinerHook)="data">
+        <span v-html="setOption(data.value)"></span>
+      </template>
+      <template #cell(lanyard.wireAndInsulation)="data">
+        <span v-html="setOption(data.value)"></span>
+      </template>
+      <template #cell(lanyard.reel)="data">
+        <span v-html="setOption(data.value)"></span>
+      </template>
+      <template #cell(lanyard.electricalConnection)="data">
+        {{ data.value == null ? `-` : data.value == true ? `Yes` : `No` }}
+      </template>
+      <template #cell(flameTrap.tightness)="data">
+        <span v-html="setOption(data.value)"></span>
+      </template>
+      <template #cell(flameTrap.cleanliness)="data">
         <span v-html="setOption(data.value)"></span>
       </template>
     </CardTable>
@@ -154,7 +176,7 @@
 <script>
 import { ASYNC_SEARCH } from "@riophae/vue-treeselect";
 import { mapGetters } from "vuex";
-import { sf207 as columns } from "@/core/datasource/columns";
+import { sf210 as columns } from "@/core/datasource/columns";
 import { standardFormStatus } from "@/core/datasource/options";
 import {
   startDate,
@@ -164,7 +186,7 @@ import {
   normalizer,
   isNullOrEmpty,
   setOption,
-  setPsi
+  setOhm
 } from "@/core/utils";
 
 import DateRangePicker from "vue2-daterange-picker";
@@ -175,8 +197,8 @@ export default {
     DateRangePicker
   },
   data: () => ({
-    title: "207 SF",
-    subTitle: "Pressure Differential Gauge & EWS Test",
+    title: "210 SF",
+    subTitle: "Bonding Wire, Lanyard, And Flame Trap Checked",
     searchText: "Search by transaction #",
     serverParams: {
       pageNumber: 1,
@@ -232,14 +254,14 @@ export default {
     dateFormat,
     isNullOrEmpty,
     setOption,
-    setPsi,
+    setOhm,
     updateParams(newProps) {
       this.serverParams = Object.assign({}, this.serverParams, newProps);
     },
     onRowSelected(items) {
       const self = this;
       self.$router.push({
-        name: "sf207Update",
+        name: "sf210Update",
         params: {
           id: items[0].id
         }
@@ -279,7 +301,7 @@ export default {
       self.table.isLoading = true;
       self.$store
         .dispatch("apis/get", {
-          url: "/board/standard-form/207",
+          url: "/board/standard-form/210",
           params: _serverParams
         })
         .then(response => {
@@ -318,7 +340,7 @@ export default {
         .then(dialog => {
           self.$store
             .dispatch("apis/download", {
-              url: `/board/export/standard-form/207?dppuId=${
+              url: `/board/export/standard-form/210?dppuId=${
                 self.serverParams.dppuId
               }&year=${self.modalForm.period.substr(0, 4)}&equipmentId=${
                 self.modalForm.equipmentId
@@ -335,7 +357,7 @@ export default {
                   fileLink = document.createElement("a");
 
                 fileLink.href = fileURL;
-                fileLink.setAttribute("download", "207.xlsx");
+                fileLink.setAttribute("download", "210.xlsx");
                 document.body.appendChild(fileLink);
 
                 fileLink.click();

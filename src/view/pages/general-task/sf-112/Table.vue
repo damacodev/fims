@@ -34,7 +34,7 @@
           <date-range-picker
             v-model="serverParams.dateRange"
             style="width: 100%; cursor: pointer"
-            opens="center"
+            opens="left"
             :locale-data="{ format: 'dd/mm/yyyy', separator: ' to ' }"
             control-container-class="form-control"
             @update="onFilter"

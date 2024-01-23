@@ -1555,6 +1555,186 @@ export const sf207 = [
   }
 ];
 
+export const sf209 = [
+  {
+    label: "DPPU",
+    key: "dppu.label",
+    thClass: "align-middle"
+  },
+  {
+    label: "Transaction #",
+    key: "transactionId",
+    thClass: "align-middle"
+  },
+  {
+    label: "Date",
+    key: "transactionDate",
+    thClass: "align-middle"
+  },
+  {
+    label: "Vehicle No",
+    key: "equipment.label",
+    thClass: "align-middle"
+  },
+  {
+    label: "Element Type",
+    key: "elementType",
+    thClass: "align-middle"
+  },
+  {
+    label: "Vessel Capacity",
+    key: "vesselCapacity",
+    thClass: "align-middle"
+  },
+  {
+    label: "Remarks",
+    key: "remarks",
+    thClass: "align-middle"
+  },
+  {
+    label: "Status",
+    key: "currentProgress.status",
+    thClass: "align-middle"
+  }
+];
+
+export const sf210 = [
+  {
+    label: "DPPU",
+    key: "dppu.label",
+    thClass: "align-middle"
+  },
+  {
+    label: "Transaction #",
+    key: "transactionId",
+    thClass: "align-middle"
+  },
+  {
+    label: "Date",
+    key: "transactionDate",
+    thClass: "align-middle"
+  },
+  {
+    label: "Equipment Identity",
+    key: "equipment.label",
+    thClass: "align-middle"
+  },
+  {
+    label: "Clip",
+    key: "frontBondingReel.clip",
+    thClass: "align-middle"
+  },
+  {
+    label: "Wire & Insulation",
+    key: "frontBondingReel.wireAndInsulation",
+    thClass: "align-middle"
+  },
+  {
+    label: "Connection & Reel",
+    key: "frontBondingReel.connectionAndReel",
+    thClass: "align-middle"
+  },
+  {
+    label: "Resistance (Ohm)",
+    key: "frontBondingReel.resistance",
+    thClass: "align-middle"
+  },
+  {
+    label: "Clip",
+    key: "rearBondingReel.clip",
+    thClass: "align-middle"
+  },
+  {
+    label: "Wire & Insulation",
+    key: "rearBondingReel.wireAndInsulation",
+    thClass: "align-middle"
+  },
+  {
+    label: "Connection & Reel",
+    key: "rearBondingReel.connectionAndReel",
+    thClass: "align-middle"
+  },
+  {
+    label: "Resistance (Ohm)",
+    key: "rearBondingReel.resistance",
+    thClass: "align-middle"
+  },
+  {
+    label: "Carabiner Hook",
+    key: "lanyard.carabinerHook",
+    thClass: "align-middle"
+  },
+  {
+    label: "Wire & Insulation",
+    key: "lanyard.wireAndInsulation",
+    thClass: "align-middle"
+  },
+  {
+    label: "Reel",
+    key: "lanyard.reel",
+    thClass: "align-middle"
+  },
+  {
+    label: "Electrical Connection (Yes/No)",
+    key: "lanyard.electricalConnection",
+    thClass: "align-middle"
+  },
+  {
+    label: "Tightness",
+    key: "flameTrap.tightness",
+    thClass: "align-middle"
+  },
+  {
+    label: "Cleanliness",
+    key: "flameTrap.cleanliness",
+    thClass: "align-middle"
+  },
+
+  {
+    label: "Remarks",
+    key: "remarks",
+    thClass: "align-middle"
+  },
+  {
+    label: "Status",
+    key: "currentProgress.status",
+    thClass: "align-middle"
+  }
+];
+
+export const sf211 = [
+  {
+    label: "DPPU",
+    key: "dppu.label",
+    thClass: "align-middle"
+  },
+  {
+    label: "Transaction #",
+    key: "transactionId",
+    thClass: "align-middle"
+  },
+  {
+    label: "Transaction Date",
+    key: "transactionDate",
+    thClass: "align-middle"
+  },
+  {
+    label: "Period",
+    key: "period",
+    thClass: "align-middle"
+  },
+  {
+    label: "Transaction Records",
+    key: "transactionRecords",
+    thClass: "align-middle"
+  },
+  {
+    label: "Status",
+    key: "currentProgress.status",
+    thClass: "align-middle"
+  }
+];
+
 export const sfCommon = [
   {
     label: "DPPU",

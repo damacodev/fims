@@ -490,6 +490,34 @@ export async function getPdgEwsTest() {
   return result;
 }
 
+export async function getReasonFilterChange() {
+  let result = [];
+
+  await store
+    .dispatch("apis/get", {
+      url: "/common/reason-filter-changed"
+    })
+    .then(response => {
+      result = response.data;
+    });
+
+  return result;
+}
+
+export async function getBondingReelCondition() {
+  let result = [];
+
+  await store
+    .dispatch("apis/get", {
+      url: "/common/bonding-reel-condition"
+    })
+    .then(response => {
+      result = response.data;
+    });
+
+  return result;
+}
+
 // export function groupBy(list, keyGetter) {
 //   const map = new Map();
 //   list.forEach((item) => {
@@ -578,6 +606,22 @@ export function setMm(params) {
 
 export function setLiter(params, precision = 0) {
   return `${numberFormat(params, precision)} LTR`;
+}
+
+export function setLitres(params, precision = 0) {
+  return `${numberFormat(params, precision)} Litres`;
+}
+
+export function setLpm(params, precision = 0) {
+  return `${numberFormat(params, precision)} Lpm.`;
+}
+
+export function setPcs(params, precision = 0) {
+  return `${numberFormat(params, precision)} Pcs`;
+}
+
+export function setOhm(params, precision = 0) {
+  return `${numberFormat(params, precision)} Ohm (Ω)`;
 }
 
 export function setKompartemen(params) {

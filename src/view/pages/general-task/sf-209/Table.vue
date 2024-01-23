@@ -25,7 +25,7 @@
         >
           Export to Excel
         </b-button>
-        <b-button variant="primary" :to="{ name: 'sf207Create' }">
+        <b-button variant="primary" :to="{ name: 'sf209Create' }">
           Create New Transaction
         </b-button>
       </template>
@@ -41,7 +41,7 @@
           />
         </div>
       </template>
-      <template #thead-top="data">
+      <!-- <template #thead-top="data">
         <b-tr>
           <b-th colspan="4"></b-th>
           <b-th colspan="2" class="text-center">PDG Piston Movement</b-th>
@@ -49,7 +49,7 @@
           <b-th colspan="3" class="text-center">EWS Loop / Function Test</b-th>
           <b-th colspan="2"></b-th>
         </b-tr>
-      </template>
+      </template> -->
       <template #filter>
         <b-row class="p-3">
           <b-col xl="3">
@@ -101,26 +101,8 @@
       <template #cell(transactionDate)="data">
         {{ dateFormat(data.value) }}
       </template>
-      <template #cell(pdgPistonMovement.zeroCondition)="data">
-        <span v-html="setOption(data.value)"></span>
-      </template>
-      <template #cell(pdgPistonMovement.freeMovementOfPiston)="data">
-        <span v-html="setOption(data.value)"></span>
-      </template>
-      <template #cell(dpSwitchActivation.warning)="data">
-        {{ data.value || "-" }}
-      </template>
-      <template #cell(dpSwitchActivation.fuelStop)="data">
-        {{ setPsi(data.value) }}
-      </template>
-      <template #cell(ewsLoop.f1)="data">
-        <span v-html="setOption(data.value)"></span>
-      </template>
-      <template #cell(ewsLoop.f2)="data">
-        <span v-html="setOption(data.value)"></span>
-      </template>
-      <template #cell(ewsLoop.f3)="data">
-        <span v-html="setOption(data.value)"></span>
+      <template #cell(vesselCapacity)="data">
+        {{ setLpm(data.value) }}
       </template>
     </CardTable>
     <b-modal
@@ -154,7 +136,7 @@
 <script>
 import { ASYNC_SEARCH } from "@riophae/vue-treeselect";
 import { mapGetters } from "vuex";
-import { sf207 as columns } from "@/core/datasource/columns";
+import { sf209 as columns } from "@/core/datasource/columns";
 import { standardFormStatus } from "@/core/datasource/options";
 import {
   startDate,
@@ -163,8 +145,7 @@ import {
   dateFormat,
   normalizer,
   isNullOrEmpty,
-  setOption,
-  setPsi
+  setLpm
 } from "@/core/utils";
 
 import DateRangePicker from "vue2-daterange-picker";
@@ -175,8 +156,8 @@ export default {
     DateRangePicker
   },
   data: () => ({
-    title: "207 SF",
-    subTitle: "Pressure Differential Gauge & EWS Test",
+    title: "209 SF",
+    subTitle: "Laporan Pemasangan / Penggantian Elemen Filter",
     searchText: "Search by transaction #",
     serverParams: {
       pageNumber: 1,
@@ -231,15 +212,14 @@ export default {
     normalizer,
     dateFormat,
     isNullOrEmpty,
-    setOption,
-    setPsi,
+    setLpm,
     updateParams(newProps) {
       this.serverParams = Object.assign({}, this.serverParams, newProps);
     },
     onRowSelected(items) {
       const self = this;
       self.$router.push({
-        name: "sf207Update",
+        name: "sf209Update",
         params: {
           id: items[0].id
         }
@@ -279,7 +259,7 @@ export default {
       self.table.isLoading = true;
       self.$store
         .dispatch("apis/get", {
-          url: "/board/standard-form/207",
+          url: "/board/standard-form/209",
           params: _serverParams
         })
         .then(response => {
@@ -318,7 +298,7 @@ export default {
         .then(dialog => {
           self.$store
             .dispatch("apis/download", {
-              url: `/board/export/standard-form/207?dppuId=${
+              url: `/board/export/standard-form/209?dppuId=${
                 self.serverParams.dppuId
               }&year=${self.modalForm.period.substr(0, 4)}&equipmentId=${
                 self.modalForm.equipmentId
@@ -335,7 +315,7 @@ export default {
                   fileLink = document.createElement("a");
 
                 fileLink.href = fileURL;
-                fileLink.setAttribute("download", "207.xlsx");
+                fileLink.setAttribute("download", "209.xlsx");
                 document.body.appendChild(fileLink);
 
                 fileLink.click();

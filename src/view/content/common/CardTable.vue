@@ -66,11 +66,11 @@
         <slot name="filter" />
       </div>
       <b-table
+        bordered
         class="text-nowrap"
         :hover="selectable"
         :selectable="selectable"
         responsive
-        :striped="selectable"
         select-mode="single"
         head-variant="light"
         :busy="isLoading"

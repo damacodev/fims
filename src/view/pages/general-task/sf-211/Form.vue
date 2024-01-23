@@ -79,11 +79,11 @@
             :v="$v.form.transactionDate"
             :max="getDate()"
           />
-          <Select
-            label="Shift"
-            v-model="form.shiftId"
-            :options="options.shift"
-            :multiple="false"
+          <InputText
+            label="Period"
+            type="text"
+            v-model="form.period"
+            :v="$v.form.period"
           />
           <b-row v-if="currentProgress.status == 'Rejected'">
             <b-col lg="8" xl="5" offset="4">
@@ -123,7 +123,7 @@
         <TableItem :rows="table.rows" @onRowSelected="onRowSelected" />
         <EmptyTable
           v-if="table.rows.length == 0"
-          title="Data Penerimaan Avturs will be displayed here"
+          title="Check & Report of Grounding Tests will be displayed here"
           description="Please add an items first"
         />
       </div>
@@ -144,10 +144,10 @@ export default {
     TableItem
   },
   data: () => ({
-    title: "125 SF - Data Penerimaan Avtur",
+    title: "211 SF - Check & Report of Grounding Test",
     route: {
-      form: "sf125Create",
-      table: "sf125"
+      form: "sf211Create",
+      table: "sf211"
     },
     form: {
       dppu: {
@@ -157,11 +157,7 @@ export default {
       dppuId: null,
       transactionId: "Auto Generated",
       transactionDate: getDate(),
-      shift: {
-        id: null,
-        label: null
-      },
-      shiftId: null,
+      period: null,
       sendApproval: false,
       updatedBy: null,
       updatedAt: null
@@ -200,7 +196,8 @@ export default {
   validations: {
     form: {
       dppuId: { required },
-      transactionDate: { required }
+      transactionDate: { required },
+      period: { required }
     }
   },
   created() {
@@ -218,7 +215,6 @@ export default {
     }
     if (self.dppu) {
       self.form.dppuId = self.dppu.id;
-      self.changeDppu();
     }
 
     if (self.$route.name != self.route.form) {
@@ -229,38 +225,13 @@ export default {
     dateFormat,
     numberFormat,
     getDate,
-    changeDppu() {
-      const self = this;
-
-      self.form.shiftId = null;
-      self.options.shift = [];
-      if (self.form.dppuId != null) {
-        self.$store
-          .dispatch("apis/get", {
-            url: `/dppu/${self.form.dppuId}`
-          })
-          .then(response => {
-            if (response.error) {
-              self.$message.error({
-                zIndex: 10000,
-                message: response.message
-              });
-            } else {
-              self.options.shift = response.data.shifts.map(x => ({
-                id: x.id,
-                label: `${x.shiftCallSign} (${x.workingTime.start} - ${x.workingTime.end})`
-              }));
-            }
-          });
-      }
-    },
     get() {
       const self = this;
 
       let loader = self.$loading.show();
       self.$store
         .dispatch("apis/get", {
-          url: `/board/standard-form/125/${self.$route.params.id}`
+          url: `/board/standard-form/211/${self.$route.params.id}`
         })
         .then(response => {
           if (response.error) {
@@ -279,11 +250,7 @@ export default {
                 response.data.transactionDate,
                 "YYYY-MM-DD"
               ),
-              shift: {
-                id: response.data.shift?.id,
-                label: response.data.shift?.label
-              },
-              shiftId: response.data.shift?.id,
+              period: response.data.period,
               updatedBy: response.data.updatedBy,
               updatedAt: response.data.updatedAt
             };
@@ -307,7 +274,7 @@ export default {
       const self = this;
 
       self.$router.push({
-        name: "sf125CreateItem",
+        name: "sf211CreateItem",
         params: {
           id: self.$route.params.id
         }
@@ -317,7 +284,7 @@ export default {
       const self = this;
 
       self.$router.push({
-        name: "sf125UpdateItem",
+        name: "sf211UpdateItem",
         params: {
           id: self.$route.params.id,
           iditem: item.id
@@ -339,13 +306,13 @@ export default {
         _confirmText = "You are about to save this transaction. Are you sure ?";
         _okText = "Yes, Save";
         _action = "apis/post";
-        _url = "/board/standard-form/125";
+        _url = "/board/standard-form/211";
       } else {
         _confirmText =
           "You are about to update this transaction. Are you sure ?";
         _okText = "Yes, Update";
         _action = "apis/put";
-        _url = `/board/standard-form/125/${self.$route.params.id}`;
+        _url = `/board/standard-form/211/${self.$route.params.id}`;
       }
 
       self.$dialog
@@ -374,7 +341,7 @@ export default {
 
                 if (self.$route.name == self.route.form) {
                   self.$router.replace({
-                    name: "sf125Update",
+                    name: "sf211Update",
                     params: {
                       id: response.data.id
                     }
@@ -388,11 +355,7 @@ export default {
                       response.data.transactionDate,
                       "YYYY-MM-DD"
                     ),
-                    shift: {
-                      id: response.data.shift?.id,
-                      label: response.data.shift?.label
-                    },
-                    shiftId: response.data.shift?.id,
+                    period: response.data.period,
                     updatedBy: response.data.updatedBy,
                     updatedAt: response.data.updatedAt
                   };
@@ -425,7 +388,7 @@ export default {
         .then(dialog => {
           self.$store
             .dispatch("apis/remove", {
-              url: `/board/standard-form/125/${self.$route.params.id}`
+              url: `/board/standard-form/211/${self.$route.params.id}`
             })
             .then(response => {
               if (response.error) {
@@ -465,7 +428,7 @@ export default {
 
           self.$store
             .dispatch("apis/put", {
-              url: `/board/standard-form/125/${self.$route.params.id}`,
+              url: `/board/standard-form/211/${self.$route.params.id}`,
               params: self.form
             })
             .then(response => {
@@ -498,7 +461,7 @@ export default {
         .then(dialog => {
           self.$store
             .dispatch("apis/download", {
-              url: `/board/export/standard-form/125/${self.$route.params.id}`
+              url: `/board/export/standard-form/211/${self.$route.params.id}`
             })
             .then(response => {
               if (response.error) {
@@ -511,7 +474,7 @@ export default {
                   fileLink = document.createElement("a");
 
                 fileLink.href = fileURL;
-                fileLink.setAttribute("download", "125.xlsx");
+                fileLink.setAttribute("download", "211.xlsx");
                 document.body.appendChild(fileLink);
 
                 fileLink.click();

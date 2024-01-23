@@ -496,6 +496,90 @@ export default new Router({
                     import("@/view/pages/general-task/sf-207/Form")
                 }
               ]
+            },
+            {
+              path: "sf-209",
+              component: () => import("@/view/pages/general-task/sf-209"),
+              children: [
+                {
+                  path: "/",
+                  name: "sf209",
+                  component: () =>
+                    import("@/view/pages/general-task/sf-209/Table.vue")
+                },
+                {
+                  path: "form",
+                  name: "sf209Create",
+                  component: () =>
+                    import("@/view/pages/general-task/sf-209/Form")
+                },
+                {
+                  path: "form/:id",
+                  name: "sf209Update",
+                  component: () =>
+                    import("@/view/pages/general-task/sf-209/Form")
+                }
+              ]
+            },
+            {
+              path: "sf-210",
+              component: () => import("@/view/pages/general-task/sf-210"),
+              children: [
+                {
+                  path: "/",
+                  name: "sf210",
+                  component: () =>
+                    import("@/view/pages/general-task/sf-210/Table.vue")
+                },
+                {
+                  path: "form",
+                  name: "sf210Create",
+                  component: () =>
+                    import("@/view/pages/general-task/sf-210/Form")
+                },
+                {
+                  path: "form/:id",
+                  name: "sf210Update",
+                  component: () =>
+                    import("@/view/pages/general-task/sf-210/Form")
+                }
+              ]
+            },
+            {
+              path: "sf-211",
+              component: () => import("@/view/pages/general-task/sf-211"),
+              children: [
+                {
+                  path: "/",
+                  name: "sf211",
+                  component: () =>
+                    import("@/view/pages/general-task/sf-211/Table.vue")
+                },
+                {
+                  path: "form",
+                  name: "sf211Create",
+                  component: () =>
+                    import("@/view/pages/general-task/sf-211/Form")
+                },
+                {
+                  path: "form/:id",
+                  name: "sf211Update",
+                  component: () =>
+                    import("@/view/pages/general-task/sf-211/Form")
+                },
+                {
+                  path: "form/:id/item",
+                  name: "sf211CreateItem",
+                  component: () =>
+                    import("@/view/pages/general-task/sf-211/Item")
+                },
+                {
+                  path: "form/:id/item/:iditem",
+                  name: "sf211UpdateItem",
+                  component: () =>
+                    import("@/view/pages/general-task/sf-211/Item")
+                }
+              ]
             }
           ]
         },

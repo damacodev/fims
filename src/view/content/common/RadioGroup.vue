@@ -14,18 +14,28 @@
     :css-class="cssClass"
   >
     <b-form-radio-group
+      v-if="!stacked"
       button-variant="outline-success"
       buttons
       v-model="model"
       :checked="value"
       :options="options"
-      :stacked="stacked"
       :size="size"
       :textField="textField"
       :valueField="valueField"
       style="z-index: 0"
       @input="handleInput"
     />
+    <b-button
+      v-else
+      v-for="(option, index) in options"
+      v-bind:key="index"
+      class="mr-2 mb-2"
+      :variant="model == option.value ? `success` : `outline-success`"
+      @click="handleChange(option.value)"
+    >
+      {{ option.text }}
+    </b-button>
   </form-group>
 </template>
 
@@ -85,6 +95,9 @@ export default {
   methods: {
     handleInput() {
       this.$emit("onInput");
+    },
+    handleChange(selected) {
+      this.model = selected;
     }
   }
 };

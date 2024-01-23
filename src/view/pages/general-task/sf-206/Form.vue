@@ -108,12 +108,7 @@ import { mapGetters } from "vuex";
 import FormHeader from "../common/FormHeader.vue";
 import TableItem from "./TableItem.vue";
 import { required } from "vuelidate/lib/validators";
-import {
-  getDppu,
-  numberFormat,
-  getDate,
-  dateFormat
-} from "@/core/utils";
+import { getDppu, numberFormat, getDate, dateFormat } from "@/core/utils";
 
 export default {
   components: {

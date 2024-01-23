@@ -262,3 +262,45 @@ export const buzzerLight = [
   { value: "Buzzer", text: "Buzzer" },
   { value: "Light", text: "Light" }
 ];
+
+export const reasonFilterChanged = [
+  { value: "Max. Limitation PDG Reached", text: "Max. Limitation PDG Reached" },
+  {
+    value: "PDG Move Up/down Immediately",
+    text: "PDG Move Up/down Immediately"
+  },
+  {
+    value: "Service Life Limitation",
+    text: "Service Life Limitation"
+  },
+  {
+    value: "Membrane Colorimetric Test Results",
+    text: "Membrane Colorimetric Test Results"
+  },
+  {
+    value:
+      "Drain Samples Expectation (CWD/EWS Result or Sediment Visually Detected Downstream Filter)",
+    text:
+      "Drain Samples Expectation (CWD/EWS Result or Sediment Visually Detected Downstream Filter)"
+  },
+  { value: "Structural Integrity Issue", text: "Structural Integrity Issue" },
+  { value: "Sudden Drop in Flowrate", text: "Sudden Drop in Flowrate" },
+  {
+    value: "Microbiological Contamination",
+    text: "Microbiological Contamination"
+  },
+  {
+    value: "Others (Airline / Inspector Request etc)",
+    text: "Others (Airline / Inspector Request etc)"
+  }
+];
+
+export const wetDry = [
+  { value: "Wet", text: "Wet" },
+  { value: "Dry", text: "Dry" }
+];
+
+export const cleanDirt = [
+  { value: "Clean", text: "Clean" },
+  { value: "Dirt", text: "Dirt" }
+];

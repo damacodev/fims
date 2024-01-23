@@ -17,7 +17,7 @@
     @onSearch="onSearch"
   >
     <template #toolbar>
-      <b-button variant="primary" :to="{ name: 'sf137Create' }">
+      <b-button variant="primary" :to="{ name: 'sf211Create' }">
         Create New Transaction
       </b-button>
     </template>
@@ -35,16 +35,16 @@
     </template>
     <template #filter>
       <b-row class="p-3">
-        <b-col xl="4">
+        <b-col xl="3">
           <treeselect
             class="mb-2"
             placeholder="Select DPPU"
             v-model="serverParams.dppuId"
             :options="options.dppu"
-            @input="onFilter"
+            @input="getAll"
           ></treeselect>
         </b-col>
-        <b-col xl="4">
+        <b-col xl="3">
           <b-form-input
             placeholder="Transaction #"
             autocomplete="off"
@@ -52,7 +52,15 @@
             @change="onFilter"
           ></b-form-input>
         </b-col>
-        <b-col xl="4">
+        <b-col xl="3">
+          <b-form-input
+            placeholder="Period"
+            autocomplete="off"
+            v-model="serverParams.period"
+            @change="onFilter"
+          ></b-form-input>
+        </b-col>
+        <b-col xl="3">
           <treeselect
             class="mb-2"
             placeholder="Select request status"
@@ -69,38 +77,29 @@
       <EmptyTable
         :title="`${subTitle} are managed from here`"
         :description="`All ${subTitle} will be displayed on this page`"
+        button-label="Create New Transaction"
+        :href="{ name: 'sf211Create' }"
       />
     </template>
     <template #cell(transactionDate)="data">
-      {{ dateFormat(data.value) }}
-    </template>
-    <template #cell(colour)="data">
-      <span v-html="setOption(data.value)"></span>
-    </template>
-    <template #cell(cleanlines)="data">
-      <span v-html="setOption(data.value)"></span>
-    </template>
-    <template #cell(freeWater)="data">
-      <span v-html="setOption(data.value)"></span>
-    </template>
-    <template #cell(waterDetector)="data">
-      <span v-html="setOption(data.value)"></span>
-    </template>
+      {{ dateFormat(data.value) }}</template
+    >
+    <template #cell(transactionRecords)="data">
+      {{ data.item.details.length }} Records</template
+    >
   </CardTable>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
-import { sf137 as columns } from "@/core/datasource/columns";
+import { sf211 as columns } from "@/core/datasource/columns";
 import { standardFormStatus } from "@/core/datasource/options";
 import {
   startDate,
   getDate,
   getDppu,
   dateFormat,
-  normalizer,
-  isNullOrEmpty,
-  setOption
+  normalizer
 } from "@/core/utils";
 
 import DateRangePicker from "vue2-daterange-picker";
@@ -111,13 +110,14 @@ export default {
     DateRangePicker
   },
   data: () => ({
-    title: "137 SF",
-    subTitle: "Deadleg Drain Quality Check",
+    title: "211 SF",
+    subTitle: "Check & Report of Grounding Test",
     searchText: "Search by transaction #",
     serverParams: {
       pageNumber: 1,
       pageSize: 20,
       keyword: null,
+      period: null,
       dppuId: null,
       status: null,
       dateRange: {
@@ -160,15 +160,13 @@ export default {
   methods: {
     normalizer,
     dateFormat,
-    isNullOrEmpty,
-    setOption,
     updateParams(newProps) {
       this.serverParams = Object.assign({}, this.serverParams, newProps);
     },
     onRowSelected(items) {
       const self = this;
       self.$router.push({
-        name: "sf137Update",
+        name: "sf211Update",
         params: {
           id: items[0].id
         }
@@ -200,6 +198,7 @@ export default {
         pageNumber: self.serverParams.pageNumber,
         pageSize: self.serverParams.pageSize,
         keyword: self.serverParams.keyword,
+        period: self.serverParams.period,
         dppuId: self.serverParams.dppuId,
         status: self.serverParams.status,
         startDate: self.serverParams.dateRange.startDate,
@@ -208,7 +207,7 @@ export default {
       self.table.isLoading = true;
       self.$store
         .dispatch("apis/get", {
-          url: "/board/standard-form/137",
+          url: "/board/standard-form/211",
           params: _serverParams
         })
         .then(response => {
