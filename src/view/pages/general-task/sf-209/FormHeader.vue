@@ -31,7 +31,7 @@
       />
       <PlainText
         label="Observed P.D.G"
-        :value="setPsi(form.conditionFilterBefore.operationalFlowrate.pdg)"
+        :value="setPsi(form.conditionFilterBefore.operationalFlowrate.pdg, 2)"
       />
       <PlainText
         label="Maximum Achievable Flowrate"
@@ -42,7 +42,7 @@
       <PlainText
         label="Corrected P.D.G"
         :value="
-          setPsi(form.conditionFilterBefore.maximumAchievableFlowrate.pdg)
+          setPsi(form.conditionFilterBefore.maximumAchievableFlowrate.pdg, 2)
         "
       />
       <PlainText
@@ -55,7 +55,7 @@
         label="Throughput Since Element Last Change"
         :value="
           setLitres(
-            form.conditionFilterBefore.throughtputSinceElementLastChange
+            form.conditionFilterBefore.throughputSinceElementLastChange
           )
         "
       />
@@ -149,7 +149,7 @@
       <PlainText
         label="Observed P.D.G"
         :value="
-          setPsi(form.filterConditionAfterInstallation.operationalFlowrate.pdg)
+          setPsi(form.filterConditionAfterInstallation.operationalFlowrate.pdg, 2)
         "
       />
       <PlainText
@@ -164,7 +164,7 @@
         label="Corrected P.D.G"
         :value="
           setPsi(
-            form.filterConditionAfterInstallation.maximumAchievableFlowrate.pdg
+            form.filterConditionAfterInstallation.maximumAchievableFlowrate.pdg, 2
           )
         "
       />
@@ -179,8 +179,12 @@
         :value="form.filterConditionAfterInstallation.meterTotalisator"
       />
       <PlainText
-        label="Millipore Colorimetric Test"
-        :value="form.filterConditionAfterInstallation.milliporeColorimetricTest"
+        label="Millipore Colorimetric Test (Wet)"
+        :value="form.filterConditionAfterInstallation.milliporeColorimetricTest.wet"
+      />
+      <PlainText
+        label="Millipore Colorimetric Test (Dry)"
+        :value="form.filterConditionAfterInstallation.milliporeColorimetricTest.dry"
       />
       <PlainText
         label="Hose End Strainer Inspection & Cleaning"

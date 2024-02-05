@@ -1,134 +1,122 @@
 <template>
-  <div class="card card-custom">
-    <div class="card-header py-3">
-      <div class="card-title align-items-start flex-column">
-        <h3 class="card-label font-weight-bolder text-dark">
-          <b-button class="btn-icon mr-2" size="xs" @click="$router.go(-1)">
-            <i class="flaticon2-back" />
-          </b-button>
-          {{ title }}
-        </h3>
-        <span class="text-muted font-weight-bold font-size-sm mt-1 pl-10">
-          {{ subTitle }}
-        </span>
+  <b-row>
+    <b-col lg="12">
+      <div class="card card-custom">
+        <div class="card-header py-3">
+          <div class="card-title align-items-start flex-column">
+            <h3 class="card-label font-weight-bolder text-dark">
+              <b-button class="btn-icon mr-2" size="xs" @click="$router.go(-1)">
+                <i class="flaticon2-back" />
+              </b-button>
+              {{ title }}
+            </h3>
+            <span class="text-muted font-weight-bold font-size-sm mt-1 pl-10">
+              {{ subTitle }}
+            </span>
+          </div>
+          <div class="card-toolbar">
+            <b-button
+              v-show="
+                currentProgress.locked && currentProgress.status == 'Approved'
+              "
+              variant="outline-primary"
+              @click="handleExport"
+            >
+              Export to Excel
+            </b-button>
+            <b-button
+              v-show="$route.name != route.form && !currentProgress.locked"
+              variant="outline-danger"
+              size="lg"
+              class="mr-2"
+              @click="handleDelete"
+            >
+              Delete
+            </b-button>
+            <b-button
+              v-show="
+                $route.name != route.form &&
+                !currentProgress.locked &&
+                table.rows.length > 0
+              "
+              variant="outline-primary"
+              size="lg"
+              class="mr-2"
+              @click="handleSendApproval"
+            >
+              Save and Send Approval
+            </b-button>
+            <b-button
+              v-show="!currentProgress.locked"
+              variant="primary"
+              size="lg"
+              @click="handleSubmit"
+            >
+              {{ textButton }}
+            </b-button>
+          </div>
+        </div>
+        <b-row class="p-2">
+          <div class="card-body pb-0">
+            <template v-if="!currentProgress.locked">
+              <Select
+                v-if="multipleDppu"
+                label="Depot Pengisian Pesawat Udara"
+                v-model="form.dppuId"
+                :v="$v.form.dppuId"
+                :options="options.dppu"
+                :multiple="false"
+                :disabled="$route.name != route.form"
+              />
+              <InputText
+                label="Transaction #"
+                type="text"
+                v-model="form.transactionId"
+                disabled
+              />
+              <InputText
+                label="Transaction Date"
+                type="date"
+                v-model="form.transactionDate"
+                :v="$v.form.transactionDate"
+                :max="getDate()"
+              />
+              <InputText
+                label="Period"
+                type="text"
+                v-model="form.period"
+                :v="$v.form.period"
+              />
+              <TextArea label="Remarks" v-model="form.remarks" />
+              <b-row v-if="currentProgress.status == 'Rejected'">
+                <b-col lg="8" xl="5" offset="4">
+                  <b-alert show variant="danger">
+                    <h4 class="alert-heading">Rejected</h4>
+                    <hr />
+                    <p class="mb-0">
+                      {{ currentProgress.remarks }}
+                    </p>
+                  </b-alert>
+                </b-col>
+              </b-row>
+            </template>
+            <FormHeader
+              v-else
+              :form="form"
+              :currentProgress="currentProgress"
+              :showRemarks="true"
+            />
+          </div>
+        </b-row>
       </div>
-      <div class="card-toolbar">
-        <b-button
-          v-show="
-            currentProgress.locked && currentProgress.status == 'Approved'
-          "
-          variant="outline-primary"
-          @click="handleExport"
-        >
-          Export to Excel
-        </b-button>
-        <b-button
-          v-show="$route.name != route.form && !currentProgress.locked"
-          variant="outline-danger"
-          size="lg"
-          class="mr-2"
-          @click="handleDelete"
-        >
-          Delete
-        </b-button>
-        <b-button
-          v-show="
-            $route.name != route.form &&
-              !currentProgress.locked &&
-              table.rows.length > 0
-          "
-          variant="outline-primary"
-          size="lg"
-          class="mr-2"
-          @click="handleSendApproval"
-        >
-          Save and Send Approval
-        </b-button>
-        <b-button
-          v-show="!currentProgress.locked"
-          variant="primary"
-          size="lg"
-          @click="handleSubmit"
-        >
-          {{ textButton }}
-        </b-button>
-      </div>
-    </div>
-    <b-row class="p-2">
-      <div class="card-body pb-0">
-        <template v-if="!currentProgress.locked">
-          <Select
-            v-if="multipleDppu"
-            label="Depot Pengisian Pesawat Udara"
-            v-model="form.dppuId"
-            :v="$v.form.dppuId"
-            :options="options.dppu"
-            :multiple="false"
-            :disabled="$route.name != route.form"
-          />
-          <InputText
-            label="Transaction #"
-            type="text"
-            v-model="form.transactionId"
-            disabled
-          />
-          <InputText
-            label="Transaction Date"
-            type="date"
-            v-model="form.transactionDate"
-            :v="$v.form.transactionDate"
-            :max="getDate()"
-          />
-          <InputText
-            label="Period"
-            type="text"
-            v-model="form.period"
-            :v="$v.form.period"
-          />
-          <b-row v-if="currentProgress.status == 'Rejected'">
-            <b-col lg="8" xl="5" offset="4">
-              <b-alert show variant="danger">
-                <h4 class="alert-heading">Rejected</h4>
-                <hr />
-                <p class="mb-0">
-                  {{ currentProgress.remarks }}
-                </p>
-              </b-alert>
-            </b-col>
-          </b-row>
-        </template>
-        <FormHeader
-          v-else
-          :form="form"
-          :currentProgress="currentProgress"
-          :showRemarks="true"
-        />
-      </div>
-    </b-row>
-    <div v-show="$route.name != route.form">
-      <hr v-show="!currentProgress.locked" />
-      <b-row>
-        <b-col>
-          <b-button
-            v-show="!currentProgress.locked"
-            variant="outline-primary"
-            class="ml-2 mb-4"
-            @click="handleOpenForm"
-          >
-            Add New Record
-          </b-button>
-        </b-col>
-      </b-row>
-      <div :class="!currentProgress.locked ? `min-card-h` : ``">
-        <TableItem :rows="table.rows" @onRowSelected="onRowSelected" />
-        <EmptyTable
-          v-if="table.rows.length == 0"
-          title="Check & Report of Grounding Tests will be displayed here"
-          description="Please add an items first"
-        />
-      </div>
-    </div>
-  </div>
+    </b-col>
+    <TableItem
+      v-show="$route.name != route.form"
+      :currentProgress="currentProgress"
+      :details="form.details"
+      @onUpdate="get"
+    />
+  </b-row>
 </template>
 
 <script>
@@ -141,26 +129,28 @@ import { getDppu, numberFormat, getDate, dateFormat } from "@/core/utils";
 export default {
   components: {
     FormHeader,
-    TableItem
+    TableItem,
   },
   data: () => ({
     title: "211 SF - Check & Report of Grounding Test",
     route: {
       form: "sf211Create",
-      table: "sf211"
+      table: "sf211",
     },
     form: {
       dppu: {
         id: null,
-        label: null
+        label: null,
       },
       dppuId: null,
       transactionId: "Auto Generated",
       transactionDate: getDate(),
       period: null,
+      remarks: null,
+      details: [],
       sendApproval: false,
       updatedBy: null,
-      updatedAt: null
+      updatedAt: null,
     },
     currentProgress: {
       locked: null,
@@ -168,16 +158,16 @@ export default {
       remarks: null,
       nextAction: {
         id: null,
-        label: null
-      }
+        label: null,
+      },
     },
     table: {
-      rows: []
+      rows: [],
     },
     options: {
       dppu: [],
-      shift: []
-    }
+      shift: [],
+    },
   }),
   computed: {
     ...mapGetters("personalize", ["multipleDppu", "dppu"]),
@@ -191,23 +181,23 @@ export default {
     textButton() {
       const self = this;
       return self.$route.name != self.route.form ? "Update" : "Save";
-    }
+    },
   },
   validations: {
     form: {
       dppuId: { required },
       transactionDate: { required },
-      period: { required }
-    }
+      period: { required },
+    },
   },
   created() {
     const self = this;
 
     if (self.multipleDppu) {
-      getDppu().then(response => {
-        self.options.dppu = response.data.map(x => ({
+      getDppu().then((response) => {
+        self.options.dppu = response.data.map((x) => ({
           id: x.id,
-          label: x.name
+          label: x.name,
         }));
       });
     } else {
@@ -231,16 +221,16 @@ export default {
       let loader = self.$loading.show();
       self.$store
         .dispatch("apis/get", {
-          url: `/board/standard-form/211/${self.$route.params.id}`
+          url: `/board/standard-form/211/${self.$route.params.id}`,
         })
-        .then(response => {
+        .then((response) => {
           if (response.error) {
             self.$message.error({
               zIndex: 10000,
-              message: response.message
+              message: response.message,
             });
 
-            self.$router.push({ name: self.route.table });
+            // self.$router.push({ name: self.route.table });
           } else {
             self.form = {
               dppu: response.data.dppu,
@@ -251,8 +241,10 @@ export default {
                 "YYYY-MM-DD"
               ),
               period: response.data.period,
+              remarks: response.data.remarks,
+              details: response.data.details,
               updatedBy: response.data.updatedBy,
-              updatedAt: response.data.updatedAt
+              updatedAt: response.data.updatedAt,
             };
 
             self.currentProgress = {
@@ -261,8 +253,8 @@ export default {
               remarks: response.data.currentProgress.remarks,
               nextAction: {
                 id: response.data.currentProgress.nextAction?.id,
-                label: response.data.currentProgress.nextAction?.label
-              }
+                label: response.data.currentProgress.nextAction?.label,
+              },
             };
 
             self.table.rows = response.data.details;
@@ -276,8 +268,8 @@ export default {
       self.$router.push({
         name: "sf211CreateItem",
         params: {
-          id: self.$route.params.id
-        }
+          id: self.$route.params.id,
+        },
       });
     },
     onRowSelected(item) {
@@ -287,8 +279,8 @@ export default {
         name: "sf211UpdateItem",
         params: {
           id: self.$route.params.id,
-          iditem: item.id
-        }
+          iditem: item.id,
+        },
       });
     },
     handleSubmit() {
@@ -319,32 +311,32 @@ export default {
         .confirm(_confirmText, {
           okText: _okText,
           cancelText: "Cancel",
-          loader: true
+          loader: true,
         })
-        .then(dialog => {
+        .then((dialog) => {
           self.$store
             .dispatch(_action, {
               url: _url,
-              params: self.form
+              params: self.form,
             })
-            .then(response => {
+            .then((response) => {
               if (response.error) {
                 self.$message.error({
                   zIndex: 10000,
-                  message: response.message
+                  message: response.message,
                 });
               } else {
                 self.$message.success({
                   zIndex: 10000,
-                  message: response.message
+                  message: response.message,
                 });
 
                 if (self.$route.name == self.route.form) {
                   self.$router.replace({
                     name: "sf211Update",
                     params: {
-                      id: response.data.id
-                    }
+                      id: response.data.id,
+                    },
                   });
 
                   self.form = {
@@ -356,8 +348,10 @@ export default {
                       "YYYY-MM-DD"
                     ),
                     period: response.data.period,
+                    remarks: response.data.remarks,
+                    details: response.data.details,
                     updatedBy: response.data.updatedBy,
-                    updatedAt: response.data.updatedAt
+                    updatedAt: response.data.updatedAt,
                   };
 
                   self.currentProgress = {
@@ -365,8 +359,8 @@ export default {
                     remarks: response.data.currentProgress.remarks,
                     nextAction: {
                       id: response.data.currentProgress.nextAction?.id,
-                      label: response.data.currentProgress.nextAction?.label
-                    }
+                      label: response.data.currentProgress.nextAction?.label,
+                    },
                   };
 
                   self.table.rows = response.data.details;
@@ -383,23 +377,23 @@ export default {
         .confirm("You are about to delete this transaction. Are you sure ?", {
           okText: "Yes, Delete",
           cancelText: "Cancel",
-          loader: true
+          loader: true,
         })
-        .then(dialog => {
+        .then((dialog) => {
           self.$store
             .dispatch("apis/remove", {
-              url: `/board/standard-form/211/${self.$route.params.id}`
+              url: `/board/standard-form/211/${self.$route.params.id}`,
             })
-            .then(response => {
+            .then((response) => {
               if (response.error) {
                 self.$message.error({
                   zIndex: 10000,
-                  message: response.message
+                  message: response.message,
                 });
               } else {
                 self.$message.success({
                   zIndex: 10000,
-                  message: response.message
+                  message: response.message,
                 });
 
                 self.$router.go(-1);
@@ -420,27 +414,27 @@ export default {
           {
             okText: "Yes, Send",
             cancelText: "Cancel",
-            loader: true
+            loader: true,
           }
         )
-        .then(dialog => {
+        .then((dialog) => {
           self.form.sendApproval = true;
 
           self.$store
             .dispatch("apis/put", {
               url: `/board/standard-form/211/${self.$route.params.id}`,
-              params: self.form
+              params: self.form,
             })
-            .then(response => {
+            .then((response) => {
               if (response.error) {
                 self.$message.error({
                   zIndex: 10000,
-                  message: response.message
+                  message: response.message,
                 });
               } else {
                 self.$message.success({
                   zIndex: 10000,
-                  message: response.message
+                  message: response.message,
                 });
 
                 self.$router.go(-1);
@@ -456,18 +450,18 @@ export default {
         .confirm("You are about to export this transaction. Are you sure ?", {
           okText: "Yes, Export",
           cancelText: "Cancel",
-          loader: true
+          loader: true,
         })
-        .then(dialog => {
+        .then((dialog) => {
           self.$store
             .dispatch("apis/download", {
-              url: `/board/export/standard-form/211/${self.$route.params.id}`
+              url: `/board/export/standard-form/211/${self.$route.params.id}`,
             })
-            .then(response => {
+            .then((response) => {
               if (response.error) {
                 self.$message.error({
                   zIndex: 10000,
-                  message: response.message
+                  message: response.message,
                 });
               } else {
                 let fileURL = window.URL.createObjectURL(new Blob([response])),
@@ -482,7 +476,7 @@ export default {
             })
             .finally(() => dialog.close());
         });
-    }
-  }
+    },
+  },
 };
 </script>

@@ -592,8 +592,8 @@ export function setConductivity(params) {
   return `${numberFormat(params)} pS/m`;
 }
 
-export function setPsi(params) {
-  return `${numberFormat(params)} Psi`;
+export function setPsi(params, precision = 0) {
+  return `${numberFormat(params, precision)} Psi`;
 }
 
 export function setFlowRate(params) {
