@@ -105,7 +105,7 @@ import { mapGetters } from "vuex";
 import { sf128 as columns } from "@/core/datasource/columns";
 import { standardFormStatus } from "@/core/datasource/options";
 import {
-  startDate,
+  yearStart,
   getDate,
   getDppu,
   dateTimeFormat,
@@ -132,7 +132,7 @@ export default {
       tankId: null,
       status: null,
       dateRange: {
-        startDate: startDate(),
+        startDate: yearStart(),
         endDate: getDate()
       }
     },

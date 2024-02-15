@@ -101,7 +101,7 @@ import { mapGetters } from "vuex";
 import { sf139a as columns } from "@/core/datasource/columns";
 import { standardFormStatus } from "@/core/datasource/options";
 import {
-  startDate,
+  yearStart,
   getDate,
   getDppu,
   changeDppu,
@@ -130,7 +130,7 @@ export default {
       nomorPolisi: null,
       status: null,
       dateRange: {
-        startDate: startDate(),
+        startDate: yearStart(),
         endDate: getDate()
       }
     },

@@ -101,7 +101,7 @@
       </div>
     </b-col>
     <TableItem
-      v-show="$route.name != route.form"
+      v-if="$route.name != route.form"
       :currentProgress="currentProgress"
       :details="form.details"
       @onUpdate="get"
@@ -111,7 +111,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-import FormHeader from "../common/FormHeader.vue";
+import FormHeader from "./FormHeader.vue";
 import TableItem from "./TableItem.vue";
 import { required } from "vuelidate/lib/validators";
 import { getDppu, numberFormat, getDate, dateFormat } from "@/core/utils";

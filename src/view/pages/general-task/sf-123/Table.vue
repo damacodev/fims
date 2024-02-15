@@ -89,7 +89,7 @@ import { mapGetters } from "vuex";
 import { sfCommonWithShift as columns } from "@/core/datasource/columns";
 import { standardFormStatus } from "@/core/datasource/options";
 import {
-  startDate,
+  yearStart,
   getDate,
   getDppu,
   dateFormat,
@@ -115,7 +115,7 @@ export default {
       shiftId: null,
       status: null,
       dateRange: {
-        startDate: startDate(),
+        startDate: yearStart(),
         endDate: getDate()
       }
     },

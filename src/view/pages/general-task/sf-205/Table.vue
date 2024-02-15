@@ -142,7 +142,7 @@ import { mapGetters } from "vuex";
 import { sf205 as columns } from "@/core/datasource/columns";
 import { standardFormStatus } from "@/core/datasource/options";
 import {
-  startDate,
+  yearStart,
   getDate,
   getDppu,
   dateFormat,
@@ -170,7 +170,7 @@ export default {
       dppuId: null,
       status: null,
       dateRange: {
-        startDate: startDate(),
+        startDate: yearStart(),
         endDate: getDate()
       }
     },
@@ -255,6 +255,7 @@ export default {
         pageSize: self.serverParams.pageSize,
         keyword: self.serverParams.keyword,
         dppuId: self.serverParams.dppuId,
+        equipmentId: self.serverParams.equipmentId,
         status: self.serverParams.status,
         startDate: self.serverParams.dateRange.startDate,
         endDate: self.serverParams.dateRange.endDate
