@@ -34,11 +34,7 @@
               Delete
             </b-button>
             <b-button
-              v-show="
-                $route.name != route.form &&
-                  !currentProgress.locked &&
-                  table.rows.length > 0
-              "
+              v-show="$route.name != route.form && !currentProgress.locked"
               variant="outline-primary"
               size="lg"
               class="mr-2"
@@ -81,13 +77,6 @@
                 :v="$v.form.transactionDate"
                 :max="getDate()"
               />
-              <InputText
-                label="Period"
-                type="text"
-                v-model="form.period"
-                :v="$v.form.period"
-              />
-              <TextArea label="Remarks" v-model="form.remarks" />
               <b-row v-if="currentProgress.status == 'Rejected'">
                 <b-col lg="8" xl="5" offset="4">
                   <b-alert show variant="danger">
@@ -108,20 +97,20 @@
             />
           </div>
         </b-row>
+        <TableItem
+          v-if="$route.name != route.form"
+          :currentProgress="currentProgress"
+          :details="form.details"
+          @onUpdate="get"
+        />
       </div>
     </b-col>
-    <TableItem
-      v-show="$route.name != route.form"
-      :currentProgress="currentProgress"
-      :details="form.details"
-      @onUpdate="get"
-    />
   </b-row>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
-import FormHeader from "./FormHeader.vue";
+import FormHeader from "../common/FormHeader.vue";
 import TableItem from "./TableItem.vue";
 import { required } from "vuelidate/lib/validators";
 import { getDppu, numberFormat, getDate, dateFormat } from "@/core/utils";
@@ -132,10 +121,10 @@ export default {
     TableItem
   },
   data: () => ({
-    title: "211 SF - Check & Report of Grounding Test",
+    title: "214 SF - Fire Hose Box Check List",
     route: {
-      form: "sf211Create",
-      table: "sf211"
+      form: "sf214Create",
+      table: "sf214"
     },
     form: {
       dppu: {
@@ -145,7 +134,6 @@ export default {
       dppuId: null,
       transactionId: "Auto Generated",
       transactionDate: getDate(),
-      period: null,
       remarks: null,
       details: [],
       sendApproval: false,
@@ -160,9 +148,6 @@ export default {
         id: null,
         label: null
       }
-    },
-    table: {
-      rows: []
     },
     options: {
       dppu: []
@@ -185,8 +170,7 @@ export default {
   validations: {
     form: {
       dppuId: { required },
-      transactionDate: { required },
-      period: { required }
+      transactionDate: { required }
     }
   },
   created() {
@@ -221,7 +205,7 @@ export default {
       let loader = self.$loading.show();
       self.$store
         .dispatch("apis/get", {
-          url: `/board/standard-form/211/${self.$route.params.id}`
+          url: `/board/standard-form/214/${self.$route.params.id}`
         })
         .then(response => {
           if (response.error) {
@@ -240,7 +224,6 @@ export default {
                 response.data.transactionDate,
                 "YYYY-MM-DD"
               ),
-              period: response.data.period,
               remarks: response.data.remarks,
               details: response.data.details,
               updatedBy: response.data.updatedBy,
@@ -256,8 +239,6 @@ export default {
                 label: response.data.currentProgress.nextAction?.label
               }
             };
-
-            self.table.rows = response.data.details;
           }
         })
         .finally(() => loader.hide());
@@ -277,13 +258,13 @@ export default {
         _confirmText = "You are about to save this transaction. Are you sure ?";
         _okText = "Yes, Save";
         _action = "apis/post";
-        _url = "/board/standard-form/211";
+        _url = "/board/standard-form/214";
       } else {
         _confirmText =
           "You are about to update this transaction. Are you sure ?";
         _okText = "Yes, Update";
         _action = "apis/put";
-        _url = `/board/standard-form/211/${self.$route.params.id}`;
+        _url = `/board/standard-form/214/${self.$route.params.id}`;
       }
 
       self.$dialog
@@ -312,7 +293,7 @@ export default {
 
                 if (self.$route.name == self.route.form) {
                   self.$router.replace({
-                    name: "sf211Update",
+                    name: "sf214Update",
                     params: {
                       id: response.data.id
                     }
@@ -326,8 +307,6 @@ export default {
                       response.data.transactionDate,
                       "YYYY-MM-DD"
                     ),
-                    period: response.data.period,
-                    remarks: response.data.remarks,
                     details: response.data.details,
                     updatedBy: response.data.updatedBy,
                     updatedAt: response.data.updatedAt
@@ -341,8 +320,6 @@ export default {
                       label: response.data.currentProgress.nextAction?.label
                     }
                   };
-
-                  self.table.rows = response.data.details;
                 }
               }
             })
@@ -361,7 +338,7 @@ export default {
         .then(dialog => {
           self.$store
             .dispatch("apis/remove", {
-              url: `/board/standard-form/211/${self.$route.params.id}`
+              url: `/board/standard-form/214/${self.$route.params.id}`
             })
             .then(response => {
               if (response.error) {
@@ -401,7 +378,7 @@ export default {
 
           self.$store
             .dispatch("apis/put", {
-              url: `/board/standard-form/211/${self.$route.params.id}`,
+              url: `/board/standard-form/214/${self.$route.params.id}`,
               params: self.form
             })
             .then(response => {
@@ -434,7 +411,7 @@ export default {
         .then(dialog => {
           self.$store
             .dispatch("apis/download", {
-              url: `/board/export/standard-form/211/${self.$route.params.id}`
+              url: `/board/export/standard-form/214/${self.$route.params.id}`
             })
             .then(response => {
               if (response.error) {
@@ -447,7 +424,7 @@ export default {
                   fileLink = document.createElement("a");
 
                 fileLink.href = fileURL;
-                fileLink.setAttribute("download", "211.xlsx");
+                fileLink.setAttribute("download", "214.xlsx");
                 document.body.appendChild(fileLink);
 
                 fileLink.click();

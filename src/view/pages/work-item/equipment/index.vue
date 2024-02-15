@@ -42,6 +42,14 @@
         v-else-if="requestInfo.request.category.id == 9"
         :requestInfo="requestInfo"
       />
+      <Category10
+        v-else-if="requestInfo.request.category.id == 10"
+        :requestInfo="requestInfo"
+      />
+      <Category11
+        v-else-if="requestInfo.request.category.id == 11"
+        :requestInfo="requestInfo"
+      />
     </b-col>
     <b-col lg="6">
       <CardForm title="Evaluate" :subTitle="subTitle">
@@ -96,6 +104,8 @@ import Category6 from "./Category6";
 import Category7 from "./Category7";
 import Category8 from "./Category8";
 import Category9 from "./Category9";
+import Category10 from "./Category10";
+import Category11 from "./Category11";
 import Empty from "../common/Empty";
 import Evaluation from "./Evaluation";
 import { mapGetters } from "vuex";
@@ -115,6 +125,8 @@ export default {
     Category7,
     Category8,
     Category9,
+    Category10,
+    Category11,
     Empty,
     Evaluation
   },

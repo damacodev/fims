@@ -76,7 +76,7 @@
         {{ dateFormat(data.value) }}</template
       >
       <template #cell(transactionRecords)="data">
-        {{ data.item.details.length }} Records</template
+        {{ data.item.details.length }} Equipments</template
       >
     </CardTable>
     <b-modal

@@ -676,6 +676,62 @@ export const deadleg = [
   }
 ];
 
+export const fireHose = [
+  {
+    label: "DPPU",
+    key: "dppu.label",
+    thClass: "align-middle"
+  },
+  {
+    label: "Equipment Code",
+    key: "code",
+    thClass: "align-middle"
+  },
+  {
+    label: "Type",
+    key: "detail.type",
+    thClass: "align-middle"
+  },
+  {
+    label: "Location",
+    key: "detail.location",
+    thClass: "align-middle"
+  },
+  {
+    label: "Status",
+    key: "actived",
+    thClass: "align-middle"
+  }
+];
+
+export const fireExtinguisher = [
+  {
+    label: "DPPU",
+    key: "dppu.label",
+    thClass: "align-middle"
+  },
+  {
+    label: "Equipment Code",
+    key: "code",
+    thClass: "align-middle"
+  },
+  {
+    label: "Capacity",
+    key: "detail.capacity",
+    thClass: "align-middle"
+  },
+  {
+    label: "Location",
+    key: "detail.location",
+    thClass: "align-middle"
+  },
+  {
+    label: "Status",
+    key: "actived",
+    thClass: "align-middle"
+  }
+];
+
 export const equipment = [
   automationAndFieldInstrument,
   electricalInstrumentAndPanel,
@@ -685,7 +741,9 @@ export const equipment = [
   refuelerOrHydrantDispenser,
   storageTank,
   bridger,
-  deadleg
+  deadleg,
+  fireHose,
+  fireExtinguisher
 ];
 
 export const importEquipment = [

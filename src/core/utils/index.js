@@ -518,6 +518,34 @@ export async function getBondingReelCondition() {
   return result;
 }
 
+export async function getPressureGaugeFunction() {
+  let result = [];
+
+  await store
+    .dispatch("apis/get", {
+      url: "/common/pressure-gauge-function"
+    })
+    .then(response => {
+      result = response.data;
+    });
+
+  return result;
+}
+
+export async function getFireHose() {
+  let result = [];
+
+  await store
+    .dispatch("apis/get", {
+      url: "/common/fire-hose"
+    })
+    .then(response => {
+      result = response.data;
+    });
+
+  return result;
+}
+
 // export function groupBy(list, keyGetter) {
 //   const map = new Map();
 //   list.forEach((item) => {

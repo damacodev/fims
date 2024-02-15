@@ -54,9 +54,7 @@
       <PlainText
         label="Throughput Since Element Last Change"
         :value="
-          setLitres(
-            form.conditionFilterBefore.throughputSinceElementLastChange
-          )
+          setLitres(form.conditionFilterBefore.throughputSinceElementLastChange)
         "
       />
       <PlainText
@@ -149,7 +147,10 @@
       <PlainText
         label="Observed P.D.G"
         :value="
-          setPsi(form.filterConditionAfterInstallation.operationalFlowrate.pdg, 2)
+          setPsi(
+            form.filterConditionAfterInstallation.operationalFlowrate.pdg,
+            2
+          )
         "
       />
       <PlainText
@@ -164,7 +165,8 @@
         label="Corrected P.D.G"
         :value="
           setPsi(
-            form.filterConditionAfterInstallation.maximumAchievableFlowrate.pdg, 2
+            form.filterConditionAfterInstallation.maximumAchievableFlowrate.pdg,
+            2
           )
         "
       />
@@ -180,11 +182,15 @@
       />
       <PlainText
         label="Millipore Colorimetric Test (Wet)"
-        :value="form.filterConditionAfterInstallation.milliporeColorimetricTest.wet"
+        :value="
+          form.filterConditionAfterInstallation.milliporeColorimetricTest.wet
+        "
       />
       <PlainText
         label="Millipore Colorimetric Test (Dry)"
-        :value="form.filterConditionAfterInstallation.milliporeColorimetricTest.dry"
+        :value="
+          form.filterConditionAfterInstallation.milliporeColorimetricTest.dry
+        "
       />
       <PlainText
         label="Hose End Strainer Inspection & Cleaning"

@@ -15,9 +15,18 @@
       <div class="card-toolbar">
         <b-button
           v-show="
+            currentProgress.locked && currentProgress.status == 'Approved'
+          "
+          variant="outline-primary"
+          @click="handleExport"
+        >
+          Export to Excel
+        </b-button>
+        <b-button
+          v-show="
             $route.name != route.form &&
-            !currentProgress.locked &&
-            form.workItemId == null
+              !currentProgress.locked &&
+              form.workItemId == null
           "
           variant="outline-danger"
           size="lg"
@@ -496,23 +505,23 @@ import { getDppu, getDate, dateFormat } from "@/core/utils";
 import {
   reasonFilterChanged,
   wetDry,
-  cleanDirt,
+  cleanDirt
 } from "@/core/datasource/options";
 
 export default {
   components: {
-    FormHeader,
+    FormHeader
   },
   data: () => ({
     title: "209 SF - Laporan Pemasangan / Penggantian Elemen Filter",
     route: {
       form: "sf209Create",
-      table: "sf209",
+      table: "sf209"
     },
     form: {
       dppu: {
         id: null,
-        label: null,
+        label: null
       },
       dppuId: null,
       transactionId: "Auto Generated",
@@ -523,19 +532,19 @@ export default {
       conditionFilterBefore: {
         operationalFlowrate: {
           lpm: null,
-          pdg: null,
+          pdg: null
         },
         maximumAchievableFlowrate: {
           lpm: null,
-          pdg: null,
+          pdg: null
         },
         dateElementFilterLastChanged: null,
         throughputSinceElementLastChange: null,
-        reasonFilterChanged: null,
+        reasonFilterChanged: null
       },
       filterVesselConditionChecked: {
         elementsCondition: null,
-        vesselCondition: null,
+        vesselCondition: null
       },
       partsElementChanged: {
         micro: null,
@@ -548,31 +557,31 @@ export default {
           coalescer: null,
           separator: null,
           monitor: null,
-          wbf: null,
-        },
+          wbf: null
+        }
       },
       filterConditionAfterInstallation: {
         operationalFlowrate: {
           lpm: null,
-          pdg: null,
+          pdg: null
         },
         maximumAchievableFlowrate: {
           lpm: null,
-          pdg: null,
+          pdg: null
         },
         productCirculation: null,
         meterTotalisator: null,
         milliporeColorimetricTest: {
           wet: null,
-          dry: null,
+          dry: null
         },
-        hoseEndStrainerInspectionAndCleaning: null,
+        hoseEndStrainerInspectionAndCleaning: null
       },
       workItemId: null,
       remarks: null,
       sendApproval: false,
       updatedBy: null,
-      updatedAt: null,
+      updatedAt: null
     },
     currentProgress: {
       locked: null,
@@ -580,15 +589,15 @@ export default {
       remarks: null,
       nextAction: {
         id: null,
-        label: null,
-      },
+        label: null
+      }
     },
     options: {
       dppu: [],
       reasonFilterChanged,
       wetDry,
-      cleanDirt,
-    },
+      cleanDirt
+    }
   }),
   computed: {
     ...mapGetters("personalize", ["multipleDppu", "dppu"]),
@@ -602,24 +611,24 @@ export default {
     textButton() {
       const self = this;
       return self.$route.name != self.route.form ? "Update" : "Save";
-    },
+    }
   },
   validations: {
     form: {
       dppuId: { required },
       transactionDate: { required },
       equipmentId: { required },
-      remarks: { maxLength: maxLength(250) },
-    },
+      remarks: { maxLength: maxLength(250) }
+    }
   },
   created() {
     const self = this;
 
     if (self.multipleDppu) {
-      getDppu().then((response) => {
-        self.options.dppu = response.data.map((x) => ({
+      getDppu().then(response => {
+        self.options.dppu = response.data.map(x => ({
           id: x.id,
-          label: x.name,
+          label: x.name
         }));
       });
     } else {
@@ -648,21 +657,21 @@ export default {
             pageNumber: 1,
             pageSize: 20,
             category: 6,
-            actived: true,
-          },
+            actived: true
+          }
         })
-        .then((response) => {
+        .then(response => {
           if (response.error) {
             self.$message.error({
               zIndex: 10000,
-              message: response.message,
+              message: response.message
             });
           } else {
             self.$refs.Equipment.$refs[
               "Loading/Discharge/Vehicle No."
-            ].defaultOptions = response.data.data.map((x) => ({
+            ].defaultOptions = response.data.data.map(x => ({
               id: x.id,
-              label: x.code,
+              label: x.code
             }));
             self.$refs.Equipment.$refs[
               "Loading/Discharge/Vehicle No."
@@ -683,21 +692,21 @@ export default {
               pageSize: 20,
               category: 6,
               keyword: searchQuery,
-              actived: true,
-            },
+              actived: true
+            }
           })
-          .then((response) => {
+          .then(response => {
             if (response.error) {
               self.$message.error({
                 zIndex: 10000,
-                message: response.message,
+                message: response.message
               });
             } else {
               callback(
                 null,
-                response.data.data.map((x) => ({
+                response.data.data.map(x => ({
                   id: x.id,
-                  label: x.code,
+                  label: x.code
                 }))
               );
             }
@@ -710,13 +719,13 @@ export default {
       let loader = self.$loading.show();
       self.$store
         .dispatch("apis/get", {
-          url: `/board/standard-form/209/${self.$route.params.id}`,
+          url: `/board/standard-form/209/${self.$route.params.id}`
         })
-        .then((response) => {
+        .then(response => {
           if (response.error) {
             self.$message.error({
               zIndex: 10000,
-              message: response.message,
+              message: response.message
             });
 
             self.$router.push({ name: self.route.table });
@@ -735,16 +744,20 @@ export default {
               vesselCapacity: response.data.vesselCapacity,
               conditionFilterBefore: {
                 operationalFlowrate: {
-                  lpm: response.data.conditionFilterBefore?.operationalFlowrate
-                    ?.lpm,
-                  pdg: response.data.conditionFilterBefore?.operationalFlowrate
-                    ?.pdg,
+                  lpm:
+                    response.data.conditionFilterBefore?.operationalFlowrate
+                      ?.lpm,
+                  pdg:
+                    response.data.conditionFilterBefore?.operationalFlowrate
+                      ?.pdg
                 },
                 maximumAchievableFlowrate: {
-                  lpm: response.data.conditionFilterBefore
-                    ?.maximumAchievableFlowrate?.lpm,
-                  pdg: response.data.conditionFilterBefore
-                    ?.maximumAchievableFlowrate?.pdg,
+                  lpm:
+                    response.data.conditionFilterBefore
+                      ?.maximumAchievableFlowrate?.lpm,
+                  pdg:
+                    response.data.conditionFilterBefore
+                      ?.maximumAchievableFlowrate?.pdg
                 },
                 dateElementFilterLastChanged: dateFormat(
                   response.data.conditionFilterBefore
@@ -755,13 +768,13 @@ export default {
                   response.data.conditionFilterBefore
                     ?.throughputSinceElementLastChange,
                 reasonFilterChanged:
-                  response.data.conditionFilterBefore?.reasonFilterChanged,
+                  response.data.conditionFilterBefore?.reasonFilterChanged
               },
               filterVesselConditionChecked: {
                 elementsCondition:
                   response.data.filterVesselConditionChecked?.elementsCondition,
                 vesselCondition:
-                  response.data.filterVesselConditionChecked?.vesselCondition,
+                  response.data.filterVesselConditionChecked?.vesselCondition
               },
               partsElementChanged: {
                 micro: response.data.partsElementChanged?.micro,
@@ -782,22 +795,27 @@ export default {
                   monitor:
                     response.data.partsElementChanged
                       ?.sparepartsElementFilterAvailable?.monitor,
-                  wbf: response.data.partsElementChanged
-                    ?.sparepartsElementFilterAvailable?.wbf,
-                },
+                  wbf:
+                    response.data.partsElementChanged
+                      ?.sparepartsElementFilterAvailable?.wbf
+                }
               },
               filterConditionAfterInstallation: {
                 operationalFlowrate: {
-                  lpm: response.data.filterConditionAfterInstallation
-                    ?.operationalFlowrate?.lpm,
-                  pdg: response.data.filterConditionAfterInstallation
-                    ?.operationalFlowrate?.pdg,
+                  lpm:
+                    response.data.filterConditionAfterInstallation
+                      ?.operationalFlowrate?.lpm,
+                  pdg:
+                    response.data.filterConditionAfterInstallation
+                      ?.operationalFlowrate?.pdg
                 },
                 maximumAchievableFlowrate: {
-                  lpm: response.data.filterConditionAfterInstallation
-                    ?.maximumAchievableFlowrate?.lpm,
-                  pdg: response.data.filterConditionAfterInstallation
-                    ?.maximumAchievableFlowrate?.pdg,
+                  lpm:
+                    response.data.filterConditionAfterInstallation
+                      ?.maximumAchievableFlowrate?.lpm,
+                  pdg:
+                    response.data.filterConditionAfterInstallation
+                      ?.maximumAchievableFlowrate?.pdg
                 },
                 productCirculation:
                   response.data.filterConditionAfterInstallation
@@ -806,20 +824,22 @@ export default {
                   response.data.filterConditionAfterInstallation
                     ?.meterTotalisator,
                 milliporeColorimetricTest: {
-                  wet: response.data.filterConditionAfterInstallation
-                    ?.milliporeColorimetricTest?.wet,
-                  dry: response.data.filterConditionAfterInstallation
-                    ?.milliporeColorimetricTest?.dry,
+                  wet:
+                    response.data.filterConditionAfterInstallation
+                      ?.milliporeColorimetricTest?.wet,
+                  dry:
+                    response.data.filterConditionAfterInstallation
+                      ?.milliporeColorimetricTest?.dry
                 },
                 hoseEndStrainerInspectionAndCleaning:
                   response.data.filterConditionAfterInstallation
-                    ?.hoseEndStrainerInspectionAndCleaning,
+                    ?.hoseEndStrainerInspectionAndCleaning
               },
 
               workItemId: response.data.workItemId,
               remarks: response.data.remarks,
               updatedBy: response.data.updatedBy,
-              updatedAt: response.data.updatedAt,
+              updatedAt: response.data.updatedAt
             };
 
             self.currentProgress = {
@@ -828,8 +848,8 @@ export default {
               remarks: response.data.currentProgress.remarks,
               nextAction: {
                 id: response.data.currentProgress.nextAction?.id,
-                label: response.data.currentProgress.nextAction?.label,
-              },
+                label: response.data.currentProgress.nextAction?.label
+              }
             };
           }
         })
@@ -863,24 +883,24 @@ export default {
         .confirm(_confirmText, {
           okText: _okText,
           cancelText: "Cancel",
-          loader: true,
+          loader: true
         })
-        .then((dialog) => {
+        .then(dialog => {
           self.$store
             .dispatch(_action, {
               url: _url,
-              params: self.form,
+              params: self.form
             })
-            .then((response) => {
+            .then(response => {
               if (response.error) {
                 self.$message.error({
                   zIndex: 10000,
-                  message: response.message,
+                  message: response.message
                 });
               } else {
                 self.$message.success({
                   zIndex: 10000,
-                  message: response.message,
+                  message: response.message
                 });
 
                 self.$router.go(-1);
@@ -896,23 +916,23 @@ export default {
         .confirm("You are about to delete this transaction. Are you sure ?", {
           okText: "Yes, Delete",
           cancelText: "Cancel",
-          loader: true,
+          loader: true
         })
-        .then((dialog) => {
+        .then(dialog => {
           self.$store
             .dispatch("apis/remove", {
-              url: `/board/standard-form/209/${self.$route.params.id}`,
+              url: `/board/standard-form/209/${self.$route.params.id}`
             })
-            .then((response) => {
+            .then(response => {
               if (response.error) {
                 self.$message.error({
                   zIndex: 10000,
-                  message: response.message,
+                  message: response.message
                 });
               } else {
                 self.$message.success({
                   zIndex: 10000,
-                  message: response.message,
+                  message: response.message
                 });
 
                 self.$router.go(-1);
@@ -933,27 +953,27 @@ export default {
           {
             okText: "Yes, Send",
             cancelText: "Cancel",
-            loader: true,
+            loader: true
           }
         )
-        .then((dialog) => {
+        .then(dialog => {
           self.form.sendApproval = true;
 
           self.$store
             .dispatch("apis/put", {
               url: `/board/standard-form/209/${self.$route.params.id}`,
-              params: self.form,
+              params: self.form
             })
-            .then((response) => {
+            .then(response => {
               if (response.error) {
                 self.$message.error({
                   zIndex: 10000,
-                  message: response.message,
+                  message: response.message
                 });
               } else {
                 self.$message.success({
                   zIndex: 10000,
-                  message: response.message,
+                  message: response.message
                 });
 
                 self.$router.go(-1);
@@ -962,6 +982,40 @@ export default {
             .finally(() => dialog.close());
         });
     },
-  },
+    handleExport() {
+      const self = this;
+
+      self.$dialog
+        .confirm("You are about to export this transaction. Are you sure ?", {
+          okText: "Yes, Export",
+          cancelText: "Cancel",
+          loader: true
+        })
+        .then(dialog => {
+          self.$store
+            .dispatch("apis/download", {
+              url: `/board/export/standard-form/209/${self.$route.params.id}`
+            })
+            .then(response => {
+              if (response.error) {
+                self.$message.error({
+                  zIndex: 10000,
+                  message: response.message
+                });
+              } else {
+                let fileURL = window.URL.createObjectURL(new Blob([response])),
+                  fileLink = document.createElement("a");
+
+                fileLink.href = fileURL;
+                fileLink.setAttribute("download", "209.xlsx");
+                document.body.appendChild(fileLink);
+
+                fileLink.click();
+              }
+            })
+            .finally(() => dialog.close());
+        });
+    }
+  }
 };
 </script>

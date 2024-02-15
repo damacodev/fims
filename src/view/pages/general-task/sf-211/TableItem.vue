@@ -33,11 +33,11 @@
                 </b-tr>
               </b-thead>
               <b-tbody>
-                <template v-for="(row, index) in detail.checks">
+                <template v-for="(row, index) in detail.records">
                   <b-tr v-bind:key="index" @click="onRowSelected(detail, row)">
                     <td>{{ detail.equipment.label }}</td>
                     <td>{{ row.testPointNumber }}</td>
-                    <td>{{ setOhm(row.resistance) }}</td>
+                    <td>{{ setOhm(row.resistance, 2) }}</td>
                     <td>{{ row.weatherCondition }}</td>
                     <td>{{ row.eartCondition }}</td>
                     <td>{{ row.remark }}</td>
@@ -46,7 +46,7 @@
               </b-tbody>
             </b-table-simple>
             <EmptyTable
-              v-if="detail.checks.length == 0"
+              v-if="detail.records.length == 0"
               title="Check & Report of Grounding Tests will be displayed here"
               description="Please add an items first"
             />
@@ -82,6 +82,7 @@
             :v="$v.modal.form.resistance"
             :useHorizontal="false"
             :usePrefix="false"
+            :precision="2"
             append="OHM"
           />
         </b-col>
@@ -114,7 +115,7 @@ import { setOhm } from "@/core/utils";
 export default {
   props: {
     currentProgress: Object,
-    details: Array,
+    details: Array
   },
   data: () => ({
     modal: {
@@ -130,17 +131,17 @@ export default {
         resistance: 0,
         weatherCondition: null,
         eartCondition: null,
-        remark: null,
-      },
-    },
+        remark: null
+      }
+    }
   }),
   validations: {
     modal: {
       form: {
         testPointNumber: { required },
-        resistance: { required },
-      },
-    },
+        resistance: { required }
+      }
+    }
   },
   methods: {
     setOhm,
@@ -148,6 +149,7 @@ export default {
       const self = this;
 
       if (!self.currentProgress.locked) {
+        self.$v.modal.form.$reset();
         self.modal.show = true;
         self.modal.mode = "add";
         self.modal.title = `Location ${detail.equipment.label}`;
@@ -166,6 +168,7 @@ export default {
       const self = this;
 
       if (!self.currentProgress.locked) {
+        self.$v.modal.form.$reset();
         self.modal.show = true;
         self.modal.mode = "edit";
         self.modal.title = `Location ${detail.equipment.label}`;
@@ -209,9 +212,9 @@ export default {
         .confirm(_confirmText, {
           okText: _okText,
           cancelText: "Cancel",
-          loader: true,
+          loader: true
         })
-        .then((dialog) => {
+        .then(dialog => {
           let payload = {
             standardForm211Id: self.$route.params.id,
             standardForm211DetailId: self.modal.form.detailId,
@@ -219,24 +222,24 @@ export default {
             resistance: self.modal.form.resistance,
             weatherCondition: self.modal.form.weatherCondition,
             eartCondition: self.modal.form.eartCondition,
-            remark: self.modal.form.remark,
+            remark: self.modal.form.remark
           };
 
           self.$store
             .dispatch(_action, {
               url: _url,
-              params: payload,
+              params: payload
             })
-            .then((response) => {
+            .then(response => {
               if (response.error) {
                 self.$message.error({
                   zIndex: 10000,
-                  message: response.message,
+                  message: response.message
                 });
               } else {
                 self.$message.success({
                   zIndex: 10000,
-                  message: response.message,
+                  message: response.message
                 });
                 self.modal.show = false;
 
@@ -290,23 +293,23 @@ export default {
         .confirm("You are about to remove this record. Are you sure ?", {
           okText: "Yes, Remove",
           cancelText: "Cancel",
-          loader: true,
+          loader: true
         })
-        .then((dialog) => {
+        .then(dialog => {
           self.$store
             .dispatch("apis/remove", {
-              url: `/board/standard-form/211/record/${self.modal.form.id}`,
+              url: `/board/standard-form/211/record/${self.modal.form.id}`
             })
-            .then((response) => {
+            .then(response => {
               if (response.error) {
                 self.$message.error({
                   zIndex: 10000,
-                  message: response.message,
+                  message: response.message
                 });
               } else {
                 self.$message.success({
                   zIndex: 10000,
-                  message: response.message,
+                  message: response.message
                 });
                 self.modal.show = false;
 
@@ -315,7 +318,7 @@ export default {
             })
             .finally(() => dialog.close());
         });
-    },
-  },
+    }
+  }
 };
 </script>

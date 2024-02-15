@@ -1,106 +1,112 @@
 <template>
-  <div class="card card-custom">
-    <div class="card-header py-3">
-      <div class="card-title align-items-start flex-column">
-        <h3 class="card-label font-weight-bolder text-dark">
-          <b-button class="btn-icon mr-2" size="xs" @click="$router.go(-1)">
-            <i class="flaticon2-back" />
-          </b-button>
-          {{ title }}
-        </h3>
-        <span class="text-muted font-weight-bold font-size-sm mt-1 pl-10">
-          {{ subTitle }}
-        </span>
+  <b-row>
+    <b-col lg="12">
+      <div class="card card-custom">
+        <div class="card-header py-3">
+          <div class="card-title align-items-start flex-column">
+            <h3 class="card-label font-weight-bolder text-dark">
+              <b-button class="btn-icon mr-2" size="xs" @click="$router.go(-1)">
+                <i class="flaticon2-back" />
+              </b-button>
+              {{ title }}
+            </h3>
+            <span class="text-muted font-weight-bold font-size-sm mt-1 pl-10">
+              {{ subTitle }}
+            </span>
+          </div>
+          <div class="card-toolbar">
+            <b-button
+              v-show="
+                currentProgress.locked && currentProgress.status == 'Approved'
+              "
+              variant="outline-primary"
+              @click="handleExport"
+            >
+              Export to Excel
+            </b-button>
+            <b-button
+              v-show="$route.name != route.form && !currentProgress.locked"
+              variant="outline-danger"
+              size="lg"
+              class="mr-2"
+              @click="handleDelete"
+            >
+              Delete
+            </b-button>
+            <b-button
+              v-show="$route.name != route.form && !currentProgress.locked"
+              variant="outline-primary"
+              size="lg"
+              class="mr-2"
+              @click="handleSendApproval"
+            >
+              Save and Send Approval
+            </b-button>
+            <b-button
+              v-show="!currentProgress.locked"
+              variant="primary"
+              size="lg"
+              @click="handleSubmit"
+            >
+              {{ textButton }}
+            </b-button>
+          </div>
+        </div>
+        <b-row class="p-2">
+          <div class="card-body pb-0">
+            <template v-if="!currentProgress.locked">
+              <Select
+                v-if="multipleDppu"
+                label="Depot Pengisian Pesawat Udara"
+                v-model="form.dppuId"
+                :v="$v.form.dppuId"
+                :options="options.dppu"
+                :multiple="false"
+                :disabled="$route.name != route.form"
+              />
+              <InputText
+                label="Transaction #"
+                type="text"
+                v-model="form.transactionId"
+                disabled
+              />
+              <InputText
+                label="Transaction Date"
+                type="date"
+                v-model="form.transactionDate"
+                :v="$v.form.transactionDate"
+                :max="getDate()"
+              />
+              <InputText label="Nomor" type="text" v-model="form.nomor" />
+              <b-row v-if="currentProgress.status == 'Rejected'">
+                <b-col lg="8" xl="5" offset="4">
+                  <b-alert show variant="danger">
+                    <h4 class="alert-heading">Rejected</h4>
+                    <hr />
+                    <p class="mb-0">
+                      {{ currentProgress.remarks }}
+                    </p>
+                  </b-alert>
+                </b-col>
+              </b-row>
+            </template>
+            <FormHeader
+              v-else
+              :form="form"
+              :currentProgress="currentProgress"
+              :showRemarks="true"
+            />
+          </div>
+        </b-row>
       </div>
-      <div class="card-toolbar">
-        <b-button
-          v-show="
-            currentProgress.locked && currentProgress.status == 'Approved'
-          "
-          variant="outline-primary"
-          @click="handleExport"
-        >
-          Export to Excel
-        </b-button>
-        <b-button
-          v-show="$route.name != route.form && !currentProgress.locked"
-          variant="outline-danger"
-          size="lg"
-          class="mr-2"
-          @click="handleDelete"
-        >
-          Delete
-        </b-button>
-        <b-button
-          v-show="$route.name != route.form && !currentProgress.locked"
-          variant="outline-primary"
-          size="lg"
-          class="mr-2"
-          @click="handleSendApproval"
-        >
-          Save and Send Approval
-        </b-button>
-        <b-button
-          v-show="!currentProgress.locked"
-          variant="primary"
-          size="lg"
-          @click="handleSubmit"
-        >
-          {{ textButton }}
-        </b-button>
-      </div>
-    </div>
-    <b-row class="p-2">
-      <div class="card-body pb-0">
-        <template v-if="!currentProgress.locked">
-          <Select
-            v-if="multipleDppu"
-            label="Depot Pengisian Pesawat Udara"
-            v-model="form.dppuId"
-            :v="$v.form.dppuId"
-            :options="options.dppu"
-            :multiple="false"
-            :disabled="$route.name != route.form"
-          />
-          <InputText
-            label="Transaction #"
-            type="text"
-            v-model="form.transactionId"
-            disabled
-          />
-          <InputText
-            label="Transaction Date"
-            type="date"
-            v-model="form.transactionDate"
-            :v="$v.form.transactionDate"
-          />
-          <b-row v-if="currentProgress.status == 'Rejected'">
-            <b-col lg="8" xl="5" offset="4">
-              <b-alert show variant="danger">
-                <h4 class="alert-heading">Rejected</h4>
-                <hr />
-                <p class="mb-0">
-                  {{ currentProgress.remarks }}
-                </p>
-              </b-alert>
-            </b-col>
-          </b-row>
-        </template>
-        <FormHeader
-          v-else
-          :form="form"
-          :currentProgress="currentProgress"
-          :showRemarks="true"
-        />
-      </div>
-    </b-row>
-    <div v-show="$route.name != route.form">
-      <TableItem
-        :rows="table.rows"
-        :buttonVisibility="!currentProgress.locked"
-      />
-    </div>
-  </div>
+    </b-col>
+    <TableItem
+      v-show="$route.name != route.form"
+      :currentProgress="currentProgress"
+      :details="form.details"
+      @onUpdate="get"
+    />
+  </b-row>
 </template>
 
 <script>
@@ -129,6 +135,7 @@ export default {
       dppuId: null,
       transactionId: "Auto Generated",
       transactionDate: getDate(),
+      nomor: null,
       workItemId: null,
       sendApproval: false,
       updatedBy: null,
@@ -142,9 +149,6 @@ export default {
         id: null,
         label: null
       }
-    },
-    table: {
-      rows: []
     },
     options: {
       dppu: []
@@ -195,6 +199,7 @@ export default {
   methods: {
     dateFormat,
     numberFormat,
+    getDate,
     get() {
       const self = this;
 
@@ -220,7 +225,8 @@ export default {
                 response.data.transactionDate,
                 "YYYY-MM-DD"
               ),
-              remarks: response.data.remarks,
+              nomor: response.data.nomor,
+              details: response.data.details,
               updatedBy: response.data.updatedBy,
               updatedAt: response.data.updatedAt
             };
@@ -234,15 +240,6 @@ export default {
                 label: response.data.currentProgress.nextAction?.label
               }
             };
-
-            self.table.rows = response.data.currentProgress.locked
-              ? response.data.details
-              : response.data.details.map(x => ({
-                  id: x.id,
-                  equipment: x.equipment,
-                  resultIds: x.resultIds.map(y => y.id),
-                  afterHeavyRainIds: x.afterHeavyRainIds.map(y => y.id)
-                }));
           }
         })
         .finally(() => loader.hide());
@@ -253,16 +250,34 @@ export default {
       self.$v.form.$touch();
       if (self.$v.form.$pending || self.$v.form.$error) return;
 
+      let _confirmText = "",
+        _okText = "",
+        _action = "",
+        _url = "";
+
+      if (self.$route.name == self.route.form) {
+        _confirmText = "You are about to save this transaction. Are you sure ?";
+        _okText = "Yes, Save";
+        _action = "apis/post";
+        _url = "/board/standard-form/206";
+      } else {
+        _confirmText =
+          "You are about to update this transaction. Are you sure ?";
+        _okText = "Yes, Update";
+        _action = "apis/put";
+        _url = `/board/standard-form/206/${self.$route.params.id}`;
+      }
+
       self.$dialog
-        .confirm("You are about to update this transaction. Are you sure ?", {
-          okText: "Yes, Update",
+        .confirm(_confirmText, {
+          okText: _okText,
           cancelText: "Cancel",
           loader: true
         })
         .then(dialog => {
           self.$store
-            .dispatch("apis/put", {
-              url: `/board/standard-form/206/${self.$route.params.id}`,
+            .dispatch(_action, {
+              url: _url,
               params: self.form
             })
             .then(response => {
@@ -276,6 +291,38 @@ export default {
                   zIndex: 10000,
                   message: response.message
                 });
+
+                if (self.$route.name == self.route.form) {
+                  self.$router.replace({
+                    name: "sf206Update",
+                    params: {
+                      id: response.data.id
+                    }
+                  });
+
+                  self.form = {
+                    dppu: response.data.dppu,
+                    dppuId: response.data.dppu?.id,
+                    transactionId: response.data.transactionId,
+                    transactionDate: dateFormat(
+                      response.data.transactionDate,
+                      "YYYY-MM-DD"
+                    ),
+                    nomor: response.data.nomor,
+                    details: response.data.details,
+                    updatedBy: response.data.updatedBy,
+                    updatedAt: response.data.updatedAt
+                  };
+
+                  self.currentProgress = {
+                    status: response.data.currentProgress.status,
+                    remarks: response.data.currentProgress.remarks,
+                    nextAction: {
+                      id: response.data.currentProgress.nextAction?.id,
+                      label: response.data.currentProgress.nextAction?.label
+                    }
+                  };
+                }
               }
             })
             .finally(() => dialog.close());
