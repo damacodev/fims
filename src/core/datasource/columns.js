@@ -1793,6 +1793,54 @@ export const sf211 = [
   }
 ];
 
+export const sf217 = [
+  {
+    label: "DPPU",
+    key: "dppu.label",
+    thClass: "align-middle"
+  },
+  {
+    label: "Transaction #",
+    key: "transactionId",
+    thClass: "align-middle"
+  },
+  {
+    label: "Transaction Date",
+    key: "transactionDate",
+    thClass: "align-middle"
+  },
+  {
+    label: "Max Test Flow Rate",
+    key: "maxTestFlowRate",
+    thClass: "align-middle"
+  },
+  {
+    label: "Against Rig Pressure P.3",
+    key: "againstRigPressure",
+    thClass: "align-middle"
+  },
+  {
+    label: "Opening",
+    key: "opening",
+    thClass: "align-middle"
+  },
+  {
+    label: "Closing",
+    key: "closing",
+    thClass: "align-middle"
+  },
+  {
+    label: "Overshoot",
+    key: "overshoot",
+    thClass: "align-middle"
+  },
+  {
+    label: "Tested By",
+    key: "updatedBy.label",
+    thClass: "align-middle"
+  }
+];
+
 export const sfCommon = [
   {
     label: "DPPU",

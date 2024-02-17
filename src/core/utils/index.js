@@ -546,6 +546,20 @@ export async function getFireHose() {
   return result;
 }
 
+export async function getDeadmanValveTest() {
+  let result = [];
+
+  await store
+    .dispatch("apis/get", {
+      url: "/common/deadman-valve-test"
+    })
+    .then(response => {
+      result = response.data;
+    });
+
+  return result;
+}
+
 // export function groupBy(list, keyGetter) {
 //   const map = new Map();
 //   list.forEach((item) => {
