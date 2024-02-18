@@ -560,6 +560,20 @@ export async function getDeadmanValveTest() {
   return result;
 }
 
+export async function getStrainerCheck() {
+  let result = [];
+
+  await store
+    .dispatch("apis/get", {
+      url: "/common/strainer-check"
+    })
+    .then(response => {
+      result = response.data;
+    });
+
+  return result;
+}
+
 // export function groupBy(list, keyGetter) {
 //   const map = new Map();
 //   list.forEach((item) => {
