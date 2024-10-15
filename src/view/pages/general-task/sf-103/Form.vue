@@ -65,6 +65,7 @@
             :options="options.dppu"
             :multiple="false"
             :disabled="$route.name != route.form"
+            @input="changeDppu"
           />
           <InputText
             label="Transaction #"
@@ -196,7 +197,9 @@ export default {
     },
     textButton() {
       const self = this;
-      return self.$route.name != self.route.form ? "Update" : "Save";
+      return self.$route.name != self.route.form
+        ? "Update"
+        : "Save and Continue";
     }
   },
   validations: {
@@ -319,13 +322,15 @@ export default {
     onRowSelected(item) {
       const self = this;
 
-      self.$router.push({
-        name: "sf103UpdateItem",
-        params: {
-          id: self.$route.params.id,
-          iditem: item.id
-        }
-      });
+      if (!self.currentProgress.locked) {
+        self.$router.push({
+          name: "sf103UpdateItem",
+          params: {
+            id: self.$route.params.id,
+            iditem: item.id
+          }
+        });
+      }
     },
     handleSubmit() {
       const self = this;
@@ -333,89 +338,73 @@ export default {
       self.$v.form.$touch();
       if (self.$v.form.$pending || self.$v.form.$error) return;
 
-      let _confirmText = "",
-        _okText = "",
-        _action = "",
+      let loader = self.$loading.show();
+      let _action = "",
         _url = "";
 
       if (self.$route.name == self.route.form) {
-        _confirmText = "You are about to save this transaction. Are you sure ?";
-        _okText = "Yes, Save";
         _action = "apis/post";
         _url = "/board/standard-form/103";
       } else {
-        _confirmText =
-          "You are about to update this transaction. Are you sure ?";
-        _okText = "Yes, Update";
         _action = "apis/put";
         _url = `/board/standard-form/103/${self.$route.params.id}`;
       }
 
-      self.$dialog
-        .confirm(_confirmText, {
-          okText: _okText,
-          cancelText: "Cancel",
-          loader: true
+      self.$store
+        .dispatch(_action, {
+          url: _url,
+          params: self.form
         })
-        .then(dialog => {
-          self.$store
-            .dispatch(_action, {
-              url: _url,
-              params: self.form
-            })
-            .then(response => {
-              if (response.error) {
-                self.$message.error({
-                  zIndex: 10000,
-                  message: response.message
-                });
-              } else {
-                self.$message.success({
-                  zIndex: 10000,
-                  message: response.message
-                });
-
-                if (self.$route.name == self.route.form) {
-                  self.$router.replace({
-                    name: "sf103Update",
-                    params: {
-                      id: response.data.id
-                    }
-                  });
-
-                  self.form = {
-                    dppu: response.data.dppu,
-                    dppuId: response.data.dppu?.id,
-                    transactionId: response.data.transactionId,
-                    transactionDate: dateFormat(
-                      response.data.transactionDate,
-                      "YYYY-MM-DD"
-                    ),
-                    shift: {
-                      id: response.data.shift?.id,
-                      label: response.data.shift?.label
-                    },
-                    shiftId: response.data.shift?.id,
-                    grade: response.data.grade,
-                    updatedBy: response.data.updatedBy,
-                    updatedAt: response.data.updatedAt
-                  };
-
-                  self.currentProgress = {
-                    status: response.data.currentProgress.status,
-                    remarks: response.data.currentProgress.remarks,
-                    nextAction: {
-                      id: response.data.currentProgress.nextAction?.id,
-                      label: response.data.currentProgress.nextAction?.label
-                    }
-                  };
-
-                  self.table.rows = response.data.details;
+        .then(response => {
+          if (response.error) {
+            self.$message.error({
+              zIndex: 10000,
+              message: response.message
+            });
+          } else {
+            if (self.$route.name == self.route.form) {
+              self.$router.replace({
+                name: "sf103Update",
+                params: {
+                  id: response.data.id
                 }
-              }
-            })
-            .finally(() => dialog.close());
-        });
+              });
+
+              self.form.dppu = response.data.dppu;
+              self.form.dppuId = response.data.dppu?.id;
+              self.form.transactionId = response.data.transactionId;
+              self.form.transactionDate = dateFormat(
+                response.data.transactionDate,
+                "YYYY-MM-DD"
+              );
+              self.form.shift = {
+                id: response.data.shift?.id,
+                label: response.data.shift?.label
+              };
+              self.form.shiftId = response.data.shift?.id;
+              self.form.grade = response.data.grade;
+              self.form.updatedBy = response.data.updatedBy;
+              self.form.updatedAt = response.data.updatedAt;
+
+              self.currentProgress.status =
+                response.data.currentProgress?.status;
+              self.currentProgress.remarks =
+                response.data.currentProgress?.remarks;
+              self.currentProgress.nextAction = {
+                id: response.data.currentProgress?.nextAction?.id,
+                label: response.data.currentProgress?.nextAction?.label
+              };
+
+              self.table.rows = response.data.details;
+            } else {
+              self.$message.success({
+                zIndex: 10000,
+                message: response.message
+              });
+            }
+          }
+        })
+        .finally(() => loader.hide());
     },
     handleDelete() {
       const self = this;

@@ -168,6 +168,27 @@ export default new Router({
           ]
         },
         {
+          path: "/cro",
+          component: () => import("@/view/pages/cro"),
+          children: [
+            {
+              path: "/",
+              name: "cro",
+              component: () => import("@/view/pages/cro/Table.vue")
+            },
+            {
+              path: "form",
+              name: "croCreate",
+              component: () => import("@/view/pages/cro/Form.vue")
+            },
+            {
+              path: "form/:id",
+              name: "croUpdate",
+              component: () => import("@/view/pages/cro/Form.vue")
+            }
+          ]
+        },
+        {
           path: "/dppu",
           component: () => import("@/view/pages/dppu"),
           children: [

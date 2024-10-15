@@ -42,8 +42,8 @@ import { dateFormat, dateTimeFormat } from "@/core/utils";
 import {
   required,
   integer,
-  decimal,
-  maxLength
+  decimal
+  // maxLength,
 } from "vuelidate/lib/validators";
 
 export default {
@@ -63,6 +63,7 @@ export default {
         id: null,
         label: null
       },
+      dppuId: null,
       transactionId: null,
       transactionDate: null,
       shift: {
@@ -74,7 +75,10 @@ export default {
       updatedAt: null,
       time: null,
       recordTime: null,
+      ritase: 1,
+      bridgerId: null,
       bridgerNo: null,
+      jumlahKompartemen: null,
       bppNo: null,
       volume: null,
       seal: null,
@@ -88,15 +92,52 @@ export default {
         temperature: null,
         densityAt15Celcius: null
       },
-      controlCheck: {
-        densityObserved: null,
-        temperature: null,
-        densityAt15Celcius: null,
-        maximumDifferential: null
-      },
-      appearanceIds: [],
-      conductivity: null,
-      tankNo: null
+      records: [
+        {
+          controlCheck: {
+            densityObserved: null,
+            temperature: null,
+            densityAt15Celcius: null,
+            maximumDifferential: null
+          },
+          appearanceIds: [],
+          conductivity: null,
+          tankNo: null
+        },
+        {
+          controlCheck: {
+            densityObserved: null,
+            temperature: null,
+            densityAt15Celcius: null,
+            maximumDifferential: null
+          },
+          appearanceIds: [],
+          conductivity: null,
+          tankNo: null
+        },
+        {
+          controlCheck: {
+            densityObserved: null,
+            temperature: null,
+            densityAt15Celcius: null,
+            maximumDifferential: null
+          },
+          appearanceIds: [],
+          conductivity: null,
+          tankNo: null
+        },
+        {
+          controlCheck: {
+            densityObserved: null,
+            temperature: null,
+            densityAt15Celcius: null,
+            maximumDifferential: null
+          },
+          appearanceIds: [],
+          conductivity: null,
+          tankNo: null
+        }
+      ]
     },
     currentProgress: {
       locked: null,
@@ -112,7 +153,9 @@ export default {
     form: {
       standardForm103Id: { required },
       time: { required },
-      bridgerNo: { required },
+      ritase: { required },
+      bridgerId: { required },
+      // bridgerNo: { required },
       bppNo: { required },
       volume: { required, decimal },
       seal: { required },
@@ -125,16 +168,53 @@ export default {
         densityObserved: { required, decimal },
         temperature: { required, integer },
         densityAt15Celcius: { required, decimal }
-      },
-      controlCheck: {
-        densityObserved: { required, decimal },
-        temperature: { required, integer },
-        densityAt15Celcius: { required, decimal },
-        maximumDifferential: { required, decimal }
-      },
-      appearanceIds: { required },
-      conductivity: { required, integer },
-      tankNo: { required, maxLength: maxLength(50) }
+      }
+      /* records: [
+        {
+          controlCheck: {
+            densityObserved: { required, decimal },
+            temperature: { required, integer },
+            densityAt15Celcius: { required, decimal },
+            maximumDifferential: { required, decimal },
+          },
+          appearanceIds: { required },
+          conductivity: { required, integer },
+          tankNo: { required, maxLength: maxLength(50) },
+        },
+        {
+          controlCheck: {
+            densityObserved: { required, decimal },
+            temperature: { required, integer },
+            densityAt15Celcius: { required, decimal },
+            maximumDifferential: { required, decimal },
+          },
+          appearanceIds: { required },
+          conductivity: { required, integer },
+          tankNo: { required, maxLength: maxLength(50) },
+        },
+        {
+          controlCheck: {
+            densityObserved: { required, decimal },
+            temperature: { required, integer },
+            densityAt15Celcius: { required, decimal },
+            maximumDifferential: { required, decimal },
+          },
+          appearanceIds: { required },
+          conductivity: { required, integer },
+          tankNo: { required, maxLength: maxLength(50) },
+        },
+        {
+          controlCheck: {
+            densityObserved: { required, decimal },
+            temperature: { required, integer },
+            densityAt15Celcius: { required, decimal },
+            maximumDifferential: { required, decimal },
+          },
+          appearanceIds: { required },
+          conductivity: { required, integer },
+          tankNo: { required, maxLength: maxLength(50) },
+        },
+      ], */
     }
   },
   computed: {
@@ -236,18 +316,24 @@ export default {
             self.$router.push({ name: self.route.table });
           } else {
             self.form.time = dateTimeFormat(response.data.recordTime, "HH:mm");
-            self.form.bridgerNo = response.data.bridgerNo;
+            self.form.bridgerId = response.data.bridgerId;
             self.form.bppNo = response.data.bppNo;
             self.form.volume = response.data.volume;
             self.form.seal = response.data.seal;
             self.form.tankBatchDocument = response.data.tankBatchDocument;
             self.form.receivingDocument = response.data.receivingDocument;
-            self.form.controlCheck = response.data.controlCheck;
-            self.form.appearanceIds = self.currentProgress.locked
-              ? response.data.appearanceIds
-              : response.data.appearanceIds.map(x => x.id);
-            self.form.conductivity = response.data.conductivity;
-            self.form.tankNo = response.data.tankNo;
+
+            if (response.data.records != null) {
+              response.data.records.forEach((item, index) => {
+                self.form.records[index].controlCheck = item.controlCheck;
+                self.form.records[index].appearanceIds = self.currentProgress
+                  .locked
+                  ? item.appearanceIds
+                  : item.appearanceIds.map(x => x.id);
+                self.form.records[index].conductivity = item.conductivity;
+                self.form.records[index].tankNo = item.tankNo;
+              });
+            }
           }
         })
         .finally(() => loader.hide());
@@ -258,56 +344,77 @@ export default {
       self.$v.form.$touch();
       if (self.$v.form.$pending || self.$v.form.$error) return;
 
-      let _confirmText = "",
-        _okText = "",
+      let loader = self.$loading.show();
+      let /* _confirmText = "",
+        _okText = "", */
         _action = "",
         _url = "";
 
       if (self.$route.name == self.route.form) {
-        _confirmText = "You are about to submit this record. Are you sure ?";
-        _okText = "Yes, Submit";
+        // _confirmText = "You are about to submit this record. Are you sure ?";
+        // _okText = "Yes, Submit";
         _action = "apis/post";
         _url = "/board/standard-form/103/record";
       } else {
-        _confirmText = "You are about to update this record. Are you sure ?";
-        _okText = "Yes, Update";
+        // _confirmText = "You are about to update this record. Are you sure ?";
+        // _okText = "Yes, Update";
         _action = "apis/put";
         _url = `/board/standard-form/103/record/${self.$route.params.iditem}`;
       }
 
-      self.$dialog
-        .confirm(_confirmText, {
-          okText: _okText,
-          cancelText: "Cancel",
-          loader: true
-        })
-        .then(dialog => {
-          self.form.recordTime = dateTimeFormat(
-            `${self.form.transactionDate} ${self.form.time}`,
-            "YYYY-MM-DD HH:mm:ss"
-          );
-          self.$store
-            .dispatch(_action, {
-              url: _url,
-              params: self.form
-            })
-            .then(response => {
-              dialog.close();
-              if (response.error) {
-                self.$message.error({
-                  zIndex: 10000,
-                  message: response.message
-                });
-              } else {
-                self.$message.success({
-                  zIndex: 10000,
-                  message: response.message
-                });
+      let records = [];
+      for (let index = 0; index < self.form.jumlahKompartemen; index++) {
+        let record = self.form.records[index];
 
-                self.$router.go(-1);
-              }
+        records.push(record);
+      }
+
+      let _form = {
+        standardForm103Id: self.form.standardForm103Id,
+        bridgerId: self.form.bridgerId,
+        recordTime: dateTimeFormat(
+          `${self.form.transactionDate} ${self.form.time}`,
+          "YYYY-MM-DD HH:mm:ss"
+        ),
+        ritase: self.form.ritase,
+        bppNo: self.form.bppNo,
+        volume: self.form.volume,
+        seal: self.form.seal,
+        tankBatchDocument: self.form.tankBatchDocument,
+        receivingDocument: self.form.receivingDocument,
+        records: records
+      };
+
+      // self.$dialog
+      //   .confirm(_confirmText, {
+      //     okText: _okText,
+      //     cancelText: "Cancel",
+      //     loader: true,
+      //   })
+      //   .then((dialog) => {
+      self.$store
+        .dispatch(_action, {
+          url: _url,
+          params: _form
+        })
+        .then(response => {
+          // dialog.close();
+          if (response.error) {
+            self.$message.error({
+              zIndex: 10000,
+              message: response.message
             });
-        });
+          } else {
+            // self.$message.success({
+            //   zIndex: 10000,
+            //   message: response.message,
+            // });
+
+            self.$router.go(-1);
+          }
+        })
+        .finally(() => loader.hide());
+      // });
     },
     handleDelete() {
       const self = this;

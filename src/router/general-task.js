@@ -53,6 +53,11 @@ export const generalTask = {
           component: () => import("@/view/pages/general-task/sf-109/Table.vue")
         },
         {
+          path: "form",
+          name: "sf109Create",
+          component: () => import("@/view/pages/general-task/sf-109/Form")
+        },
+        {
           path: "form/:id",
           name: "sf109Update",
           component: () => import("@/view/pages/general-task/sf-109/Form")
@@ -67,6 +72,11 @@ export const generalTask = {
           path: "/",
           name: "sf110",
           component: () => import("@/view/pages/general-task/sf-110/Table.vue")
+        },
+        {
+          path: "form",
+          name: "sf110Create",
+          component: () => import("@/view/pages/general-task/sf-110/Form")
         },
         {
           path: "form/:id",
@@ -85,6 +95,11 @@ export const generalTask = {
           component: () => import("@/view/pages/general-task/sf-111/Table.vue")
         },
         {
+          path: "form",
+          name: "sf111Create",
+          component: () => import("@/view/pages/general-task/sf-111/Form")
+        },
+        {
           path: "form/:id",
           name: "sf111Update",
           component: () => import("@/view/pages/general-task/sf-111/Form")
@@ -101,6 +116,11 @@ export const generalTask = {
           component: () => import("@/view/pages/general-task/sf-112/Table.vue")
         },
         {
+          path: "form",
+          name: "sf112Create",
+          component: () => import("@/view/pages/general-task/sf-112/Form")
+        },
+        {
           path: "form/:id",
           name: "sf112Update",
           component: () => import("@/view/pages/general-task/sf-112/Form")
@@ -115,6 +135,11 @@ export const generalTask = {
           path: "/",
           name: "sf118",
           component: () => import("@/view/pages/general-task/sf-118/Table.vue")
+        },
+        {
+          path: "form",
+          name: "sf118Create",
+          component: () => import("@/view/pages/general-task/sf-118/Form")
         },
         {
           path: "form/:id",
@@ -178,6 +203,11 @@ export const generalTask = {
           path: "/",
           name: "sf123",
           component: () => import("@/view/pages/general-task/sf-123/Table.vue")
+        },
+        {
+          path: "form",
+          name: "sf123Create",
+          component: () => import("@/view/pages/general-task/sf-123/Form")
         },
         {
           path: "form/:id",

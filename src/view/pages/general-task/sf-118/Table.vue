@@ -16,6 +16,11 @@
     @onPageChange="onPageChange"
     @onSearch="onSearch"
   >
+    <template #toolbar>
+      <b-button variant="primary" :to="{ name: 'sf118Create' }">
+        Create New Transaction
+      </b-button>
+    </template>
     <template #search>
       <div class="ml-2 mr-2 mb-2">
         <date-range-picker

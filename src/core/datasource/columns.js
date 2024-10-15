@@ -189,6 +189,34 @@ export const configuration = [
   }
 ];
 
+export const cro = [
+  {
+    label: "DPPU",
+    key: "dppu.label",
+    thClass: "align-middle"
+  },
+  {
+    label: "Kode",
+    key: "code",
+    thClass: "align-middle"
+  },
+  {
+    label: "Nama Lengkap",
+    key: "fullName",
+    thClass: "align-middle"
+  },
+  {
+    label: "Fungsi",
+    key: "fungsi",
+    thClass: "align-middle"
+  },
+  {
+    label: "Status",
+    key: "actived",
+    thClass: "align-middle"
+  }
+];
+
 export const region = [
   {
     label: "Region",

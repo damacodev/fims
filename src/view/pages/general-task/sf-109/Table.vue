@@ -18,8 +18,15 @@
       @onSearch="onSearch"
     >
       <template #toolbar>
-        <b-button variant="outline-primary" @click="openModalExport">
+        <b-button
+          variant="outline-primary"
+          class="mr-2"
+          @click="openModalExport"
+        >
           Export to Excel
+        </b-button>
+        <b-button variant="primary" :to="{ name: 'sf109Create' }">
+          Create New Transaction
         </b-button>
       </template>
       <template #search>
@@ -76,8 +83,8 @@
         {{ dateFormat(data.value) }}</template
       >
       <template #cell(transactionRecords)="data">
-        {{ data.item.details.length }} Records</template
-      >
+        {{ data.item.details.length }} Records
+      </template>
     </CardTable>
     <b-modal
       v-model="modalForm.export"

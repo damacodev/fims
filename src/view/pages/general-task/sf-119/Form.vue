@@ -59,6 +59,7 @@
             :options="options.dppu"
             :multiple="false"
             :disabled="$route.name != route.form"
+            @input="changeDppu"
           />
           <InputText
             label="Transaction #"
@@ -1444,6 +1445,8 @@ export default {
             }
           });
       }
+
+      self.getDefaultEquipment();
     },
     get() {
       const self = this;

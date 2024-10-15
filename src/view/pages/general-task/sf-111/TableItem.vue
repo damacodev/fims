@@ -102,23 +102,14 @@ export default {
           message: "Record time must not be empty"
         });
       } else {
-        self.$store
-          .dispatch("apis/put", {
-            url: `/board/standard-form/111/${self.$route.params.id}/record/${row.id}`,
-            params: {
-              recordTime: row.recordTime,
-              conductivity: row.conductivity,
-              temperature: row.temperature
-            }
-          })
-          .then(response => {
-            if (response.error) {
-              self.$message.error({
-                zIndex: 10000,
-                message: response.message
-              });
-            }
-          });
+        self.$store.dispatch("apis/put", {
+          url: `/board/standard-form/111/${self.$route.params.id}/record/${row.id}`,
+          params: {
+            recordTime: row.recordTime,
+            conductivity: row.conductivity,
+            temperature: row.temperature
+          }
+        });
       }
     }
   }

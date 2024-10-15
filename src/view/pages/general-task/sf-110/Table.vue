@@ -18,8 +18,15 @@
       @onSearch="onSearch"
     >
       <template #toolbar>
-        <b-button variant="outline-primary" @click="openModalExport">
+        <b-button
+          variant="outline-primary"
+          class="mr-2"
+          @click="openModalExport"
+        >
           Export to Excel
+        </b-button>
+        <b-button variant="primary" :to="{ name: 'sf110Create' }">
+          Create New Transaction
         </b-button>
       </template>
       <template #search>

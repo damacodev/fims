@@ -63,21 +63,12 @@ export default {
     handleSubmit(index) {
       const self = this;
 
-      self.$store
-        .dispatch("apis/put", {
-          url: `/board/standard-form/110/${self.$route.params.id}/record/${self.rows[index].id}`,
-          params: {
-            resultIds: self.rows[index].resultIds
-          }
-        })
-        .then(response => {
-          if (response.error) {
-            self.$message.error({
-              zIndex: 10000,
-              message: response.message
-            });
-          }
-        });
+      self.$store.dispatch("apis/put", {
+        url: `/board/standard-form/110/${self.$route.params.id}/record/${self.rows[index].id}`,
+        params: {
+          resultIds: self.rows[index].resultIds
+        }
+      });
     }
   }
 };

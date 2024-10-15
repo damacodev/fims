@@ -121,6 +121,11 @@
         icon="flaticon-map-location"
       />
       <li-menu :to="{ name: 'dppu' }" text="DPPU" icon="flaticon2-shelter" />
+      <li-menu
+        :to="{ name: 'cro' }"
+        text="CRO"
+        icon="flaticon2-user-outline-symbol"
+      />
       <li
         aria-haspopup="true"
         data-menu-toggle="hover"
