@@ -34,7 +34,7 @@
                 row.inlet.gridBeforePump,
                 row.outlet.gridBeforePump,
                 row.outlet.gridAirEliminator,
-                row.outlet.strainerCoupler
+                row.outlet.strainerCoupler,
               ]"
               v-bind:key="indexItem"
               class="text-center"
@@ -162,11 +162,11 @@ import { getStrainerCheck, setOption, dateFormat } from "@/core/utils";
 export default {
   props: {
     currentProgress: Object,
-    details: Array
+    details: Array,
   },
   data: () => ({
     options: {
-      strainerCheck: []
+      strainerCheck: [],
     },
     modal: {
       show: false,
@@ -178,14 +178,14 @@ export default {
         equipment: {
           id: null,
           code: null,
-          detail: []
+          detail: [],
         },
         recordDate: null,
         inlet: {
           strainerCouplerId: null,
           strainerCoupler: null,
           gridBeforePumpId: null,
-          gridBeforePump: null
+          gridBeforePump: null,
         },
         outlet: {
           gridBeforePumpId: null,
@@ -193,16 +193,16 @@ export default {
           gridAirEliminatorId: null,
           gridAirEliminator: null,
           strainerCouplerId: null,
-          strainerCoupler: null
+          strainerCoupler: null,
         },
-        remarks: null
-      }
-    }
+        remarks: null,
+      },
+    },
   }),
   created() {
     const self = this;
 
-    getStrainerCheck().then(response => {
+    getStrainerCheck().then((response) => {
       self.options.strainerCheck = response;
     });
   },
@@ -243,45 +243,33 @@ export default {
 
       const self = this;
 
-      self.$dialog
-        .confirm("You are about to update this record. Are you sure ?", {
-          okText: "Yes, Update",
-          cancelText: "Cancel",
-          loader: true
+      let loader = self.$loading.show();
+      let payload = {
+        standardForm218Id: self.$route.params.id,
+        recordDate: self.modal.form.recordDate,
+        inlet: self.modal.form.inlet,
+        outlet: self.modal.form.outlet,
+        remarks: self.modal.form.remarks,
+      };
+
+      self.$store
+        .dispatch("apis/put", {
+          url: `/board/standard-form/218/record/${self.modal.form.id}`,
+          params: payload,
         })
-        .then(dialog => {
-          let payload = {
-            standardForm218Id: self.$route.params.id,
-            recordDate: self.modal.form.recordDate,
-            inlet: self.modal.form.inlet,
-            outlet: self.modal.form.outlet,
-            remarks: self.modal.form.remarks
-          };
-
-          self.$store
-            .dispatch("apis/put", {
-              url: `/board/standard-form/218/record/${self.modal.form.id}`,
-              params: payload
-            })
-            .then(response => {
-              if (response.error) {
-                self.$message.error({
-                  zIndex: 10000,
-                  message: response.message
-                });
-              } else {
-                self.$message.success({
-                  zIndex: 10000,
-                  message: response.message
-                });
-                self.modal.show = false;
-
-                self.$emit("onUpdate");
-              }
-            })
-            .finally(() => dialog.close());
-        });
-    }
-  }
+        .then((response) => {
+          if (response.error) {
+            self.$message.error({
+              zIndex: 10000,
+              message: response.message,
+            });
+          } else {
+            self.modal.show = false;
+            self.$emit("onUpdate");
+          }
+        })
+        .finally(() => loader.hide());
+    },
+  },
 };
 </script>

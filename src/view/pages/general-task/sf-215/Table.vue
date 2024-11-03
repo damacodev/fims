@@ -118,7 +118,7 @@ export default {
   },
   data: () => ({
     title: "215 SF",
-    subTitle: "Fire Hose Box Check List",
+    subTitle: "Fire Extinguisher Check List",
     searchText: "Search by transaction #",
     serverParams: {
       pageNumber: 1,

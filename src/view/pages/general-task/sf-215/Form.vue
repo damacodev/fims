@@ -118,18 +118,18 @@ import { getDppu, numberFormat, getDate, dateFormat } from "@/core/utils";
 export default {
   components: {
     FormHeader,
-    TableItem
+    TableItem,
   },
   data: () => ({
-    title: "215 SF - Fire Hose Box Check List",
+    title: "215 SF - Fire Extinguisher Check List",
     route: {
       form: "sf215Create",
-      table: "sf215"
+      table: "sf215",
     },
     form: {
       dppu: {
         id: null,
-        label: null
+        label: null,
       },
       dppuId: null,
       transactionId: "Auto Generated",
@@ -138,7 +138,7 @@ export default {
       details: [],
       sendApproval: false,
       updatedBy: null,
-      updatedAt: null
+      updatedAt: null,
     },
     currentProgress: {
       locked: null,
@@ -146,12 +146,12 @@ export default {
       remarks: null,
       nextAction: {
         id: null,
-        label: null
-      }
+        label: null,
+      },
     },
     options: {
-      dppu: []
-    }
+      dppu: [],
+    },
   }),
   computed: {
     ...mapGetters("personalize", ["multipleDppu", "dppu"]),
@@ -164,23 +164,25 @@ export default {
     },
     textButton() {
       const self = this;
-      return self.$route.name != self.route.form ? "Update" : "Save";
-    }
+      return self.$route.name != self.route.form
+        ? "Update"
+        : "Save and Continue";
+    },
   },
   validations: {
     form: {
       dppuId: { required },
-      transactionDate: { required }
-    }
+      transactionDate: { required },
+    },
   },
   created() {
     const self = this;
 
     if (self.multipleDppu) {
-      getDppu().then(response => {
-        self.options.dppu = response.data.map(x => ({
+      getDppu().then((response) => {
+        self.options.dppu = response.data.map((x) => ({
           id: x.id,
-          label: x.name
+          label: x.name,
         }));
       });
     } else {
@@ -205,13 +207,13 @@ export default {
       let loader = self.$loading.show();
       self.$store
         .dispatch("apis/get", {
-          url: `/board/standard-form/215/${self.$route.params.id}`
+          url: `/board/standard-form/215/${self.$route.params.id}`,
         })
-        .then(response => {
+        .then((response) => {
           if (response.error) {
             self.$message.error({
               zIndex: 10000,
-              message: response.message
+              message: response.message,
             });
 
             self.$router.push({ name: self.route.table });
@@ -227,7 +229,7 @@ export default {
               remarks: response.data.remarks,
               details: response.data.details,
               updatedBy: response.data.updatedBy,
-              updatedAt: response.data.updatedAt
+              updatedAt: response.data.updatedAt,
             };
 
             self.currentProgress = {
@@ -236,8 +238,8 @@ export default {
               remarks: response.data.currentProgress.remarks,
               nextAction: {
                 id: response.data.currentProgress.nextAction?.id,
-                label: response.data.currentProgress.nextAction?.label
-              }
+                label: response.data.currentProgress.nextAction?.label,
+              },
             };
           }
         })
@@ -249,82 +251,65 @@ export default {
       self.$v.form.$touch();
       if (self.$v.form.$pending || self.$v.form.$error) return;
 
-      let _confirmText = "",
-        _okText = "",
-        _action = "",
+      let loader = self.$loading.show();
+      let _action = "",
         _url = "";
 
       if (self.$route.name == self.route.form) {
-        _confirmText = "You are about to save this transaction. Are you sure ?";
-        _okText = "Yes, Save";
         _action = "apis/post";
         _url = "/board/standard-form/215";
       } else {
-        _confirmText =
-          "You are about to update this transaction. Are you sure ?";
-        _okText = "Yes, Update";
         _action = "apis/put";
         _url = `/board/standard-form/215/${self.$route.params.id}`;
       }
 
-      self.$dialog
-        .confirm(_confirmText, {
-          okText: _okText,
-          cancelText: "Cancel",
-          loader: true
+      self.$store
+        .dispatch(_action, {
+          url: _url,
+          params: self.form,
         })
-        .then(dialog => {
-          self.$store
-            .dispatch(_action, {
-              url: _url,
-              params: self.form
-            })
-            .then(response => {
-              if (response.error) {
-                self.$message.error({
-                  zIndex: 10000,
-                  message: response.message
-                });
-              } else {
-                self.$message.success({
-                  zIndex: 10000,
-                  message: response.message
-                });
+        .then((response) => {
+          if (response.error) {
+            self.$message.error({
+              zIndex: 10000,
+              message: response.message,
+            });
+          } else {
+            if (self.$route.name == self.route.form) {
+              self.$router.replace({
+                name: "sf215Update",
+                params: {
+                  id: response.data.id,
+                },
+              });
 
-                if (self.$route.name == self.route.form) {
-                  self.$router.replace({
-                    name: "sf215Update",
-                    params: {
-                      id: response.data.id
-                    }
-                  });
+              self.form = {
+                dppu: response.data.dppu,
+                dppuId: response.data.dppu?.id,
+                transactionId: response.data.transactionId,
+                transactionDate: dateFormat(
+                  response.data.transactionDate,
+                  "YYYY-MM-DD"
+                ),
+                details: response.data.details,
+                updatedBy: response.data.updatedBy,
+                updatedAt: response.data.updatedAt,
+              };
 
-                  self.form = {
-                    dppu: response.data.dppu,
-                    dppuId: response.data.dppu?.id,
-                    transactionId: response.data.transactionId,
-                    transactionDate: dateFormat(
-                      response.data.transactionDate,
-                      "YYYY-MM-DD"
-                    ),
-                    details: response.data.details,
-                    updatedBy: response.data.updatedBy,
-                    updatedAt: response.data.updatedAt
-                  };
+              self.currentProgress = {
+                status: response.data.currentProgress.status,
+                remarks: response.data.currentProgress.remarks,
+                nextAction: {
+                  id: response.data.currentProgress.nextAction?.id,
+                  label: response.data.currentProgress.nextAction?.label,
+                },
+              };
 
-                  self.currentProgress = {
-                    status: response.data.currentProgress.status,
-                    remarks: response.data.currentProgress.remarks,
-                    nextAction: {
-                      id: response.data.currentProgress.nextAction?.id,
-                      label: response.data.currentProgress.nextAction?.label
-                    }
-                  };
-                }
-              }
-            })
-            .finally(() => dialog.close());
-        });
+              self.table.rows = response.data.details;
+            }
+          }
+        })
+        .finally(() => loader.hide());
     },
     handleDelete() {
       const self = this;
@@ -333,23 +318,23 @@ export default {
         .confirm("You are about to delete this transaction. Are you sure ?", {
           okText: "Yes, Delete",
           cancelText: "Cancel",
-          loader: true
+          loader: true,
         })
-        .then(dialog => {
+        .then((dialog) => {
           self.$store
             .dispatch("apis/remove", {
-              url: `/board/standard-form/215/${self.$route.params.id}`
+              url: `/board/standard-form/215/${self.$route.params.id}`,
             })
-            .then(response => {
+            .then((response) => {
               if (response.error) {
                 self.$message.error({
                   zIndex: 10000,
-                  message: response.message
+                  message: response.message,
                 });
               } else {
                 self.$message.success({
                   zIndex: 10000,
-                  message: response.message
+                  message: response.message,
                 });
 
                 self.$router.go(-1);
@@ -370,27 +355,27 @@ export default {
           {
             okText: "Yes, Send",
             cancelText: "Cancel",
-            loader: true
+            loader: true,
           }
         )
-        .then(dialog => {
+        .then((dialog) => {
           self.form.sendApproval = true;
 
           self.$store
             .dispatch("apis/put", {
               url: `/board/standard-form/215/${self.$route.params.id}`,
-              params: self.form
+              params: self.form,
             })
-            .then(response => {
+            .then((response) => {
               if (response.error) {
                 self.$message.error({
                   zIndex: 10000,
-                  message: response.message
+                  message: response.message,
                 });
               } else {
                 self.$message.success({
                   zIndex: 10000,
-                  message: response.message
+                  message: response.message,
                 });
 
                 self.$router.go(-1);
@@ -406,18 +391,18 @@ export default {
         .confirm("You are about to export this transaction. Are you sure ?", {
           okText: "Yes, Export",
           cancelText: "Cancel",
-          loader: true
+          loader: true,
         })
-        .then(dialog => {
+        .then((dialog) => {
           self.$store
             .dispatch("apis/download", {
-              url: `/board/export/standard-form/215/${self.$route.params.id}`
+              url: `/board/export/standard-form/215/${self.$route.params.id}`,
             })
-            .then(response => {
+            .then((response) => {
               if (response.error) {
                 self.$message.error({
                   zIndex: 10000,
-                  message: response.message
+                  message: response.message,
                 });
               } else {
                 let fileURL = window.URL.createObjectURL(new Blob([response])),
@@ -432,7 +417,7 @@ export default {
             })
             .finally(() => dialog.close());
         });
-    }
-  }
+    },
+  },
 };
 </script>

@@ -115,7 +115,7 @@ import { setOhm } from "@/core/utils";
 export default {
   props: {
     currentProgress: Object,
-    details: Array
+    details: Array,
   },
   data: () => ({
     modal: {
@@ -131,17 +131,17 @@ export default {
         resistance: 0,
         weatherCondition: null,
         eartCondition: null,
-        remark: null
-      }
-    }
+        remark: null,
+      },
+    },
   }),
   validations: {
     modal: {
       form: {
         testPointNumber: { required },
-        resistance: { required }
-      }
-    }
+        resistance: { required },
+      },
+    },
   },
   methods: {
     setOhm,
@@ -191,98 +191,45 @@ export default {
       self.$v.modal.form.$touch();
       if (self.$v.modal.form.$pending || self.$v.modal.form.$error) return;
 
-      let _confirmText = "",
-        _okText = "",
-        _action = "",
+      let loader = self.$loading.show();
+      let _action = "",
         _url = "";
 
       if (self.modal.mode == "add") {
-        _confirmText = "You are about to save this record. Are you sure ?";
-        _okText = "Yes, Save";
         _action = "apis/post";
         _url = "/board/standard-form/211/record";
       } else {
-        _confirmText = "You are about to update this record. Are you sure ?";
-        _okText = "Yes, Update";
         _action = "apis/put";
         _url = `/board/standard-form/211/record/${self.modal.form.id}`;
       }
 
-      self.$dialog
-        .confirm(_confirmText, {
-          okText: _okText,
-          cancelText: "Cancel",
-          loader: true
+      let payload = {
+        standardForm211Id: self.$route.params.id,
+        standardForm211DetailId: self.modal.form.detailId,
+        testPointNumber: self.modal.form.testPointNumber,
+        resistance: self.modal.form.resistance,
+        weatherCondition: self.modal.form.weatherCondition,
+        eartCondition: self.modal.form.eartCondition,
+        remark: self.modal.form.remark,
+      };
+
+      self.$store
+        .dispatch(_action, {
+          url: _url,
+          params: payload,
         })
-        .then(dialog => {
-          let payload = {
-            standardForm211Id: self.$route.params.id,
-            standardForm211DetailId: self.modal.form.detailId,
-            testPointNumber: self.modal.form.testPointNumber,
-            resistance: self.modal.form.resistance,
-            weatherCondition: self.modal.form.weatherCondition,
-            eartCondition: self.modal.form.eartCondition,
-            remark: self.modal.form.remark
-          };
-
-          self.$store
-            .dispatch(_action, {
-              url: _url,
-              params: payload
-            })
-            .then(response => {
-              if (response.error) {
-                self.$message.error({
-                  zIndex: 10000,
-                  message: response.message
-                });
-              } else {
-                self.$message.success({
-                  zIndex: 10000,
-                  message: response.message
-                });
-                self.modal.show = false;
-
-                self.$emit("onUpdate");
-
-                /* if (self.$route.name == self.route.form) {
-                  self.$router.replace({
-                    name: "sf211Update",
-                    params: {
-                      id: response.data.id,
-                    },
-                  });
-
-                  self.form = {
-                    dppu: response.data.dppu,
-                    dppuId: response.data.dppu?.id,
-                    transactionId: response.data.transactionId,
-                    transactionDate: dateFormat(
-                      response.data.transactionDate,
-                      "YYYY-MM-DD"
-                    ),
-                    period: response.data.period,
-                    remarks: response.data.remarks,
-                    details: response.data.details,
-                    updatedBy: response.data.updatedBy,
-                    updatedAt: response.data.updatedAt,
-                  };
-
-                  self.currentProgress = {
-                    status: response.data.currentProgress.status,
-                    remarks: response.data.currentProgress.remarks,
-                    nextAction: {
-                      id: response.data.currentProgress.nextAction?.id,
-                      label: response.data.currentProgress.nextAction?.label,
-                    },
-                  };
-
-                  self.table.rows = response.data.details;
-                } */
-              }
-            })
-            .finally(() => dialog.close());
-        });
+        .then((response) => {
+          if (response.error) {
+            self.$message.error({
+              zIndex: 10000,
+              message: response.message,
+            });
+          } else {
+            self.modal.show = false;
+            self.$emit("onUpdate");
+          }
+        })
+        .finally(() => loader.hide());
     },
     handleRemove(event) {
       event.preventDefault();
@@ -293,23 +240,23 @@ export default {
         .confirm("You are about to remove this record. Are you sure ?", {
           okText: "Yes, Remove",
           cancelText: "Cancel",
-          loader: true
+          loader: true,
         })
-        .then(dialog => {
+        .then((dialog) => {
           self.$store
             .dispatch("apis/remove", {
-              url: `/board/standard-form/211/record/${self.modal.form.id}`
+              url: `/board/standard-form/211/record/${self.modal.form.id}`,
             })
-            .then(response => {
+            .then((response) => {
               if (response.error) {
                 self.$message.error({
                   zIndex: 10000,
-                  message: response.message
+                  message: response.message,
                 });
               } else {
                 self.$message.success({
                   zIndex: 10000,
-                  message: response.message
+                  message: response.message,
                 });
                 self.modal.show = false;
 
@@ -318,7 +265,7 @@ export default {
             })
             .finally(() => dialog.close());
         });
-    }
-  }
+    },
+  },
 };
 </script>

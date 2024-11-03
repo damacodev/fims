@@ -60,7 +60,7 @@
                 row.lineProportioner,
                 row.threeWayValve,
                 row.combinationConnecting,
-                row.yPeace
+                row.yPeace,
               ]"
               v-bind:key="indexItem"
               class="text-center"
@@ -281,11 +281,11 @@ import { getFireHose, setOption } from "@/core/utils";
 export default {
   props: {
     currentProgress: Object,
-    details: Array
+    details: Array,
   },
   data: () => ({
     options: {
-      fireHose: []
+      fireHose: [],
     },
     modal: {
       show: false,
@@ -297,7 +297,7 @@ export default {
         equipment: {
           id: null,
           code: null,
-          detail: []
+          detail: [],
         },
         bodyConditionsId: null,
         bodyConditions: null,
@@ -329,14 +329,14 @@ export default {
         combinationConnecting: null,
         yPeaceId: null,
         yPeace: null,
-        remarks: null
-      }
-    }
+        remarks: null,
+      },
+    },
   }),
   created() {
     const self = this;
 
-    getFireHose().then(response => {
+    getFireHose().then((response) => {
       self.options.fireHose = response;
     });
   },
@@ -391,57 +391,45 @@ export default {
 
       const self = this;
 
-      self.$dialog
-        .confirm("You are about to update this record. Are you sure ?", {
-          okText: "Yes, Update",
-          cancelText: "Cancel",
-          loader: true
+      let loader = self.$loading.show();
+      let payload = {
+        standardForm214Id: self.$route.params.id,
+        bodyConditionsId: self.modal.form.bodyConditionsId,
+        paintId: self.modal.form.paintId,
+        handleId: self.modal.form.handleId,
+        afffId: self.modal.form.afffId,
+        mysteryFogId: self.modal.form.mysteryFogId,
+        waterJetId: self.modal.form.waterJetId,
+        hoses15Id: self.modal.form.hoses15Id,
+        hoses2Id: self.modal.form.hoses2Id,
+        hoses25Id: self.modal.form.hoses25Id,
+        spiralId: self.modal.form.spiralId,
+        axeId: self.modal.form.axeId,
+        lineProportionerId: self.modal.form.lineProportionerId,
+        threeWayValveId: self.modal.form.threeWayValveId,
+        combinationConnectingId: self.modal.form.combinationConnectingId,
+        yPeaceId: self.modal.form.yPeaceId,
+        remarks: self.modal.form.remarks,
+      };
+
+      self.$store
+        .dispatch("apis/put", {
+          url: `/board/standard-form/214/record/${self.modal.form.id}`,
+          params: payload,
         })
-        .then(dialog => {
-          let payload = {
-            standardForm214Id: self.$route.params.id,
-            bodyConditionsId: self.modal.form.bodyConditionsId,
-            paintId: self.modal.form.paintId,
-            handleId: self.modal.form.handleId,
-            afffId: self.modal.form.afffId,
-            mysteryFogId: self.modal.form.mysteryFogId,
-            waterJetId: self.modal.form.waterJetId,
-            hoses15Id: self.modal.form.hoses15Id,
-            hoses2Id: self.modal.form.hoses2Id,
-            hoses25Id: self.modal.form.hoses25Id,
-            spiralId: self.modal.form.spiralId,
-            axeId: self.modal.form.axeId,
-            lineProportionerId: self.modal.form.lineProportionerId,
-            threeWayValveId: self.modal.form.threeWayValveId,
-            combinationConnectingId: self.modal.form.combinationConnectingId,
-            yPeaceId: self.modal.form.yPeaceId,
-            remarks: self.modal.form.remarks
-          };
-
-          self.$store
-            .dispatch("apis/put", {
-              url: `/board/standard-form/214/record/${self.modal.form.id}`,
-              params: payload
-            })
-            .then(response => {
-              if (response.error) {
-                self.$message.error({
-                  zIndex: 10000,
-                  message: response.message
-                });
-              } else {
-                self.$message.success({
-                  zIndex: 10000,
-                  message: response.message
-                });
-                self.modal.show = false;
-
-                self.$emit("onUpdate");
-              }
-            })
-            .finally(() => dialog.close());
-        });
-    }
-  }
+        .then((response) => {
+          if (response.error) {
+            self.$message.error({
+              zIndex: 10000,
+              message: response.message,
+            });
+          } else {
+            self.modal.show = false;
+            self.$emit("onUpdate");
+          }
+        })
+        .finally(() => loader.hide());
+    },
+  },
 };
 </script>

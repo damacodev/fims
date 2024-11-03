@@ -65,6 +65,16 @@
       </b-col>
       <b-col lg="6">
         <InputText
+          label="Estimate Time of Arrival"
+          type="time"
+          v-model="form.eta"
+          :v="validator.eta"
+          :useHorizontal="false"
+          :disabled="currentProgress.locked"
+        />
+      </b-col>
+      <b-col lg="6">
+        <InputText
           label="Estimate Time of Departure"
           type="time"
           v-model="form.etd"
@@ -173,6 +183,7 @@ export default {
       self.form.airlineIata = null;
       self.form.flightNumber = null;
       self.form.aircraftType = null;
+      self.form.eta = null;
       self.form.etd = null;
 
       let _find = self.options.flightSchedule.find(
@@ -183,6 +194,7 @@ export default {
         self.form.airlineIata = _find.detail.airlineIata;
         self.form.flightNumber = _find.detail.flightNumber;
         self.form.aircraftType = _find.detail.aircraftType;
+        self.form.eta = dateFormat(_find.detail.arrivalTime, "HH:mm");
         self.form.etd = dateFormat(_find.detail.departureTime, "HH:mm");
       }
     }

@@ -15,10 +15,19 @@
         </div>
         <div class="card-toolbar">
           <b-button
-            v-show="
-              currentProgress.locked && currentProgress.status == 'Approved'
-            "
+            v-show="$route.name != route.form"
             variant="outline-primary"
+            size="lg"
+            class="mr-2"
+            @click="handleOpenFormCopy"
+          >
+            Copy
+          </b-button>
+          <b-button
+            v-show="$route.name != route.form"
+            variant="outline-primary"
+            size="lg"
+            class="mr-2"
             @click="handleExport"
           >
             Export to Excel
@@ -159,6 +168,10 @@
 
                   <div class="vuecal__event-title" v-html="event.title" />
 
+                  ETA :
+                  <span class="font-weight-bolder">
+                    {{ dateTimeFormat(event.eta, "HH:mm") }} </span
+                  ><br />
                   ETD :
                   <span class="font-weight-bolder">
                     {{ dateTimeFormat(event.etd, "HH:mm") }} </span
@@ -221,6 +234,21 @@
           {{ modalForm.id == null ? "Save" : "Update" }}
         </b-button>
       </template>
+    </b-modal>
+    <b-modal
+      v-model="modalCopy.dialog"
+      title="Destination to Copy Transaction"
+      ok-title="Copy"
+      :no-close-on-backdrop="true"
+      :no-close-on-esc="true"
+      @ok="handleCopy"
+    >
+      <InputText
+        label="Transaction Date"
+        type="date"
+        v-model="modalCopy.transactionDate"
+        :useHorizontal="false"
+      />
     </b-modal>
   </fragment>
 </template>
@@ -313,12 +341,17 @@ export default {
       airlineIata: null,
       flightNumber: null,
       aircraftType: null,
+      eta: null,
       etd: null,
       refuelingTime: null,
       croId: null,
       quickHandling: false,
       exron: false,
       remarksId: null
+    },
+    modalCopy: {
+      dialog: false,
+      transactionDate: getDate()
     }
   }),
   computed: {
@@ -332,7 +365,9 @@ export default {
     },
     textButton() {
       const self = this;
-      return self.$route.name != self.route.form ? "Update" : "Save";
+      return self.$route.name != self.route.form
+        ? "Update"
+        : "Save and Continue";
     },
     calendarTime() {
       const self = this;
@@ -357,9 +392,10 @@ export default {
       transactionDate: { required }
     },
     modalForm: {
-      airlineIata: { required, maxLength: maxLength(2) },
+      airlineIata: { required, maxLength: maxLength(3) },
       flightNumber: { required, maxLength: maxLength(4) },
       aircraftType: { required, maxLength: maxLength(100) },
+      eta: { required },
       etd: { required }
     }
   },
@@ -448,6 +484,9 @@ export default {
               id: x.id,
               label: `${x.flightIata} (${capitalize(
                 x.status
+              )}, ETA : ${dateFormat(
+                x.arrivalTime,
+                "HH:mm"
               )}, ETD : ${dateFormat(x.departureTime, "HH:mm")})`,
               detail: x
             }));
@@ -459,7 +498,7 @@ export default {
 
       self.$store
         .dispatch("apis/get", {
-          url: "/account/technician",
+          url: "/common/cro",
           params: {
             dppu: self.form.dppuId
           }
@@ -473,9 +512,9 @@ export default {
           } else {
             self.options.cro = response.data.data.map(x => ({
               id: x.id,
-              label: isNullOrEmpty(x.internalCode)
+              label: isNullOrEmpty(x.code)
                 ? x.fullName
-                : `${x.internalCode} - ${x.fullName}`
+                : `${x.code} - ${x.fullName}`
             }));
           }
         });
@@ -554,6 +593,7 @@ export default {
               ),
               title: `<span class="font-size-h5 font-weight-bolder">${x.airlineIata}${x.flightNumber}</span>`,
               cro: x.cro,
+              eta: x.eta,
               etd: x.etd,
               refuelingTime: x.refuelingTime,
               class:
@@ -588,6 +628,7 @@ export default {
       self.modalForm.airlineIata = null;
       self.modalForm.flightNumber = null;
       self.modalForm.aircraftType = null;
+      self.modalForm.eta = null;
       self.modalForm.etd = null;
       self.modalForm.refuelingTime = null;
       self.modalForm.croId = null;
@@ -622,6 +663,7 @@ export default {
       self.modalForm.airlineIata = item.airlineIata;
       self.modalForm.flightNumber = item.flightNumber;
       self.modalForm.aircraftType = item.aircraftType;
+      self.modalForm.eta = dateFormat(item.eta, "HH:mm");
       self.modalForm.etd = dateFormat(item.etd, "HH:mm");
       self.modalForm.refuelingTime = dateFormat(item.refuelingTime, "HH:mm");
       self.modalForm.croId = item.cro?.id;
@@ -636,89 +678,75 @@ export default {
       self.$v.form.$touch();
       if (self.$v.form.$pending || self.$v.form.$error) return;
 
-      let _confirmText = "",
-        _okText = "",
-        _action = "",
+      let loader = self.$loading.show();
+      let _action = "",
         _url = "";
 
       if (self.$route.name == self.route.form) {
-        _confirmText = "You are about to save this transaction. Are you sure ?";
-        _okText = "Yes, Save";
         _action = "apis/post";
         _url = "/board/standard-form/120";
       } else {
-        _confirmText =
-          "You are about to update this transaction. Are you sure ?";
-        _okText = "Yes, Update";
         _action = "apis/put";
         _url = `/board/standard-form/120/${self.$route.params.id}`;
       }
 
-      self.$dialog
-        .confirm(_confirmText, {
-          okText: _okText,
-          cancelText: "Cancel",
-          loader: true
+      self.$store
+        .dispatch(_action, {
+          url: _url,
+          params: self.form
         })
-        .then(dialog => {
-          self.$store
-            .dispatch(_action, {
-              url: _url,
-              params: self.form
-            })
-            .then(response => {
-              if (response.error) {
-                self.$message.error({
-                  zIndex: 10000,
-                  message: response.message
-                });
-              } else {
-                self.$message.success({
-                  zIndex: 10000,
-                  message: response.message
-                });
+        .then(response => {
+          if (response.error) {
+            self.$message.error({
+              zIndex: 10000,
+              message: response.message
+            });
+          } else {
+            // self.$message.success({
+            //   zIndex: 10000,
+            //   message: response.message
+            // });
 
-                if (self.$route.name == self.route.form) {
-                  self.$router.replace({
-                    name: "sf120Update",
-                    params: {
-                      id: response.data.id
-                    }
-                  });
-
-                  self.form = {
-                    dppu: response.data.dppu,
-                    dppuId: response.data.dppu?.id,
-                    transactionId: response.data.transactionId,
-                    transactionDate: dateFormat(
-                      response.data.transactionDate,
-                      "YYYY-MM-DD"
-                    ),
-                    shift: {
-                      id: response.data.shift?.id,
-                      label: response.data.shift?.label
-                    },
-                    shiftId: response.data.shift?.id,
-                    shiftGroup: response.data.shiftGroup,
-                    updatedBy: response.data.updatedBy,
-                    updatedAt: response.data.updatedAt
-                  };
-
-                  self.currentProgress = {
-                    status: response.data.currentProgress.status,
-                    remarks: response.data.currentProgress.remarks,
-                    nextAction: {
-                      id: response.data.currentProgress.nextAction?.id,
-                      label: response.data.currentProgress.nextAction?.label
-                    }
-                  };
-
-                  self.table.rows = response.data.details;
+            if (self.$route.name == self.route.form) {
+              self.$router.replace({
+                name: "sf120Update",
+                params: {
+                  id: response.data.id
                 }
-              }
-            })
-            .finally(() => dialog.close());
-        });
+              });
+
+              self.form = {
+                dppu: response.data.dppu,
+                dppuId: response.data.dppu?.id,
+                transactionId: response.data.transactionId,
+                transactionDate: dateFormat(
+                  response.data.transactionDate,
+                  "YYYY-MM-DD"
+                ),
+                shift: {
+                  id: response.data.shift?.id,
+                  label: response.data.shift?.label
+                },
+                shiftId: response.data.shift?.id,
+                shiftGroup: response.data.shiftGroup,
+                updatedBy: response.data.updatedBy,
+                updatedAt: response.data.updatedAt
+              };
+
+              self.currentProgress = {
+                status: response.data.currentProgress.status,
+                remarks: response.data.currentProgress.remarks,
+                nextAction: {
+                  id: response.data.currentProgress.nextAction?.id,
+                  label: response.data.currentProgress.nextAction?.label
+                }
+              };
+
+              self.table.rows = response.data.details;
+            }
+          }
+        })
+        .finally(() => loader.hide());
     },
     handleDelete() {
       const self = this;
@@ -834,73 +862,64 @@ export default {
       self.$v.modalForm.$touch();
       if (self.$v.modalForm.$pending || self.$v.modalForm.$error) return;
 
-      let _confirmText = "",
-        _okText = "",
-        _action = "",
+      let loader = self.$loading.show();
+      let _action = "",
         _url = "";
 
       if (self.modalForm.id == null) {
-        _confirmText = "You are about to save this record. Are you sure ?";
-        _okText = "Yes, Save";
         _action = "apis/post";
         _url = "/board/standard-form/120/record";
       } else {
-        _confirmText = "You are about to update this record. Are you sure ?";
-        _okText = "Yes, Update";
         _action = "apis/put";
         _url = `/board/standard-form/120/record/${self.modalForm.id}`;
       }
 
-      self.$dialog
-        .confirm(_confirmText, {
-          okText: _okText,
-          cancelText: "Cancel",
-          loader: true
+      self.$store
+        .dispatch(_action, {
+          url: _url,
+          params: {
+            standardForm120Id: self.$route.params.id,
+            eta: dateTimeFormat(
+              `${self.form.transactionDate} ${self.modalForm.eta}`,
+              "YYYY-MM-DD HH:mm:ss"
+            ),
+            etd: dateTimeFormat(
+              `${self.form.transactionDate} ${self.modalForm.etd}`,
+              "YYYY-MM-DD HH:mm:ss"
+            ),
+            airlineIata: self.modalForm.airlineIata,
+            flightNumber: self.modalForm.flightNumber,
+            aircraftType: self.modalForm.aircraftType,
+            flightScheduleId: self.modalForm.flightScheduleId,
+            refuelingTime:
+              self.modalForm.refuelingTime == null
+                ? null
+                : dateTimeFormat(
+                    `${self.form.transactionDate} ${self.modalForm.refuelingTime}`,
+                    "YYYY-MM-DD HH:mm:ss"
+                  ),
+            croId: self.modalForm.croId,
+            quickHandling: self.modalForm.quickHandling,
+            exron: self.modalForm.exron,
+            remarksId: self.modalForm.remarksId
+          }
         })
-        .then(dialog => {
-          self.$store
-            .dispatch(_action, {
-              url: _url,
-              params: {
-                standardForm120Id: self.$route.params.id,
-                etd: dateTimeFormat(
-                  `${self.form.transactionDate} ${self.modalForm.etd}`,
-                  "YYYY-MM-DD HH:mm:ss"
-                ),
-                airlineIata: self.modalForm.airlineIata,
-                flightNumber: self.modalForm.flightNumber,
-                aircraftType: self.modalForm.aircraftType,
-                flightScheduleId: self.modalForm.flightScheduleId,
-                refuelingTime:
-                  self.modalForm.refuelingTime == null
-                    ? null
-                    : dateTimeFormat(
-                        `${self.form.transactionDate} ${self.modalForm.refuelingTime}`,
-                        "YYYY-MM-DD HH:mm:ss"
-                      ),
-                croId: self.modalForm.croId,
-                quickHandling: self.modalForm.quickHandling,
-                exron: self.modalForm.exron,
-                remarksId: self.modalForm.remarksId
-              }
-            })
-            .then(response => {
-              if (response.error) {
-                self.$message.error({
-                  zIndex: 10000,
-                  message: response.message
-                });
-              } else {
-                self.$message.success({
-                  zIndex: 10000,
-                  message: response.message
-                });
-                self.get();
-                self.resetModalForm();
-              }
-            })
-            .finally(() => dialog.close());
-        });
+        .then(response => {
+          if (response.error) {
+            self.$message.error({
+              zIndex: 10000,
+              message: response.message
+            });
+          } else {
+            self.$message.success({
+              zIndex: 10000,
+              message: response.message
+            });
+            self.get();
+            self.resetModalForm();
+          }
+        })
+        .finally(() => loader.hide());
     },
     handleDeleteRecord() {
       const self = this;
@@ -955,6 +974,7 @@ export default {
       self.modalForm.airlineIata = event.detail.airlineIata;
       self.modalForm.flightNumber = event.detail.flightNumber;
       self.modalForm.aircraftType = event.detail.aircraftType;
+      self.modalForm.eta = dateFormat(event.detail.eta, "HH:mm");
       self.modalForm.etd = dateFormat(event.detail.etd, "HH:mm");
       self.modalForm.refuelingTime = dateFormat(
         event.detail.refuelingTime,
@@ -966,6 +986,56 @@ export default {
       self.modalForm.remarksId = event.detail.remarks?.id;
 
       e.stopPropagation();
+    },
+    handleOpenFormCopy() {
+      const self = this;
+
+      self.modalCopy.dialog = true;
+      self.modalCopy.transactionDate = getDate();
+    },
+    handleCopy() {
+      const self = this;
+
+      self.$dialog
+        .confirm("You are about to copy this transaction. Are you sure ?", {
+          okText: "Yes, Copy",
+          cancelText: "Cancel",
+          loader: true
+        })
+        .then(dialog => {
+          self.$store
+            .dispatch("apis/post", {
+              url: `/board/standard-form/120/copy/${self.$route.params.id}`,
+              params: {
+                transactionDate: self.modalCopy.transactionDate
+              }
+            })
+            .then(response => {
+              if (response.error) {
+                self.$message.error({
+                  zIndex: 10000,
+                  message: response.message
+                });
+              } else {
+                self.$message.success({
+                  zIndex: 10000,
+                  message: response.message
+                });
+
+                setTimeout(() => {
+                  // self.$router.push({
+                  //   name: "sf120Update",
+                  //   params: {
+                  //     id: response.data.id,
+                  //   },
+                  // });
+                  // self.get();
+                  self.$router.push({ name: self.route.table });
+                }, 1000);
+              }
+            })
+            .finally(() => dialog.close());
+        });
     }
   }
 };

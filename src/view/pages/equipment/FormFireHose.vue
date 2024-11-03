@@ -81,7 +81,7 @@ export default {
       category: 10,
       code: null,
       detail: {
-        type: null,
+        type: "AWG Coupling",
         location: null
       },
       actived: true
@@ -89,8 +89,8 @@ export default {
     options: {
       dppu: [],
       type: [
-        { value: "AWG", text: "AWG" },
-        { value: "TORCH", text: "TORCH" }
+        { value: "AWG Coupling", text: "AWG Coupling" },
+        { value: "Storz", text: "Storz" }
       ],
       category,
       status

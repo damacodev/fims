@@ -2,10 +2,11 @@
   <b-table-simple responsive="" bordered hover class="text-nowrap">
     <b-thead head-variant="light">
       <b-tr>
-        <b-th class="text-center" colspan="5">Program</b-th>
+        <b-th class="text-center" colspan="6">Program</b-th>
         <b-th class="text-center" colspan="4">Realization</b-th>
       </b-tr>
       <b-tr>
+        <b-th class="text-center align-middle">ETA</b-th>
         <b-th class="text-center align-middle">ETD</b-th>
         <b-th class="text-center align-middle">Airline IATA</b-th>
         <b-th class="text-center align-middle">Flight Number</b-th>
@@ -20,6 +21,9 @@
     <b-tbody>
       <template v-for="(row, index) in rows">
         <b-tr v-bind:key="index" @click="onRowSelected(row)">
+          <td>
+            {{ dateTimeFormat(row.eta, "HH:mm") }}
+          </td>
           <td>
             {{ dateTimeFormat(row.etd, "HH:mm") }}
           </td>

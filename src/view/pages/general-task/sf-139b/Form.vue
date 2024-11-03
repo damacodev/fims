@@ -527,6 +527,11 @@ export default {
         self.form.details[index].teraMetrologi =
           bridger.detail.detail.kompartemen[index].ullage;
       }
+
+      self.getSf103ByBridger();
+    },
+    getSf103ByBridger(){
+      
     },
     getEquipmentByCategory() {
       const self = this;

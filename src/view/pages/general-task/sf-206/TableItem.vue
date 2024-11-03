@@ -342,11 +342,11 @@ import { getPressureGaugeFunction, setOption } from "@/core/utils";
 export default {
   props: {
     currentProgress: Object,
-    details: Array
+    details: Array,
   },
   data: () => ({
     options: {
-      pressureGaugeFunction: []
+      pressureGaugeFunction: [],
     },
     modal: {
       show: false,
@@ -362,36 +362,36 @@ export default {
           master: null,
           eqpt: null,
           remark: null,
-          remarkId: null
+          remarkId: null,
         },
         airReference: {
           master: null,
           eqpt: null,
           remark: null,
-          remarkId: null
+          remarkId: null,
         },
         venturi: {
           master: null,
           eqpt: null,
           remark: null,
-          remarkId: null
+          remarkId: null,
         },
         inletLoading: {
           master: null,
           eqpt: null,
           remark: null,
-          remarkId: null
+          remarkId: null,
         },
-        notes: null
-      }
-    }
+        notes: null,
+      },
+    },
   }),
   validations: {
     modal: {
       form: {
-        nomorUji: { required, minValue: minValue(1), maxValue: maxValue(3) }
-      }
-    }
+        nomorUji: { required, minValue: minValue(1), maxValue: maxValue(3) },
+      },
+    },
   },
   computed: {
     pumpPressureDifferent() {
@@ -415,12 +415,12 @@ export default {
       return (
         self.modal.form.inletLoading.eqpt - self.modal.form.inletLoading.master
       );
-    }
+    },
   },
   created() {
     const self = this;
 
-    getPressureGaugeFunction().then(response => {
+    getPressureGaugeFunction().then((response) => {
       self.options.pressureGaugeFunction = response;
     });
   },
@@ -455,25 +455,25 @@ export default {
           master: null,
           eqpt: null,
           remark: null,
-          remarkId: null
+          remarkId: null,
         };
         self.modal.form.airReference = {
           master: null,
           eqpt: null,
           remark: null,
-          remarkId: null
+          remarkId: null,
         };
         self.modal.form.venturi = {
           master: null,
           eqpt: null,
           remark: null,
-          remarkId: null
+          remarkId: null,
         };
         self.modal.form.inletLoading = {
           master: null,
           eqpt: null,
           remark: null,
-          remarkId: null
+          remarkId: null,
         };
         self.modal.form.notes = null;
       }
@@ -496,25 +496,25 @@ export default {
           master: item.pumpPressure?.master,
           eqpt: item.pumpPressure?.eqpt,
           remark: item.pumpPressure?.remark,
-          remarkId: item.pumpPressure?.remark?.id
+          remarkId: item.pumpPressure?.remark?.id,
         };
         self.modal.form.airReference = {
           master: item.airReference?.master,
           eqpt: item.airReference?.eqpt,
           remark: item.airReference?.remark,
-          remarkId: item.airReference?.remark?.id
+          remarkId: item.airReference?.remark?.id,
         };
         (self.modal.form.venturi = {
           master: item.venturi?.master,
           eqpt: item.airReference?.eqpt,
           remark: item.airReference?.remark,
-          remarkId: item.airReference?.remark?.id
+          remarkId: item.airReference?.remark?.id,
         }),
           (self.modal.form.inletLoading = {
             master: item.airReference?.master,
             eqpt: item.airReference?.eqpt,
             remark: item.airReference?.remark,
-            remarkId: item.airReference?.remark?.id
+            remarkId: item.airReference?.remark?.id,
           }),
           (self.modal.form.notes = item.notes);
       }
@@ -527,64 +527,46 @@ export default {
       self.$v.modal.form.$touch();
       if (self.$v.modal.form.$pending || self.$v.modal.form.$error) return;
 
-      let _confirmText = "",
-        _okText = "",
-        _action = "",
+      let loader = self.$loading.show();
+      let _action = "",
         _url = "";
 
       if (self.modal.mode == "add") {
-        _confirmText = "You are about to save this record. Are you sure ?";
-        _okText = "Yes, Save";
         _action = "apis/post";
         _url = "/board/standard-form/206/record";
       } else {
-        _confirmText = "You are about to update this record. Are you sure ?";
-        _okText = "Yes, Update";
         _action = "apis/put";
         _url = `/board/standard-form/206/record/${self.modal.form.id}`;
       }
 
-      self.$dialog
-        .confirm(_confirmText, {
-          okText: _okText,
-          cancelText: "Cancel",
-          loader: true
+      let payload = {
+        standardForm206Id: self.$route.params.id,
+        standardForm206DetailId: self.modal.form.detailId,
+        nomorUji: self.modal.form.nomorUji,
+        pumpPressure: self.modal.form.pumpPressure,
+        airReference: self.modal.form.airReference,
+        venturi: self.modal.form.venturi,
+        inletLoading: self.modal.form.inletLoading,
+        notes: self.modal.form.notes,
+      };
+
+      self.$store
+        .dispatch(_action, {
+          url: _url,
+          params: payload,
         })
-        .then(dialog => {
-          let payload = {
-            standardForm206Id: self.$route.params.id,
-            standardForm206DetailId: self.modal.form.detailId,
-            nomorUji: self.modal.form.nomorUji,
-            pumpPressure: self.modal.form.pumpPressure,
-            airReference: self.modal.form.airReference,
-            venturi: self.modal.form.venturi,
-            inletLoading: self.modal.form.inletLoading,
-            notes: self.modal.form.notes
-          };
-
-          self.$store
-            .dispatch(_action, {
-              url: _url,
-              params: payload
-            })
-            .then(response => {
-              if (response.error) {
-                self.$message.error({
-                  zIndex: 10000,
-                  message: response.message
-                });
-              } else {
-                self.$message.success({
-                  zIndex: 10000,
-                  message: response.message
-                });
-                self.modal.show = false;
-
-                self.$emit("onUpdate");
-              }
-            })
-            .finally(() => dialog.close());
-        });
+        .then((response) => {
+          if (response.error) {
+            self.$message.error({
+              zIndex: 10000,
+              message: response.message,
+            });
+          } else {
+            self.modal.show = false;
+            self.$emit("onUpdate");
+          }
+        })
+        .finally(() => loader.hide());
     },
     handleRemove(event) {
       event.preventDefault();
@@ -595,23 +577,23 @@ export default {
         .confirm("You are about to remove this record. Are you sure ?", {
           okText: "Yes, Remove",
           cancelText: "Cancel",
-          loader: true
+          loader: true,
         })
-        .then(dialog => {
+        .then((dialog) => {
           self.$store
             .dispatch("apis/remove", {
-              url: `/board/standard-form/206/record/${self.modal.form.id}`
+              url: `/board/standard-form/206/record/${self.modal.form.id}`,
             })
-            .then(response => {
+            .then((response) => {
               if (response.error) {
                 self.$message.error({
                   zIndex: 10000,
-                  message: response.message
+                  message: response.message,
                 });
               } else {
                 self.$message.success({
                   zIndex: 10000,
-                  message: response.message
+                  message: response.message,
                 });
                 self.modal.show = false;
 
@@ -620,7 +602,7 @@ export default {
             })
             .finally(() => dialog.close());
         });
-    }
-  }
+    },
+  },
 };
 </script>

@@ -98,10 +98,8 @@
           </div>
         </div>
         <!--end::Header-->
-        <div class="separator separator-dashed mt-8 mb-5"></div>
-        <!--begin::Nav-->
+        <!-- <div class="separator separator-dashed mt-8 mb-5"></div>
         <div class="navi navi-spacer-x-0 p-0">
-          <!--begin::Item-->
           <router-link
             to="/builder"
             @click.native="closeOffcanvas"
@@ -112,13 +110,11 @@
               <div class="symbol symbol-40 bg-light mr-3">
                 <div class="symbol-label">
                   <span class="svg-icon svg-icon-md svg-icon-success">
-                    <!--begin::Svg Icon-->
                     <inline-svg
                       :src="
                         require('@/assets/media/svg/icons/General/Notification2.svg')
                       "
                     />
-                    <!--end::Svg Icon-->
                   </span>
                 </div>
               </div>
@@ -138,8 +134,6 @@
               </div>
             </div>
           </router-link>
-          <!--end:Item-->
-          <!--begin::Item-->
           <router-link
             to="/builder"
             @click.native="closeOffcanvas"
@@ -150,13 +144,11 @@
               <div class="symbol symbol-40 bg-light mr-3">
                 <div class="symbol-label">
                   <span class="svg-icon svg-icon-md svg-icon-warning">
-                    <!--begin::Svg Icon-->
                     <inline-svg
                       :src="
                         require('@/assets/media/svg/icons/Shopping/Chart-bar1.svg')
                       "
                     />
-                    <!--end::Svg Icon-->
                   </span>
                 </div>
               </div>
@@ -166,8 +158,6 @@
               </div>
             </div>
           </router-link>
-          <!--end:Item-->
-          <!--begin::Item-->
           <router-link
             to="/builder"
             @click.native="closeOffcanvas"
@@ -178,13 +168,11 @@
               <div class="symbol symbol-40 bg-light mr-3">
                 <div class="symbol-label">
                   <span class="svg-icon svg-icon-md svg-icon-danger">
-                    <!--begin::Svg Icon-->
                     <inline-svg
                       :src="
                         require('@/assets/media/svg/icons/Files/Selected-file.svg')
                       "
                     />
-                    <!--end::Svg Icon-->
                   </span>
                 </div>
               </div>
@@ -194,8 +182,6 @@
               </div>
             </div>
           </router-link>
-          <!--end:Item-->
-          <!--begin::Item-->
           <router-link
             to="/builder"
             @click.native="closeOffcanvas"
@@ -206,13 +192,11 @@
               <div class="symbol symbol-40 bg-light mr-3">
                 <div class="symbol-label">
                   <span class="svg-icon svg-icon-md svg-icon-primary">
-                    <!--begin::Svg Icon-->
                     <inline-svg
                       :src="
                         require('@/assets/media/svg/icons/Communication/Mail-opened.svg')
                       "
                     />
-                    <!--end::Svg Icon-->
                   </span>
                 </div>
               </div>
@@ -222,17 +206,11 @@
               </div>
             </div>
           </router-link>
-          <!--end:Item-->
         </div>
-        <!--end::Nav-->
         <div class="separator separator-dashed my-7"></div>
-        <!--begin::Notifications-->
         <div>
-          <!--begin:Heading-->
           <h5 class="mb-5">Recent Notifications</h5>
-          <!--end:Heading-->
           <template v-for="(item, i) in list">
-            <!--begin::Item -->
             <div
               class="d-flex align-items-center rounded p-5 gutter-b"
               v-bind:class="`bg-light-${item.type}`"
@@ -243,9 +221,7 @@
                 v-bind:class="`svg-icon-${item.type}`"
               >
                 <span class="svg-icon svg-icon-lg">
-                  <!--begin::Svg Icon-->
                   <inline-svg :src="item.svg" />
-                  <!--end::Svg Icon-->
                 </span>
               </span>
               <div class="d-flex flex-column flex-grow-1 mr-2">
@@ -271,10 +247,8 @@
                 {{ item.alt }}
               </span>
             </div>
-            <!--end::Item -->
           </template>
-        </div>
-        <!--end::Notifications-->
+        </div> -->
       </perfect-scrollbar>
       <!--end::Content-->
     </div>
@@ -301,36 +275,36 @@ export default {
         desc: "Due in 2 Days",
         alt: "+28%",
         svg: "/media/svg/icons/Home/Library.svg",
-        type: "warning"
+        type: "warning",
       },
       {
         title: "Would be to people",
         desc: "Due in 2 Days",
         alt: "+50%",
         svg: "/media/svg/icons/Communication/Write.svg",
-        type: "success"
+        type: "success",
       },
       {
         title: "Purpose would be to persuade",
         desc: "Due in 2 Days",
         alt: "-27%",
         svg: "/media/svg/icons/Communication/Group-chat.svg",
-        type: "danger"
+        type: "danger",
       },
       {
         title: "The best product",
         desc: "Due in 2 Days",
         alt: "+8%",
         svg: "/media/svg/icons/General/Attachment2.svg",
-        type: "info"
-      }
-    ]
+        type: "info",
+      },
+    ],
   }),
   computed: {
     ...mapGetters("auth", ["user", "token"]),
     picture() {
       return process.env.BASE_URL + "media/users/default.jpg";
-    }
+    },
   },
   mounted() {
     KTLayoutQuickUser.init(this.$refs["kt_quick_user"]);
@@ -346,26 +320,26 @@ export default {
         .dispatch("apis/get", {
           url: "auth/logout",
           params: {
-            refreshToken: self.token.refreshToken
-          }
+            refreshToken: self.token.refreshToken,
+          },
         })
-        .then(response => {
+        .then((response) => {
           localStorage.removeItem("vuex");
 
           if (response.error) {
             self.$message.error({
               zIndex: 10000,
-              message: response.message
+              message: response.message,
             });
           } else {
             self.$message.success({
               zIndex: 10000,
-              message: response.message
+              message: response.message,
             });
           }
           window.location.reload();
         });
-    }
-  }
+    },
+  },
 };
 </script>
