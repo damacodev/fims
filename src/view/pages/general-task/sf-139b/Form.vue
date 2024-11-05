@@ -263,6 +263,30 @@
         <FormKlaimPlain v-else :form="form" />
       </b-col>
     </b-row>
+
+    <b-modal
+      v-model="modalRitase.show"
+      title="Ritase"
+      :hide-footer="true"
+      :no-close-on-backdrop="true"
+      :no-close-on-esc="true"
+    >
+      <p>
+        Bridger record with Nomor Polisi
+        <strong>{{ modalRitase.bridgerNo }}</strong> was found in SF103. Please
+        select one.
+      </p>
+      <b-button
+        v-for="(record, index) in modalRitase.records"
+        v-bind:key="index"
+        class="mr-2"
+        size="sm"
+        variant="outline-success"
+        @click="selectRitase(record)"
+      >
+        Ritase {{ record.ritase }}
+      </b-button>
+    </b-modal>
   </fragment>
 </template>
 
@@ -442,6 +466,11 @@ export default {
       equipment: [],
       kompartemen,
       dryCheck
+    },
+    modalRitase: {
+      show: false,
+      bridgerNo: "",
+      records: []
     }
   }),
   computed: {
@@ -511,6 +540,7 @@ export default {
     changeEquipment() {
       const self = this;
 
+      self.modalRitase.records = [];
       self.form.nomorPolisi = null;
       self.form.jumlahKompartemen = null;
       self.form.masaBerlakuTeraTangki = null;
@@ -530,8 +560,35 @@ export default {
 
       self.getSf103ByBridger();
     },
-    getSf103ByBridger(){
-      
+    getSf103ByBridger() {
+      const self = this;
+
+      let loader = self.$loading.show();
+      let _serverParams = {
+        dppuId: self.form.dppuId,
+        bridgerId: self.form.bridgerId,
+        recordDate: self.form.transactionDate
+      };
+      self.$store
+        .dispatch("apis/get", {
+          url: "/board/standard-form/103/record",
+          params: _serverParams
+        })
+        .then(response => {
+          if (response.error) {
+            self.$message.error({
+              zIndex: 10000,
+              message: response.message
+            });
+          } else {
+            if (response.data.length > 0) {
+              self.modalRitase.show = true;
+              self.modalRitase.bridgerNo = response.data[0].bridgerNo;
+              self.modalRitase.records = response.data;
+            }
+          }
+        })
+        .finally(() => loader.hide());
     },
     getEquipmentByCategory() {
       const self = this;
@@ -643,6 +700,24 @@ export default {
           }
         })
         .finally(() => loader.hide());
+    },
+    selectRitase(params) {
+      const self = this;
+
+      self.form.volume = params.volume * params.records.length;
+      self.form.bottomLoaderCover = params.seal;
+      params.records.forEach((item, index) => {
+        self.form.details[index].atSupplyPoint.densityObserved =
+          params.receivingDocument.densityObserved;
+        self.form.details[index].atSupplyPoint.temperature =
+          params.receivingDocument.temperature;
+        self.form.details[index].atDppu.densityObserved =
+          item.controlCheck.densityObserved;
+        self.form.details[index].atDppu.temperature =
+          item.controlCheck.temperature;
+      });
+
+      self.modalRitase.show = false;
     },
     calculateKlaim() {
       const self = this;

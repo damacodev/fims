@@ -35,7 +35,7 @@
                 row.co2,
                 row.hoseAndNozzle,
                 row.valve,
-                row.seal,
+                row.seal
               ]"
               v-bind:key="indexItem"
               class="text-center"
@@ -166,11 +166,11 @@ import { getFireHose, setOption } from "@/core/utils";
 export default {
   props: {
     currentProgress: Object,
-    details: Array,
+    details: Array
   },
   data: () => ({
     options: {
-      fireHose: [],
+      fireHose: []
     },
     modal: {
       show: false,
@@ -182,7 +182,7 @@ export default {
         equipment: {
           id: null,
           code: null,
-          detail: [],
+          detail: []
         },
         vesselConditionId: null,
         vesselCondition: null,
@@ -196,14 +196,14 @@ export default {
         valve: null,
         sealId: null,
         seal: null,
-        remarks: null,
-      },
-    },
+        remarks: null
+      }
+    }
   }),
   created() {
     const self = this;
 
-    getFireHose().then((response) => {
+    getFireHose().then(response => {
       self.options.fireHose = response;
     });
   },
@@ -248,19 +248,19 @@ export default {
         hoseAndNozzleId: self.modal.form.hoseAndNozzleId,
         valveId: self.modal.form.valveId,
         sealId: self.modal.form.sealId,
-        remarks: self.modal.form.remarks,
+        remarks: self.modal.form.remarks
       };
 
       self.$store
         .dispatch("apis/put", {
           url: `/board/standard-form/215/record/${self.modal.form.id}`,
-          params: payload,
+          params: payload
         })
-        .then((response) => {
+        .then(response => {
           if (response.error) {
             self.$message.error({
               zIndex: 10000,
-              message: response.message,
+              message: response.message
             });
           } else {
             self.modal.show = false;
@@ -268,7 +268,7 @@ export default {
           }
         })
         .finally(() => loader.hide());
-    },
-  },
+    }
+  }
 };
 </script>

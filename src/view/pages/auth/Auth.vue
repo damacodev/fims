@@ -34,7 +34,7 @@
             "
             style="color: #986923"
           >
-            Maintenance 4.0<br />PT Pertamina (Persero)
+            Facility Integrity Managemenet System<br />PT Pertamina (Persero)
           </h3>
         </div>
         <div

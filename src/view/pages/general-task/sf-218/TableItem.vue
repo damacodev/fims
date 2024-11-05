@@ -34,7 +34,7 @@
                 row.inlet.gridBeforePump,
                 row.outlet.gridBeforePump,
                 row.outlet.gridAirEliminator,
-                row.outlet.strainerCoupler,
+                row.outlet.strainerCoupler
               ]"
               v-bind:key="indexItem"
               class="text-center"
@@ -162,11 +162,11 @@ import { getStrainerCheck, setOption, dateFormat } from "@/core/utils";
 export default {
   props: {
     currentProgress: Object,
-    details: Array,
+    details: Array
   },
   data: () => ({
     options: {
-      strainerCheck: [],
+      strainerCheck: []
     },
     modal: {
       show: false,
@@ -178,14 +178,14 @@ export default {
         equipment: {
           id: null,
           code: null,
-          detail: [],
+          detail: []
         },
         recordDate: null,
         inlet: {
           strainerCouplerId: null,
           strainerCoupler: null,
           gridBeforePumpId: null,
-          gridBeforePump: null,
+          gridBeforePump: null
         },
         outlet: {
           gridBeforePumpId: null,
@@ -193,16 +193,16 @@ export default {
           gridAirEliminatorId: null,
           gridAirEliminator: null,
           strainerCouplerId: null,
-          strainerCoupler: null,
+          strainerCoupler: null
         },
-        remarks: null,
-      },
-    },
+        remarks: null
+      }
+    }
   }),
   created() {
     const self = this;
 
-    getStrainerCheck().then((response) => {
+    getStrainerCheck().then(response => {
       self.options.strainerCheck = response;
     });
   },
@@ -249,19 +249,19 @@ export default {
         recordDate: self.modal.form.recordDate,
         inlet: self.modal.form.inlet,
         outlet: self.modal.form.outlet,
-        remarks: self.modal.form.remarks,
+        remarks: self.modal.form.remarks
       };
 
       self.$store
         .dispatch("apis/put", {
           url: `/board/standard-form/218/record/${self.modal.form.id}`,
-          params: payload,
+          params: payload
         })
-        .then((response) => {
+        .then(response => {
           if (response.error) {
             self.$message.error({
               zIndex: 10000,
-              message: response.message,
+              message: response.message
             });
           } else {
             self.modal.show = false;
@@ -269,7 +269,7 @@ export default {
           }
         })
         .finally(() => loader.hide());
-    },
-  },
+    }
+  }
 };
 </script>

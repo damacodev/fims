@@ -115,7 +115,7 @@ import { setOhm } from "@/core/utils";
 export default {
   props: {
     currentProgress: Object,
-    details: Array,
+    details: Array
   },
   data: () => ({
     modal: {
@@ -131,17 +131,17 @@ export default {
         resistance: 0,
         weatherCondition: null,
         eartCondition: null,
-        remark: null,
-      },
-    },
+        remark: null
+      }
+    }
   }),
   validations: {
     modal: {
       form: {
         testPointNumber: { required },
-        resistance: { required },
-      },
-    },
+        resistance: { required }
+      }
+    }
   },
   methods: {
     setOhm,
@@ -210,19 +210,19 @@ export default {
         resistance: self.modal.form.resistance,
         weatherCondition: self.modal.form.weatherCondition,
         eartCondition: self.modal.form.eartCondition,
-        remark: self.modal.form.remark,
+        remark: self.modal.form.remark
       };
 
       self.$store
         .dispatch(_action, {
           url: _url,
-          params: payload,
+          params: payload
         })
-        .then((response) => {
+        .then(response => {
           if (response.error) {
             self.$message.error({
               zIndex: 10000,
-              message: response.message,
+              message: response.message
             });
           } else {
             self.modal.show = false;
@@ -240,23 +240,23 @@ export default {
         .confirm("You are about to remove this record. Are you sure ?", {
           okText: "Yes, Remove",
           cancelText: "Cancel",
-          loader: true,
+          loader: true
         })
-        .then((dialog) => {
+        .then(dialog => {
           self.$store
             .dispatch("apis/remove", {
-              url: `/board/standard-form/211/record/${self.modal.form.id}`,
+              url: `/board/standard-form/211/record/${self.modal.form.id}`
             })
-            .then((response) => {
+            .then(response => {
               if (response.error) {
                 self.$message.error({
                   zIndex: 10000,
-                  message: response.message,
+                  message: response.message
                 });
               } else {
                 self.$message.success({
                   zIndex: 10000,
-                  message: response.message,
+                  message: response.message
                 });
                 self.modal.show = false;
 
@@ -265,7 +265,7 @@ export default {
             })
             .finally(() => dialog.close());
         });
-    },
-  },
+    }
+  }
 };
 </script>

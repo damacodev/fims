@@ -343,17 +343,27 @@ export const generalTask = {
         {
           path: "/",
           name: "sf139b",
-          component: () => import("@/view/pages/general-task/sf-139b/Table.vue")
+          component: () =>
+            import("@/view/pages/general-task/sf-139b/Table.vue"),
+          meta: {
+            title: "SF139B"
+          }
         },
         {
           path: "form",
           name: "sf139bCreate",
-          component: () => import("@/view/pages/general-task/sf-139b/Form")
+          component: () => import("@/view/pages/general-task/sf-139b/Form"),
+          meta: {
+            title: "SF139B"
+          }
         },
         {
           path: "form/:id",
           name: "sf139bUpdate",
-          component: () => import("@/view/pages/general-task/sf-139b/Form")
+          component: () => import("@/view/pages/general-task/sf-139b/Form"),
+          meta: {
+            title: "SF139B"
+          }
         }
       ]
     },

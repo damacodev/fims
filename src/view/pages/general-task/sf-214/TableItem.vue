@@ -60,7 +60,7 @@
                 row.lineProportioner,
                 row.threeWayValve,
                 row.combinationConnecting,
-                row.yPeace,
+                row.yPeace
               ]"
               v-bind:key="indexItem"
               class="text-center"
@@ -281,11 +281,11 @@ import { getFireHose, setOption } from "@/core/utils";
 export default {
   props: {
     currentProgress: Object,
-    details: Array,
+    details: Array
   },
   data: () => ({
     options: {
-      fireHose: [],
+      fireHose: []
     },
     modal: {
       show: false,
@@ -297,7 +297,7 @@ export default {
         equipment: {
           id: null,
           code: null,
-          detail: [],
+          detail: []
         },
         bodyConditionsId: null,
         bodyConditions: null,
@@ -329,14 +329,14 @@ export default {
         combinationConnecting: null,
         yPeaceId: null,
         yPeace: null,
-        remarks: null,
-      },
-    },
+        remarks: null
+      }
+    }
   }),
   created() {
     const self = this;
 
-    getFireHose().then((response) => {
+    getFireHose().then(response => {
       self.options.fireHose = response;
     });
   },
@@ -409,19 +409,19 @@ export default {
         threeWayValveId: self.modal.form.threeWayValveId,
         combinationConnectingId: self.modal.form.combinationConnectingId,
         yPeaceId: self.modal.form.yPeaceId,
-        remarks: self.modal.form.remarks,
+        remarks: self.modal.form.remarks
       };
 
       self.$store
         .dispatch("apis/put", {
           url: `/board/standard-form/214/record/${self.modal.form.id}`,
-          params: payload,
+          params: payload
         })
-        .then((response) => {
+        .then(response => {
           if (response.error) {
             self.$message.error({
               zIndex: 10000,
-              message: response.message,
+              message: response.message
             });
           } else {
             self.modal.show = false;
@@ -429,7 +429,7 @@ export default {
           }
         })
         .finally(() => loader.hide());
-    },
-  },
+    }
+  }
 };
 </script>

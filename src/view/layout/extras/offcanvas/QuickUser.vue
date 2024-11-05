@@ -275,36 +275,36 @@ export default {
         desc: "Due in 2 Days",
         alt: "+28%",
         svg: "/media/svg/icons/Home/Library.svg",
-        type: "warning",
+        type: "warning"
       },
       {
         title: "Would be to people",
         desc: "Due in 2 Days",
         alt: "+50%",
         svg: "/media/svg/icons/Communication/Write.svg",
-        type: "success",
+        type: "success"
       },
       {
         title: "Purpose would be to persuade",
         desc: "Due in 2 Days",
         alt: "-27%",
         svg: "/media/svg/icons/Communication/Group-chat.svg",
-        type: "danger",
+        type: "danger"
       },
       {
         title: "The best product",
         desc: "Due in 2 Days",
         alt: "+8%",
         svg: "/media/svg/icons/General/Attachment2.svg",
-        type: "info",
-      },
-    ],
+        type: "info"
+      }
+    ]
   }),
   computed: {
     ...mapGetters("auth", ["user", "token"]),
     picture() {
       return process.env.BASE_URL + "media/users/default.jpg";
-    },
+    }
   },
   mounted() {
     KTLayoutQuickUser.init(this.$refs["kt_quick_user"]);
@@ -320,26 +320,26 @@ export default {
         .dispatch("apis/get", {
           url: "auth/logout",
           params: {
-            refreshToken: self.token.refreshToken,
-          },
+            refreshToken: self.token.refreshToken
+          }
         })
-        .then((response) => {
+        .then(response => {
           localStorage.removeItem("vuex");
 
           if (response.error) {
             self.$message.error({
               zIndex: 10000,
-              message: response.message,
+              message: response.message
             });
           } else {
             self.$message.success({
               zIndex: 10000,
-              message: response.message,
+              message: response.message
             });
           }
           window.location.reload();
         });
-    },
-  },
+    }
+  }
 };
 </script>
