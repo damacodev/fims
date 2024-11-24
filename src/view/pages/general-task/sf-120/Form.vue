@@ -16,7 +16,7 @@
         <div class="card-toolbar">
           <b-button
             v-show="$route.name != route.form"
-            variant="outline-primary"
+            variant="secondary"
             size="lg"
             class="mr-2"
             @click="handleOpenFormCopy"

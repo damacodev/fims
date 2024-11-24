@@ -1,120 +1,146 @@
 <template>
-  <div class="card card-custom">
-    <div class="card-header py-3">
-      <div class="card-title align-items-start flex-column">
-        <h3 class="card-label font-weight-bolder text-dark">
-          <b-button class="btn-icon mr-2" size="xs" @click="$router.go(-1)">
-            <i class="flaticon2-back" />
+  <fragment>
+    <div class="card card-custom">
+      <div class="card-header py-3">
+        <div class="card-title align-items-start flex-column">
+          <h3 class="card-label font-weight-bolder text-dark">
+            <b-button class="btn-icon mr-2" size="xs" @click="$router.go(-1)">
+              <i class="flaticon2-back" />
+            </b-button>
+            {{ title }}
+          </h3>
+          <span class="text-muted font-weight-bold font-size-sm mt-1 pl-10">
+            {{ subTitle }}
+          </span>
+        </div>
+        <div class="card-toolbar">
+          <b-button
+            v-show="$route.name != route.form"
+            variant="secondary"
+            size="lg"
+            class="mr-2"
+            @click="handleOpenFormCopy"
+          >
+            Copy
           </b-button>
-          {{ title }}
-        </h3>
-        <span class="text-muted font-weight-bold font-size-sm mt-1 pl-10">
-          {{ subTitle }}
-        </span>
+          <b-button
+            v-show="currentProgress.locked"
+            variant="outline-primary"
+            @click="handleExport"
+          >
+            Export to Excel
+          </b-button>
+          <b-button
+            v-show="$route.name != route.form && !currentProgress.locked"
+            variant="outline-danger"
+            size="lg"
+            class="mr-2"
+            @click="handleDelete"
+          >
+            Delete
+          </b-button>
+          <b-button
+            v-show="$route.name != route.form && !currentProgress.locked"
+            variant="outline-primary"
+            size="lg"
+            class="mr-2"
+            @click="handleSendApproval"
+          >
+            Save and Send Approval
+          </b-button>
+          <b-button
+            v-show="!currentProgress.locked"
+            variant="primary"
+            size="lg"
+            @click="handleSubmit"
+          >
+            {{ textButton }}
+          </b-button>
+        </div>
       </div>
-      <div class="card-toolbar">
-        <b-button
-          v-show="currentProgress.locked"
-          variant="outline-primary"
-          @click="handleExport"
-        >
-          Export to Excel
-        </b-button>
-        <b-button
-          v-show="$route.name != route.form && !currentProgress.locked"
-          variant="outline-danger"
-          size="lg"
-          class="mr-2"
-          @click="handleDelete"
-        >
-          Delete
-        </b-button>
-        <b-button
-          v-show="$route.name != route.form && !currentProgress.locked"
-          variant="outline-primary"
-          size="lg"
-          class="mr-2"
-          @click="handleSendApproval"
-        >
-          Save and Send Approval
-        </b-button>
-        <b-button
-          v-show="!currentProgress.locked"
-          variant="primary"
-          size="lg"
-          @click="handleSubmit"
-        >
-          {{ textButton }}
-        </b-button>
-      </div>
-    </div>
-    <b-row class="p-2">
-      <div class="card-body pb-0">
-        <template v-if="!currentProgress.locked">
-          <Select
-            v-if="multipleDppu"
-            label="Depot Pengisian Pesawat Udara"
-            v-model="form.dppuId"
-            :v="$v.form.dppuId"
-            :options="options.dppu"
-            :multiple="false"
-            :disabled="$route.name != route.form"
-            @input="changeDppu"
+      <b-row class="p-2">
+        <div class="card-body pb-0">
+          <template v-if="!currentProgress.locked">
+            <Select
+              v-if="multipleDppu"
+              label="Depot Pengisian Pesawat Udara"
+              v-model="form.dppuId"
+              :v="$v.form.dppuId"
+              :options="options.dppu"
+              :multiple="false"
+              :disabled="$route.name != route.form"
+              @input="changeDppu"
+            />
+            <InputText
+              label="Transaction #"
+              type="text"
+              v-model="form.transactionId"
+              disabled
+            />
+            <InputText
+              label="Date"
+              type="date"
+              v-model="form.transactionDate"
+              :v="$v.form.transactionDate"
+              :max="getDate()"
+            />
+            <Select
+              ref="Equipment"
+              label="Equipment"
+              placeholder="Search equipment..."
+              v-model="form.equipmentId"
+              :v="$v.form.equipmentId"
+              :async="true"
+              :multiple="false"
+              :loadOptions="getEquipmentByCategory"
+            />
+            <Select
+              label="Shift"
+              placeholder="Select shift"
+              v-model="form.shiftId"
+              :v="$v.form.shiftId"
+              :options="options.shift"
+              :multiple="false"
+            />
+            <InputText
+              label="Shift Group"
+              type="text"
+              v-model="form.shiftGroup"
+              :v="$v.form.shiftGroup"
+            />
+          </template>
+          <FormHeader
+            v-else
+            :form="form"
+            :currentProgress="currentProgress"
+            :showRemarks="true"
           />
-          <InputText
-            label="Transaction #"
-            type="text"
-            v-model="form.transactionId"
-            disabled
-          />
-          <InputText
-            label="Date"
-            type="date"
-            v-model="form.transactionDate"
-            :v="$v.form.transactionDate"
-            :max="getDate()"
-          />
-          <Select
-            ref="Equipment"
-            label="Equipment"
-            placeholder="Search equipment..."
-            v-model="form.equipmentId"
-            :v="$v.form.equipmentId"
-            :async="true"
-            :multiple="false"
-            :loadOptions="getEquipmentByCategory"
-          />
-          <Select
-            label="Shift"
-            placeholder="Select shift"
-            v-model="form.shiftId"
-            :v="$v.form.shiftId"
-            :options="options.shift"
-            :multiple="false"
-          />
-          <InputText
-            label="Shift Group"
-            type="text"
-            v-model="form.shiftGroup"
-            :v="$v.form.shiftGroup"
-          />
-        </template>
-        <FormHeader
-          v-else
-          :form="form"
-          :currentProgress="currentProgress"
-          :showRemarks="true"
-        />
-      </div>
-    </b-row>
+        </div>
+      </b-row>
 
-    <TableItem
-      :form="form"
-      :options="options"
-      :validations="$v"
-      :buttonVisibility="!currentProgress.locked"
-    />
-  </div>
+      <TableItem
+        :form="form"
+        :options="options"
+        :validations="$v"
+        :buttonVisibility="!currentProgress.locked"
+      />
+    </div>
+    <b-modal
+      v-model="modalCopy.dialog"
+      title="Destination to Copy Transaction"
+      ok-title="Copy"
+      :no-close-on-backdrop="true"
+      :no-close-on-esc="true"
+      @ok="handleCopy"
+    >
+      <InputText
+        label="Transaction Date"
+        type="date"
+        v-model="modalCopy.transactionDate"
+        :useHorizontal="false"
+      />
+    </b-modal>
+  </fragment>
 </template>
 
 <script>
@@ -570,7 +596,8 @@ export default {
       updatedBy: null,
       updatedAt: null
     },
-    /* form: {
+    /* 
+    form: {
       dppu: {
         id: null,
         label: null
@@ -993,7 +1020,8 @@ export default {
       sendApproval: false,
       updatedBy: null,
       updatedAt: null
-    }, */
+    },
+    */
     currentProgress: {
       locked: null,
       status: null,
@@ -1007,6 +1035,10 @@ export default {
       dppu: [],
       shift: [],
       checklistResult: []
+    },
+    modalCopy: {
+      dialog: false,
+      transactionDate: getDate()
     }
   }),
   computed: {
@@ -1686,6 +1718,56 @@ export default {
                 document.body.appendChild(fileLink);
 
                 fileLink.click();
+              }
+            })
+            .finally(() => dialog.close());
+        });
+    },
+    handleOpenFormCopy() {
+      const self = this;
+
+      self.modalCopy.dialog = true;
+      self.modalCopy.transactionDate = getDate();
+    },
+    handleCopy() {
+      const self = this;
+
+      self.$dialog
+        .confirm("You are about to copy this transaction. Are you sure ?", {
+          okText: "Yes, Copy",
+          cancelText: "Cancel",
+          loader: true
+        })
+        .then(dialog => {
+          self.$store
+            .dispatch("apis/post", {
+              url: `/board/standard-form/119/copy/${self.$route.params.id}`,
+              params: {
+                transactionDate: self.modalCopy.transactionDate
+              }
+            })
+            .then(response => {
+              if (response.error) {
+                self.$message.error({
+                  zIndex: 10000,
+                  message: response.message
+                });
+              } else {
+                self.$message.success({
+                  zIndex: 10000,
+                  message: response.message
+                });
+
+                setTimeout(() => {
+                  // self.$router.push({
+                  //   name: "sf120Update",
+                  //   params: {
+                  //     id: response.data.id,
+                  //   },
+                  // });
+                  // self.get();
+                  self.$router.push({ name: self.route.table });
+                }, 1000);
               }
             })
             .finally(() => dialog.close());
