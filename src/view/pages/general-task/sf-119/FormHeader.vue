@@ -14,6 +14,10 @@
       <PlainText label="Shift" :value="form.shift.label" />
       <PlainText label="Shift Group" :value="form.shiftGroup" />
       <PlainText
+        label="Performed By"
+        :value="form.cro == null ? '-' : form.cro.label"
+      />
+      <PlainText
         label="General Condition"
         :value="
           form.generalCondition == null ? '-' : form.generalCondition.label

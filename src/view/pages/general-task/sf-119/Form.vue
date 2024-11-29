@@ -26,6 +26,7 @@
           <b-button
             v-show="currentProgress.locked"
             variant="outline-primary"
+            size="lg"
             @click="handleExport"
           >
             Export to Excel
@@ -108,6 +109,13 @@
               v-model="form.shiftGroup"
               :v="$v.form.shiftGroup"
             />
+            <Select
+              label="Performed By"
+              placeholder="Select performed by"
+              v-model="form.croId"
+              :options="options.cro"
+              :multiple="false"
+            />
           </template>
           <FormHeader
             v-else
@@ -139,6 +147,14 @@
         v-model="modalCopy.transactionDate"
         :useHorizontal="false"
       />
+      <Select
+        label="Shift"
+        placeholder="Select shift"
+        v-model="modalCopy.shiftId"
+        :options="options.shift"
+        :multiple="false"
+        :useHorizontal="false"
+      />
     </b-modal>
   </fragment>
 </template>
@@ -154,7 +170,8 @@ import {
   getChecklistResult,
   numberFormat,
   getDate,
-  dateFormat
+  dateFormat,
+  isNullOrEmpty
 } from "@/core/utils";
 
 export default {
@@ -179,6 +196,11 @@ export default {
       equipmentId: null,
       shiftId: null,
       shiftGroup: null,
+      cro: {
+        id: null,
+        label: null
+      },
+      croId: null,
       generalCondition: {
         id: null,
         label: null
@@ -1034,11 +1056,13 @@ export default {
     options: {
       dppu: [],
       shift: [],
-      checklistResult: []
+      checklistResult: [],
+      cro: []
     },
     modalCopy: {
       dialog: false,
-      transactionDate: getDate()
+      transactionDate: getDate(),
+      shiftId: null
     }
   }),
   computed: {
@@ -1380,6 +1404,7 @@ export default {
       self.options.checklistResult = response;
     });
 
+    self.getCro();
     if (self.$route.name != self.route.form) {
       self.get();
     }
@@ -1453,6 +1478,32 @@ export default {
           });
       }
     },
+    getCro() {
+      const self = this;
+
+      self.$store
+        .dispatch("apis/get", {
+          url: "/common/cro",
+          params: {
+            dppu: self.form.dppuId
+          }
+        })
+        .then(response => {
+          if (response.error) {
+            self.$message.error({
+              zIndex: 10000,
+              message: response.message
+            });
+          } else {
+            self.options.cro = response.data.data.map(x => ({
+              id: x.id,
+              label: isNullOrEmpty(x.code)
+                ? x.fullName
+                : `${x.code} - ${x.fullName}`
+            }));
+          }
+        });
+    },
     changeDppu() {
       const self = this;
 
@@ -1474,6 +1525,7 @@ export default {
                 id: x.id,
                 label: `${x.shiftCallSign} (${x.workingTime.start} - ${x.workingTime.end})`
               }));
+              self.getCro();
             }
           });
       }
@@ -1499,14 +1551,16 @@ export default {
           } else {
             self.form = {
               dppu: response.data.dppu,
-              dppuId: response.data.dppu.id,
+              dppuId: response.data.dppu?.id,
               transactionId: response.data.transactionId,
               transactionDate: response.data.transactionDate,
               equipment: response.data.equipment,
-              equipmentId: response.data.equipment.id,
+              equipmentId: response.data.equipment?.id,
               shift: response.data.shift,
-              shiftId: response.data.shift.id,
+              shiftId: response.data.shift?.id,
               shiftGroup: response.data.shiftGroup,
+              cro: response.data.cro,
+              croId: response.data.cro?.id,
               generalCondition: response.data.generalCondition,
               cleanliness: response.data.cleanliness,
               truckConditions: response.data.truckConditions,
@@ -1728,6 +1782,7 @@ export default {
 
       self.modalCopy.dialog = true;
       self.modalCopy.transactionDate = getDate();
+      self.modalCopy.shiftId = null;
     },
     handleCopy() {
       const self = this;
@@ -1743,7 +1798,8 @@ export default {
             .dispatch("apis/post", {
               url: `/board/standard-form/119/copy/${self.$route.params.id}`,
               params: {
-                transactionDate: self.modalCopy.transactionDate
+                transactionDate: self.modalCopy.transactionDate,
+                shiftId: self.modalCopy.shiftId
               }
             })
             .then(response => {

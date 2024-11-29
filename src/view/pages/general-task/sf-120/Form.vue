@@ -249,6 +249,14 @@
         v-model="modalCopy.transactionDate"
         :useHorizontal="false"
       />
+      <Select
+        label="Shift"
+        placeholder="Select shift"
+        v-model="modalCopy.shiftId"
+        :options="options.shift"
+        :multiple="false"
+        :useHorizontal="false"
+      />
     </b-modal>
   </fragment>
 </template>
@@ -351,7 +359,8 @@ export default {
     },
     modalCopy: {
       dialog: false,
-      transactionDate: getDate()
+      transactionDate: getDate(),
+      shiftId: null
     }
   }),
   computed: {
@@ -992,6 +1001,7 @@ export default {
 
       self.modalCopy.dialog = true;
       self.modalCopy.transactionDate = getDate();
+      self.modalCopy.shiftId = null;
     },
     handleCopy() {
       const self = this;
@@ -1007,7 +1017,8 @@ export default {
             .dispatch("apis/post", {
               url: `/board/standard-form/120/copy/${self.$route.params.id}`,
               params: {
-                transactionDate: self.modalCopy.transactionDate
+                transactionDate: self.modalCopy.transactionDate,
+                shiftId: self.modalCopy.shiftId
               }
             })
             .then(response => {
