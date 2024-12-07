@@ -613,7 +613,7 @@ export function camelizeKeys(obj) {
 }
 
 export function isNullOrEmpty(str) {
-  if (str === null || str.trim() === "") return true;
+  if (str === null || str?.length == 0) return true;
   else return false;
 }
 

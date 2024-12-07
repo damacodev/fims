@@ -44,7 +44,7 @@
           v-model="form.flightNumber"
           :v="validator.flightNumber"
           :useHorizontal="false"
-          :disabled="form.flightScheduleId != null || currentProgress.locked"
+          :disabled="currentProgress.locked"
         >
           <template #append>
             <b-button @click="openFlightRadar24" variant="secondary">

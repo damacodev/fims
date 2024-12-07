@@ -34,7 +34,8 @@
             "
             style="color: #986923"
           >
-            Facility Integrity Managemenet System<br />PT Pertamina (Persero)
+            Facility Integrity<br />Management System<br />PT Pertamina
+            (Persero)
           </h3>
         </div>
         <div

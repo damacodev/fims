@@ -271,7 +271,7 @@ import { mapGetters } from "vuex";
 import FormHeader from "./FormHeader.vue";
 import FormModal from "./FormModal.vue";
 import TableItem from "./TableItem.vue";
-import { required, maxLength } from "vuelidate/lib/validators";
+import { required, minLength, maxLength } from "vuelidate/lib/validators";
 import {
   getDppu,
   getRefuelingProgram,
@@ -404,8 +404,8 @@ export default {
       airlineIata: { required, maxLength: maxLength(3) },
       flightNumber: { required, maxLength: maxLength(4) },
       aircraftType: { required, maxLength: maxLength(100) },
-      eta: { required },
-      etd: { required }
+      eta: { required, minLength: minLength(5), maxLength: maxLength(5) },
+      etd: { required, minLength: minLength(5), maxLength: maxLength(5) }
     }
   },
   created() {
@@ -901,7 +901,8 @@ export default {
             aircraftType: self.modalForm.aircraftType,
             flightScheduleId: self.modalForm.flightScheduleId,
             refuelingTime:
-              self.modalForm.refuelingTime == null
+              self.modalForm.refuelingTime == null ||
+              self.modalForm.refuelingTime.length <= 1
                 ? null
                 : dateTimeFormat(
                     `${self.form.transactionDate} ${self.modalForm.refuelingTime}`,

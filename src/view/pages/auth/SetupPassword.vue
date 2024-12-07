@@ -15,7 +15,10 @@
       >
         <div class="d-flex flex-column-auto flex-column pt-lg-40 pt-15">
           <a href="#" class="text-center mb-10">
-            <img src="/media/logos/logo-mini-white.png" class="max-h-70px" />
+            <img
+              :src="require('@/assets/media/logos/logo-mini-white.png')"
+              class="max-h-70px"
+            />
           </a>
           <h3
             class="
@@ -26,7 +29,8 @@
             "
             style="color: #986923"
           >
-            Maintenance 4.0<br />PT Pertamina (Persero)
+            Facility Integrity<br />Management System<br />PT Pertamina
+            (Persero)
           </h3>
         </div>
         <div
@@ -36,7 +40,9 @@
             flex-row-fluid
             bgi-no-repeat bgi-position-y-bottom bgi-position-x-center
           "
-          :style="{ backgroundImage: `url(${backgroundImage})` }"
+          :style="{
+            backgroundImage: `url(${require('@/assets/media/svg/illustrations/refinery.svg')})`
+          }"
         ></div>
       </div>
       <!--begin::Aside-->
@@ -68,7 +74,7 @@
                   Welcome, {{ fullName }}
                 </h3>
                 <span class="text-muted font-weight-bold font-size-h5">
-                  Please setup your credentials to use MTC Application
+                  Please setup your credentials to use FIMS Application
                 </span>
               </div>
               <InputText
@@ -115,8 +121,9 @@
             href="https://damaco.dev"
             target="_blank"
             class="text-primary font-weight-bolder font-size-h5"
-            >Build with &hearts; by Damaco.Dev</a
           >
+            Build with &hearts; by Damaco.Dev
+          </a>
         </div>
         <!--end::Content footer-->
       </div>
@@ -148,11 +155,6 @@ export default {
         required,
         sameAsNewPassword: sameAs("newPassword")
       }
-    }
-  },
-  computed: {
-    backgroundImage() {
-      return process.env.BASE_URL + "media/svg/illustrations/refinery.svg";
     }
   },
   created() {

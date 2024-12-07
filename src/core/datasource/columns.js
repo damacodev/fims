@@ -104,8 +104,13 @@ export const approver = [
     thClass: "align-middle"
   },
   {
-    label: "Name",
+    label: "Approver",
     key: "approver.label",
+    thClass: "align-middle"
+  },
+  {
+    label: "Role",
+    key: "approverRole.label",
     thClass: "align-middle"
   },
   {

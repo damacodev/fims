@@ -39,6 +39,13 @@
             :options="options.approver"
             :multiple="false"
           />
+          <Select
+            label="Approver (Role Level)"
+            v-model="form.approverRole"
+            :v="$v.form.approverRole"
+            :options="options.role"
+            :multiple="false"
+          />
           <InputText
             label="Position"
             type="text"
@@ -60,7 +67,8 @@
 import { mapGetters } from "vuex";
 import { required, maxLength } from "vuelidate/lib/validators";
 import { yesNo } from "@/core/datasource/options";
-import { getDppu, normalizer } from "@/core/utils";
+import { getDppu, getRole, normalizer } from "@/core/utils";
+import { requiredIf } from "vuelidate/lib/validators";
 
 export default {
   data: () => ({
@@ -73,6 +81,7 @@ export default {
       dppuId: null,
       standardFormId: null,
       approver: null,
+      approverRole: null,
       position: null,
       partialMode: false
     },
@@ -80,6 +89,7 @@ export default {
       dppu: [],
       standardForm: [],
       approver: [],
+      role: [],
       yesNo
     }
   }),
@@ -87,7 +97,16 @@ export default {
     form: {
       dppuId: { required },
       standardFormId: { required },
-      approver: { required },
+      approver: {
+        required: requiredIf(function() {
+          return this.form.approverRole == null;
+        })
+      },
+      approverRole: {
+        required: requiredIf(function() {
+          return this.form.approver == null;
+        })
+      },
       position: { maxLength: maxLength(100) },
       partialMode: { required }
     }
@@ -111,6 +130,10 @@ export default {
     self.getStandardForm();
 
     if (self.multipleDppu) {
+      getRole().then(response => {
+        self.options.role = response.data;
+      });
+
       getDppu().then(response => {
         self.options.dppu = response.data.map(x => ({
           id: x.id,
@@ -198,13 +221,12 @@ export default {
 
             self.$router.push({ name: self.route.table });
           } else {
-            self.form = {
-              dppuId: response.data.dppu.id,
-              standardFormId: response.data.standardForm.id,
-              approver: response.data.approver.id,
-              position: response.data.position,
-              partialMode: response.data.partialMode
-            };
+            self.form.dppuId = response.data.dppu.id;
+            self.form.standardFormId = response.data.standardForm.id;
+            self.form.approver = response.data.approver?.id;
+            self.form.approverRole = response.data.approverRole?.id;
+            self.form.position = response.data.position;
+            self.form.partialMode = response.data.partialMode;
           }
         })
         .finally(() => loader.hide());
@@ -214,6 +236,15 @@ export default {
 
       self.$v.form.$touch();
       if (self.$v.form.$pending || self.$v.form.$error) return;
+
+      if (self.form.approver != null && self.form.approverRole != null) {
+        self.$message.warning({
+          zIndex: 10000,
+          message:
+            "Sorry, you can not select both of them (approver & approver (role level)). Please select one"
+        });
+        return;
+      }
 
       let _confirmText = "",
         _okText = "",
