@@ -17,6 +17,13 @@
     @onSearch="onSearch"
   >
     <template #toolbar>
+      <b-button
+        class="mr-2"
+        variant="outline-primary"
+        :to="{ name: 'oisFile' }"
+      >
+        Manage OIS File
+      </b-button>
       <b-button variant="primary" :to="{ name: 'sf120Create' }">
         Create New Transaction
       </b-button>

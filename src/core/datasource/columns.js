@@ -1,3 +1,53 @@
+export const oisFile = [
+  {
+    label: "DPPU",
+    key: "dppu.label",
+    thClass: "align-middle"
+  },
+  {
+    label: "Delivery No",
+    key: "deliveryNo",
+    thClass: "align-middle"
+  },
+  {
+    label: "GI Date",
+    key: "giDate",
+    thClass: "align-middle"
+  },
+  {
+    label: "Aircraft Registration",
+    key: "aircraftRegistration",
+    thClass: "align-middle"
+  },
+  {
+    label: "Aircraft Type",
+    key: "aircraftType",
+    thClass: "align-middle"
+  },
+  {
+    label: "Flight No",
+    key: "flightNo",
+    thClass: "align-middle"
+  },
+  {
+    label: "By Shift",
+    key: "byShift",
+    thClass: "align-middle"
+  },
+  {
+    label: "Meter 1 Start Time",
+    key: "meter1StartTime",
+    thClass: "align-middle text-center",
+    tdClass: "text-center"
+  },
+  {
+    label: "Used",
+    key: "used",
+    thClass: "align-middle text-center",
+    tdClass: "text-center"
+  }
+];
+
 export const checklistDetail = [
   {
     label: "No",

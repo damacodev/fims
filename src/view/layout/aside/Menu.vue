@@ -45,6 +45,11 @@
         text="OE Generator"
         icon="flaticon-interface-9"
       />
+      <li-menu
+        :to="{ name: 'oisFile' }"
+        text="Manage OIS File"
+        icon="flaticon2-writing"
+      />
       <!-- <li-menu
         :to="{ name: 'checklist' }"
         text="Checklist"

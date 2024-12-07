@@ -113,12 +113,6 @@ export default {
     options: {
       dppu: [],
       status
-    },
-    normalizer(node) {
-      return {
-        id: node.value,
-        label: node.text
-      };
     }
   }),
   computed: {

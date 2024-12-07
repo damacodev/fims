@@ -24,6 +24,11 @@ export default new Router({
           name: "workOrder",
           component: () => import("@/view/pages/WorkOrder.vue")
         },
+        {
+          path: "/ois-file",
+          name: "oisFile",
+          component: () => import("@/view/pages/ManageOisFile.vue")
+        },
         generalTask,
         {
           path: "/approver",

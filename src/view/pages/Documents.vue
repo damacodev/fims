@@ -46,9 +46,9 @@
     <template #cell(title)="data">
       {{ data.value }}
       <br /><span class="text-muted">{{ data.item.description }}</span>
-      <br /><small class="text-muted font-italic">{{
-        data.item.category.label
-      }}</small>
+      <br /><small class="text-muted font-italic">
+        {{ data.item.category == null ? "-" : data.item.category.label }}
+      </small>
     </template>
     <template #cell(type)="data">
       {{ data.item.document.group.label }}

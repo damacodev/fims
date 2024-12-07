@@ -122,6 +122,14 @@
             >
               Add New Record
             </b-button>
+            <b-button
+              v-show="!currentProgress.locked"
+              variant="secondary"
+              class="ml-2 mb-4"
+              @click="handleSyncOis"
+            >
+              Sync OIS
+            </b-button>
           </b-col>
           <b-col lg="6" class="text-right">
             <b-button
@@ -1044,6 +1052,42 @@ export default {
                   // self.get();
                   self.$router.push({ name: self.route.table });
                 }, 1000);
+              }
+            })
+            .finally(() => dialog.close());
+        });
+    },
+    handleSyncOis() {
+      const self = this;
+
+      self.$dialog
+        .confirm(
+          "You are about to sync OIS for this transaction. Are you sure ?",
+          {
+            okText: "Yes, Sync",
+            cancelText: "Cancel",
+            loader: true
+          }
+        )
+        .then(dialog => {
+          self.$store
+            .dispatch("apis/post", {
+              url: `/board/standard-form/120/sync/${self.$route.params.id}`,
+              params: self.form
+            })
+            .then(response => {
+              if (response.error) {
+                self.$message.error({
+                  zIndex: 10000,
+                  message: response.message
+                });
+              } else {
+                self.$message.success({
+                  zIndex: 10000,
+                  message: response.message
+                });
+
+                self.get();
               }
             })
             .finally(() => dialog.close());
