@@ -11,6 +11,13 @@
           :value="requestInfo.request.standardForm.label"
         />
         <PlainText label="Description" :value="requestInfo.description" />
+        <PlainText
+          v-if="
+            requestInfo.request != null && requestInfo.request.equipment != null
+          "
+          label="Equipment"
+          :value="requestInfo.request.equipment.label"
+        />
         <PlainText label="Transaction">
           <template #value>
             <router-link
